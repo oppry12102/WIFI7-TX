@@ -1,0 +1,81 @@
+==============================================================================
+LVSDB 逐项失配明细 · /data/workspace/phys/sow6_run/run_v2/lvs/deckfix_v1/out_drv2v20_v35_v1g/m2_mix_v35.lvsdb
+==============================================================================
+
+---- circuit pairs ----
+  circuit_pair <klayout.dbcore.CircuitPairData object at 0x7bfcd6f11130>
+  合计 circuit_pair = 1
+
+---- net pairs (逐网 status) ----
+  [Match         ] TX5G_M2_MIX_V35        layout=XBI1/nref                      sch=XBI1/NREF                     
+  [Match         ] TX5G_M2_MIX_V35        layout=XBI2/nref                      sch=XBI2/NREF                     
+  [Match         ] TX5G_M2_MIX_V35        layout=e1a                            sch=E1A                           
+  [Match         ] TX5G_M2_MIX_V35        layout=e1b                            sch=E1B                           
+  [Match         ] TX5G_M2_MIX_V35        layout=e2a                            sch=E2A                           
+  [Match         ] TX5G_M2_MIX_V35        layout=e2b                            sch=E2B                           
+  [Match         ] TX5G_M2_MIX_V35        layout=gnd                            sch=GND                           
+  [Match         ] TX5G_M2_MIX_V35        layout=ifn                            sch=IFN                           
+  [Match         ] TX5G_M2_MIX_V35        layout=ifp                            sch=IFP                           
+  [Match         ] TX5G_M2_MIX_V35        layout=lon                            sch=LON                           
+  [Match         ] TX5G_M2_MIX_V35        layout=lond                           sch=LOND                          
+  [Match         ] TX5G_M2_MIX_V35        layout=lop                            sch=LOP                           
+  [Match         ] TX5G_M2_MIX_V35        layout=lopd                           sch=LOPD                          
+  [Match         ] TX5G_M2_MIX_V35        layout=na1p                           sch=NA1P                          
+  [Match         ] TX5G_M2_MIX_V35        layout=na2n                           sch=NA2N                          
+  [Match         ] TX5G_M2_MIX_V35        layout=nb1p                           sch=NB1P                          
+  [Match         ] TX5G_M2_MIX_V35        layout=nb2n                           sch=NB2N                          
+  [Match         ] TX5G_M2_MIX_V35        layout=nbiasH                         sch=NBIASH                        
+  [Match         ] TX5G_M2_MIX_V35        layout=nbiasL                         sch=NBIASL                        
+  [Match         ] TX5G_M2_MIX_V35        layout=nifbias                        sch=NIFBIAS                       
+  [Match         ] TX5G_M2_MIX_V35        layout=nsens                          sch=NSENS                         
+  [Match         ] TX5G_M2_MIX_V35        layout=nswa                           sch=NSWA                          
+  [Match         ] TX5G_M2_MIX_V35        layout=nswb                           sch=NSWB                          
+  [Match         ] TX5G_M2_MIX_V35        layout=ntaila                         sch=NTAILA                        
+  [Match         ] TX5G_M2_MIX_V35        layout=ntailb                         sch=NTAILB                        
+  [Match         ] TX5G_M2_MIX_V35        layout=nvtop                          sch=NVTOP                         
+  [Match         ] TX5G_M2_MIX_V35        layout=rfon                           sch=RFON                          
+  [Match         ] TX5G_M2_MIX_V35        layout=rfop                           sch=RFOP                          
+  [Match         ] TX5G_M2_MIX_V35        layout=vcc                            sch=VCC                           
+  合计 net_pair = 29
+  状态分布: {'Match': 29}
+
+---- 仅 layout / 仅 sch（NoMatch 方向） ----
+
+---- device pairs (逐器件) ----
+  [Match         ] layout=$32                          sch=CCA1                        
+  [Match         ] layout=$34                          sch=CCB2                        
+  [Match         ] layout=$35                          sch=CCB1                        
+  [Match         ] layout=$36                          sch=CCA2                        
+  [Match         ] layout=$31                          sch=CT1                         
+  [Match         ] layout=$33                          sch=CT2                         
+  [Match         ] layout=$6                           sch=XQ1A                        
+  [Match         ] layout=$7                           sch=XQ1B                        
+  [Match         ] layout=$8                           sch=XQ2B                        
+  [Match         ] layout=$9                           sch=XQ2A                        
+  [Match         ] layout=$5                           sch=XD3L                        
+  [Match         ] layout=$2                           sch=XBI1_XQO                    
+  [Match         ] layout=$1                           sch=XBI1_XQR                    
+  [Match         ] layout=$3                           sch=XBI2_XQO                    
+  [Match         ] layout=$4                           sch=XBI2_XQR                    
+  [Match         ] layout=$13                          sch=XQ3                         
+  [Match         ] layout=$14                          sch=XQ4                         
+  [Match         ] layout=$11                          sch=XQ5                         
+  [Match         ] layout=$10                          sch=XQ6                         
+  [Match         ] layout=$12                          sch=XQS                         
+  [Match         ] layout=$25                          sch=XBI1_RREF                   
+  [Match         ] layout=$26                          sch=XBI2_RREF                   
+  [Match         ] layout=$27                          sch=RBA1                        
+  [Match         ] layout=$28                          sch=RBB1                        
+  [Match         ] layout=$29                          sch=RBB2                        
+  [Match         ] layout=$30                          sch=RBA2                        
+  [Match         ] layout=$23                          sch=RBIN1                       
+  [Match         ] layout=$24                          sch=RBIN2                       
+  [Match         ] layout=$15                          sch=RE1A                        
+  [Match         ] layout=$16                          sch=RE2A                        
+  [Match         ] layout=$17                          sch=RE1B                        
+  [Match         ] layout=$18                          sch=RE2B                        
+  [Match         ] layout=$19                          sch=RD1                         
+  [Match         ] layout=$20                          sch=RD2                         
+  [Match         ] layout=$21                          sch=RL1                         
+  [Match         ] layout=$22                          sch=RL2                         
+  合计 device_pair = 36 ；非 Match = 0

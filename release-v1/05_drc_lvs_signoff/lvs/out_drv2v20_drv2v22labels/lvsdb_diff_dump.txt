@@ -1,0 +1,59 @@
+==============================================================================
+LVSDB 逐项失配明细 · /data/workspace/phys/sow6_run/run_v2/lvs/deckfix_v1/out_drv2v20_drv2v22labels/m3_drv2_v22.lvsdb
+==============================================================================
+
+---- circuit pairs ----
+  circuit_pair <klayout.dbcore.CircuitPairData object at 0x70c10ab31130>
+  合计 circuit_pair = 1
+
+---- net pairs (逐网 status) ----
+  [Match         ] TX5G_M3_DRV2_V22       layout=bb1                            sch=BB1                           
+  [Match         ] TX5G_M3_DRV2_V22       layout=bin                            sch=BIN                           
+  [Match         ] TX5G_M3_DRV2_V22       layout=ccas1                          sch=CCAS1                         
+  [Match         ] TX5G_M3_DRV2_V22       layout=ccas2                          sch=CCAS2                         
+  [Match         ] TX5G_M3_DRV2_V22       layout=e1                             sch=E1                            
+  [Match         ] TX5G_M3_DRV2_V22       layout=e2                             sch=E2                            
+  [Match         ] TX5G_M3_DRV2_V22       layout=gnd                            sch=0                             
+  [Match         ] TX5G_M3_DRV2_V22       layout=inn                            sch=INN                           
+  [Match         ] TX5G_M3_DRV2_V22       layout=inp                            sch=INP                           
+  [Match         ] TX5G_M3_DRV2_V22       layout=nbcas                          sch=NBCAS                         
+  [Match         ] TX5G_M3_DRV2_V22       layout=nbias                          sch=NBIAS                         
+  [Match         ] TX5G_M3_DRV2_V22       layout=ntail                          sch=NTAIL                         
+  [Match         ] TX5G_M3_DRV2_V22       layout=outn                           sch=OUTN                          
+  [Match         ] TX5G_M3_DRV2_V22       layout=outp                           sch=OUTP                          
+  [Match         ] TX5G_M3_DRV2_V22       layout=vcc                            sch=VCC                           
+  [MatchWithWarning] TX5G_M3_DRV2_V22       layout=XBI1/nref                      sch=NREF1                         
+  [MatchWithWarning] TX5G_M3_DRV2_V22       layout=XBI2/nref                      sch=NREF2                         
+  [MatchWithWarning] TX5G_M3_DRV2_V22       layout=XBI3/nref                      sch=NREF3                         
+  [MatchWithWarning] TX5G_M3_DRV2_V22       layout=XBI4/nref                      sch=NREF4                         
+  合计 net_pair = 19
+  状态分布: {'Match': 15, 'MatchWithWarning': 4}
+
+---- 仅 layout / 仅 sch（NoMatch 方向） ----
+
+---- device pairs (逐器件) ----
+  [Match         ] layout=$9                           sch=XQ1                         
+  [Match         ] layout=$12                          sch=XQ2                         
+  [Match         ] layout=$10                          sch=XQ3                         
+  [Match         ] layout=$11                          sch=XQ4                         
+  [Match         ] layout=$2                           sch=XBI1_XQR                    
+  [Match         ] layout=$1                           sch=XBI1_XQO                    
+  [Match         ] layout=$4                           sch=XBI2_XQR                    
+  [Match         ] layout=$3                           sch=XBI2_XQO                    
+  [Match         ] layout=$6                           sch=XBI3_XQR                    
+  [Match         ] layout=$5                           sch=XBI3_XQO                    
+  [Match         ] layout=$8                           sch=XBI4_XQR                    
+  [Match         ] layout=$7                           sch=XBI4_XQO                    
+  [Match         ] layout=$19                          sch=RIN1                        
+  [Match         ] layout=$20                          sch=RIN2                        
+  [Match         ] layout=$21                          sch=XBI1_RREF                   
+  [Match         ] layout=$22                          sch=XBI2_RREF                   
+  [Match         ] layout=$23                          sch=XBI3_RREF                   
+  [Match         ] layout=$24                          sch=XBI4_RREF                   
+  [Match         ] layout=$15                          sch=RB1                         
+  [Match         ] layout=$16                          sch=RB2                         
+  [Match         ] layout=$17                          sch=RL1                         
+  [Match         ] layout=$18                          sch=RL2                         
+  [Match         ] layout=$13                          sch=RE1                         
+  [Match         ] layout=$14                          sch=RE2                         
+  合计 device_pair = 24 ；非 Match = 0

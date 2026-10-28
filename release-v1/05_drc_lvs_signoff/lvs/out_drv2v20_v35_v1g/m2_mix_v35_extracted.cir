@@ -1,0 +1,42 @@
+* Extracted by KLayout with SG13G2 LVS runset on : 20/10/2026 04:04
+
+.SUBCKT TX5G_M2_MIX_V35 gnd ifp ifn nifbias nvtop XBI1/nref ntaila XBI2/nref
++ rfop rfon e1a e2a e1b e2b ntailb nswa nswb na1p nb1p nb2n na2n lond lopd
++ nsens lop lon vcc nbiasL nbiasH
+Q$1 XBI1/nref XBI1/nref gnd gnd npn13G2 we=70n le=900n Nx=1 m=1
+Q$2 ntaila XBI1/nref gnd gnd npn13G2 we=70n le=900n Nx=10 m=1
+Q$3 ntailb XBI2/nref gnd gnd npn13G2 we=70n le=900n Nx=10 m=1
+Q$4 XBI2/nref XBI2/nref gnd gnd npn13G2 we=70n le=900n Nx=1 m=1
+Q$5 gnd gnd gnd gnd npn13G2 we=70n le=900n Nx=3 m=2
+Q$6 nswa na1p e1a gnd npn13G2 we=70n le=900n Nx=3 m=1
+Q$7 nswa nb1p e1b gnd npn13G2 we=70n le=900n Nx=3 m=1
+Q$8 nswb nb2n e2b gnd npn13G2 we=70n le=900n Nx=3 m=1
+Q$9 nswb na2n e2a gnd npn13G2 we=70n le=900n Nx=3 m=1
+Q$11 rfop lond nswb gnd npn13G2 we=70n le=900n Nx=6 m=1
+Q$12 rfon lopd nswb gnd npn13G2 we=70n le=900n Nx=6 m=1
+Q$13 nsens nsens gnd gnd npn13G2 we=70n le=900n Nx=1 m=1
+Q$14 rfop lopd nswa gnd npn13G2 we=70n le=900n Nx=6 m=1
+Q$15 rfon lond nswa gnd npn13G2 we=70n le=900n Nx=6 m=1
+R$16 e1a ntaila gnd rsil w=1u l=4.286u ps=0u b=0 m=1
+R$17 e2a ntaila gnd rsil w=1u l=4.286u ps=0u b=0 m=1
+R$18 e1b ntailb gnd rsil w=1u l=4.286u ps=0u b=0 m=1
+R$19 e2b ntailb gnd rsil w=1u l=4.286u ps=0u b=0 m=1
+R$20 lop lopd gnd rsil w=1u l=1.429u ps=0u b=0 m=1
+R$21 lon lond gnd rsil w=1u l=1.429u ps=0u b=0 m=1
+R$22 vcc rfop gnd rsil w=1u l=6.429u ps=0u b=0 m=1
+R$23 vcc rfon gnd rsil w=1u l=6.429u ps=0u b=0 m=1
+R$24 ifp nifbias gnd rhigh w=1u l=1.47u ps=0u b=0 m=1
+R$25 ifn nifbias gnd rhigh w=1u l=1.47u ps=0u b=0 m=1
+R$26 nvtop XBI1/nref gnd rhigh w=2u l=1u ps=0u b=0 m=1
+R$27 nvtop XBI2/nref gnd rhigh w=2u l=1u ps=0u b=0 m=1
+R$28 na1p nbiasL gnd rhigh w=1u l=1.47u ps=0u b=0 m=1
+R$29 nb1p nbiasH gnd rhigh w=1u l=1.47u ps=0u b=0 m=1
+R$30 nb2n nbiasL gnd rhigh w=1u l=1.47u ps=0u b=0 m=1
+R$31 na2n nbiasH gnd rhigh w=1u l=1.47u ps=0u b=0 m=1
+C$32 rfop gnd cap_cmim w=23.61u l=23.61u A=557.4321p P=94.44u m=1
+C$33 na1p ifp cap_cmim w=23.61u l=23.61u A=557.4321p P=94.44u m=1
+C$34 rfon gnd cap_cmim w=23.61u l=23.61u A=557.4321p P=94.44u m=1
+C$35 nb2n ifn cap_cmim w=23.61u l=23.61u A=557.4321p P=94.44u m=1
+C$36 nb1p ifp cap_cmim w=23.61u l=23.61u A=557.4321p P=94.44u m=1
+C$37 na2n ifn cap_cmim w=23.61u l=23.61u A=557.4321p P=94.44u m=1
+.ENDS TX5G_M2_MIX_V35

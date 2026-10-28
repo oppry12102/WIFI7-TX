@@ -1,0 +1,21 @@
+19-Oct-2026 09:17:26 | INFO    | Your Klayout version is: KLayout 0.30.0 (required >= 0.30.0)
+19-Oct-2026 09:17:26 | WARNING | KLayout binary version (0.30.0) differs from the imported klayout Python package version (0.30.12). Re-align with: pip install klayout==0.30.0
+19-Oct-2026 09:17:26 | ERROR   | The input GDS file path /data/workspace/phys/sow6_run/run_v2/lvs/verify/drv1_v23_run/out/m3_drv1_v23.gds doesn't exist, please recheck.
+19-Oct-2026 09:17:26 | INFO    | ==============================================================================
+19-Oct-2026 09:17:26 | INFO    | Important Summary
+19-Oct-2026 09:17:26 | INFO    | +------------------+--------------------------------------------------------------------------+
+19-Oct-2026 09:17:26 | INFO    | | Status           | UNKNOWN                                                                  |
+19-Oct-2026 09:17:26 | INFO    | | Mode             | COMPARE                                                                  |
+19-Oct-2026 09:17:26 | INFO    | | Outcome          | Comparison mode: outcome unknown (layout log not found).                 |
+19-Oct-2026 09:17:26 | INFO    | | Layout           | m3_drv1_v23.gds                                                          |
+19-Oct-2026 09:17:26 | INFO    | | Top Cell         | n/a                                                                      |
+19-Oct-2026 09:17:26 | INFO    | | Results Dir      | /data/workspace/phys/sow6_run/run_v2/lvs/deckfix_v1/out_drv2v20_v23_drv1 |
+19-Oct-2026 09:17:26 | INFO    | | Warnings         | 1                                                                        |
+19-Oct-2026 09:17:26 | INFO    | | Errors           | 1                                                                        |
+19-Oct-2026 09:17:26 | INFO    | | Run Time (s)     | 0.251                                                                    |
+19-Oct-2026 09:17:26 | INFO    | +------------------+--------------------------------------------------------------------------+
+19-Oct-2026 09:17:26 | ERROR   | Key errors:
+19-Oct-2026 09:17:26 | ERROR   |   - The input GDS file path /data/workspace/phys/sow6_run/run_v2/lvs/verify/drv1_v23_run/out/m3_drv1_v23.gds doesn't exist, please recheck.
+19-Oct-2026 09:17:26 | WARNING | Key warnings:
+19-Oct-2026 09:17:26 | WARNING |   - KLayout binary version (0.30.0) differs from the imported klayout Python package version (0.30.12). Re-align with: pip install klayout==0.30.0
+19-Oct-2026 09:17:26 | INFO    | ==============================================================================

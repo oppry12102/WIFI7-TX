@@ -1,0 +1,18 @@
+* Extracted by KLayout with SG13G2 LVS runset on : 19/10/2026 09:17
+
+.SUBCKT TX5G_M3_DRV1_V23 bb1 bin inp inn gnd nbias vcc XBI/nref ntail e1 e2 cop
++ con
+Q$1 ntail XBI/nref gnd gnd npn13G2 we=70n le=900n Nx=8 m=1
+Q$2 cop bin e1 gnd npn13G2 we=70n le=900n Nx=6 m=1
+Q$3 con bb1 e2 gnd npn13G2 we=70n le=900n Nx=6 m=1
+Q$4 XBI/nref XBI/nref gnd gnd npn13G2 we=70n le=900n Nx=1 m=1
+R$5 e1 ntail gnd rsil w=1.75u l=1u ps=0u b=0 m=1
+R$6 e2 ntail gnd rsil w=1.75u l=1u ps=0u b=0 m=1
+R$7 vcc cop gnd rppd w=2.6u l=1u ps=0u b=0 m=1
+R$8 vcc con gnd rppd w=2.6u l=1u ps=0u b=0 m=1
+R$9 inp gnd gnd rhigh w=1.36u l=1u ps=0u b=0 m=1
+R$10 inn gnd gnd rhigh w=1.36u l=1u ps=0u b=0 m=1
+R$11 bin nbias gnd rhigh w=1.36u l=1u ps=0u b=0 m=1
+R$12 bb1 nbias gnd rhigh w=1.36u l=1u ps=0u b=0 m=1
+R$13 vcc XBI/nref gnd rhigh w=1u l=1.19u ps=0u b=0 m=1
+.ENDS TX5G_M3_DRV1_V23

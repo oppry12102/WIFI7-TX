@@ -1,0 +1,29 @@
+* Extracted by KLayout with SG13G2 LVS runset on : 19/10/2026 08:09
+
+.SUBCKT TX5G_M3_DRV2_V22 inp inn gnd nbias bin vcc ntail XBI1/nref XBI2/nref
++ XBI3/nref XBI4/nref e1 e2 ccas1 bb1 ccas2 nbcas outp outn
+Q$1 ntail XBI1/nref gnd gnd npn13G2 we=70n le=900n Nx=8 m=1
+Q$2 XBI1/nref XBI1/nref gnd gnd npn13G2 we=70n le=900n Nx=1 m=1
+Q$3 ntail XBI2/nref gnd gnd npn13G2 we=70n le=900n Nx=8 m=1
+Q$4 XBI2/nref XBI2/nref gnd gnd npn13G2 we=70n le=900n Nx=1 m=1
+Q$5 ntail XBI3/nref gnd gnd npn13G2 we=70n le=900n Nx=8 m=1
+Q$6 XBI3/nref XBI3/nref gnd gnd npn13G2 we=70n le=900n Nx=1 m=1
+Q$7 ntail XBI4/nref gnd gnd npn13G2 we=70n le=900n Nx=8 m=1
+Q$8 XBI4/nref XBI4/nref gnd gnd npn13G2 we=70n le=900n Nx=1 m=1
+Q$9 ccas1 bin e1 gnd npn13G2 we=70n le=900n Nx=10 m=1
+Q$10 outp nbcas ccas1 gnd npn13G2 we=70n le=900n Nx=10 m=1
+Q$11 outn nbcas ccas2 gnd npn13G2 we=70n le=900n Nx=10 m=1
+Q$12 ccas2 bb1 e2 gnd npn13G2 we=70n le=900n Nx=10 m=1
+R$13 e1 ntail gnd rsil w=4.665u l=1u ps=0u b=0 m=1
+R$14 e2 ntail gnd rsil w=4.665u l=1u ps=0u b=0 m=1
+R$15 bin nbias gnd rppd w=1u l=1.923u ps=0u b=0 m=1
+R$16 bb1 nbias gnd rppd w=1u l=1.923u ps=0u b=0 m=1
+R$17 vcc outp gnd rppd w=2.6u l=1u ps=0u b=0 m=1
+R$18 vcc outn gnd rppd w=2.6u l=1u ps=0u b=0 m=1
+R$19 inp gnd gnd rhigh w=1.36u l=1u ps=0u b=0 m=1
+R$20 inn gnd gnd rhigh w=1.36u l=1u ps=0u b=0 m=1
+R$21 vcc XBI1/nref gnd rhigh w=1u l=1.19u ps=0u b=0 m=1
+R$22 vcc XBI2/nref gnd rhigh w=1u l=1.19u ps=0u b=0 m=1
+R$23 vcc XBI3/nref gnd rhigh w=1u l=1.19u ps=0u b=0 m=1
+R$24 vcc XBI4/nref gnd rhigh w=1u l=1.19u ps=0u b=0 m=1
+.ENDS TX5G_M3_DRV2_V22

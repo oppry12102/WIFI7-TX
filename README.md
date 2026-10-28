@@ -23,8 +23,9 @@ WiFi7 射频发射模组 ASIC 设计组的设计成果归档仓库。
 ## 状态
 
 - 2026-10-28：仓库建立；已向 b7a0 请求成果包，等待组方打包与交付。
-- 2026-10-28：公开展示页快照已加入 `display-snapshot/`（源 <http://62.234.172.57:8600/>，站内链接已转换，`fk-*` 等凭据形态值已脱敏）；完整展示页源码与设计成果包仍等 b7a0。
-- 收到后按「公共版 / 受限版」区分；公共版进本仓库，大件走 release asset。
+- 2026-10-28：公开展示页快照已加入 `display-snapshot/`（源 <http://62.234.172.57:8600/>，站内链接已转换，`fk-*` 等凭据形态值已脱敏）。
+- 2026-10-28：**b7a0 成果包 v1 已入 `release-v1/`**——271 件 / 约 6.8MB，六个目录（webpage / spec / gds / netlists / drc-lvs-signoff / layout-notes）；原始包 sha256 `41e5b401…334f3`。公开树有一处历史 file-key 已脱敏，见 `release-v1/SANITIZATION.md`；公开树校验用 `release-v1/PUBLIC_MANIFEST.sha256`。
+- 收到后续调整按「公共版 / 受限版」区分；大件走 release asset。
 
 ---
 本仓库内容由 WiFi7-TX 设计组提供；仓库维护：管理员。

@@ -1,0 +1,19 @@
+19-Oct-2026 09:17:45 | INFO    | Your Klayout version is: KLayout 0.30.0 (required >= 0.30.0)
+19-Oct-2026 09:17:45 | WARNING | KLayout binary version (0.30.0) differs from the imported klayout Python package version (0.30.12). Re-align with: pip install klayout==0.30.0
+19-Oct-2026 09:17:45 | INFO    | Running SG13G2 LVS checks on design /data/workspace/verify/drv1_v23_run/out/m3_drv1_v23.gds on cell TX5G_M3_DRV1_V23
+19-Oct-2026 09:17:49 | INFO    | ==============================================================================
+19-Oct-2026 09:17:49 | INFO    | Important Summary
+19-Oct-2026 09:17:49 | INFO    | +------------------+--------------------------------------------------------------------------+
+19-Oct-2026 09:17:49 | INFO    | | Status           | PASS                                                                     |
+19-Oct-2026 09:17:49 | INFO    | | Mode             | COMPARE                                                                  |
+19-Oct-2026 09:17:49 | INFO    | | Outcome          | Comparison mode: PASS (netlists match).                                  |
+19-Oct-2026 09:17:49 | INFO    | | Layout           | m3_drv1_v23.gds                                                          |
+19-Oct-2026 09:17:49 | INFO    | | Top Cell         | TX5G_M3_DRV1_V23                                                         |
+19-Oct-2026 09:17:49 | INFO    | | Results Dir      | /data/workspace/phys/sow6_run/run_v2/lvs/deckfix_v1/out_drv2v20_v23_drv1 |
+19-Oct-2026 09:17:49 | INFO    | | Warnings         | 1                                                                        |
+19-Oct-2026 09:17:49 | INFO    | | Errors           | 0                                                                        |
+19-Oct-2026 09:17:49 | INFO    | | Run Time (s)     | 5.137                                                                    |
+19-Oct-2026 09:17:49 | INFO    | +------------------+--------------------------------------------------------------------------+
+19-Oct-2026 09:17:49 | WARNING | Key warnings:
+19-Oct-2026 09:17:49 | WARNING |   - KLayout binary version (0.30.0) differs from the imported klayout Python package version (0.30.12). Re-align with: pip install klayout==0.30.0
+19-Oct-2026 09:17:49 | INFO    | ==============================================================================

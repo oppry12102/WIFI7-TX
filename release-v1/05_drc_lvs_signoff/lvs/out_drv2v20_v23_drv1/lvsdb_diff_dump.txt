@@ -1,0 +1,42 @@
+==============================================================================
+LVSDB 逐项失配明细 · /data/workspace/phys/sow6_run/run_v2/lvs/deckfix_v1/out_drv2v20_v23_drv1/m3_drv1_v23.lvsdb
+==============================================================================
+
+---- circuit pairs ----
+  circuit_pair <klayout.dbcore.CircuitPairData object at 0x74691e779130>
+  合计 circuit_pair = 1
+
+---- net pairs (逐网 status) ----
+  [Match         ] TX5G_M3_DRV1_V23       layout=XBI/nref                       sch=NREF1                         
+  [Match         ] TX5G_M3_DRV1_V23       layout=bb1                            sch=BB1                           
+  [Match         ] TX5G_M3_DRV1_V23       layout=bin                            sch=BIN                           
+  [Match         ] TX5G_M3_DRV1_V23       layout=con                            sch=CON                           
+  [Match         ] TX5G_M3_DRV1_V23       layout=cop                            sch=COP                           
+  [Match         ] TX5G_M3_DRV1_V23       layout=e1                             sch=E1                            
+  [Match         ] TX5G_M3_DRV1_V23       layout=e2                             sch=E2                            
+  [Match         ] TX5G_M3_DRV1_V23       layout=gnd                            sch=0                             
+  [Match         ] TX5G_M3_DRV1_V23       layout=inn                            sch=INN                           
+  [Match         ] TX5G_M3_DRV1_V23       layout=inp                            sch=INP                           
+  [Match         ] TX5G_M3_DRV1_V23       layout=nbias                          sch=NBIAS                         
+  [Match         ] TX5G_M3_DRV1_V23       layout=ntail                          sch=NTAIL                         
+  [Match         ] TX5G_M3_DRV1_V23       layout=vcc                            sch=VCC                           
+  合计 net_pair = 13
+  状态分布: {'Match': 13}
+
+---- 仅 layout / 仅 sch（NoMatch 方向） ----
+
+---- device pairs (逐器件) ----
+  [Match         ] layout=$2                           sch=XQ1                         
+  [Match         ] layout=$3                           sch=XQ2                         
+  [Match         ] layout=$4                           sch=XBI_XQR                     
+  [Match         ] layout=$1                           sch=XBI_XQO                     
+  [Match         ] layout=$9                           sch=RIN1                        
+  [Match         ] layout=$10                          sch=RIN2                        
+  [Match         ] layout=$11                          sch=RB1                         
+  [Match         ] layout=$12                          sch=RB2                         
+  [Match         ] layout=$13                          sch=XBI_RREF                    
+  [Match         ] layout=$7                           sch=RL1                         
+  [Match         ] layout=$8                           sch=RL2                         
+  [Match         ] layout=$5                           sch=RE1                         
+  [Match         ] layout=$6                           sch=RE2                         
+  合计 device_pair = 13 ；非 Match = 0
