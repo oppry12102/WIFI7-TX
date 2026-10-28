@@ -1,0 +1,290 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>单元几何真值表 v1.1（SOW-6 · 组长 b7a0 2026-10-17） · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="../index.html" class="">总览</a><a href="../spec.html" class="">规格</a><a href="architecture-md.html" class="">架构</a><a href="../docs.html" class="on">文档</a><a href="../circuit.html" class="">电路</a><a href="../layout.html" class="">版图</a><a href="../phys.html" class="">版图实证</a><a href="../dyn.html" class="">动态指标</a><a href="../scan.html" class="">ACPR 扫描</a><a href="../netlist.html" class="">网表</a><a href="../sim.html" class="">仿真</a><a href="../tree.html" class="">文件树</a><a href="../data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><p class="muted"><a href="../docs.html">← 文档库</a> · SOW-6 全链版图（组长·2026-10-17） · phys/top/单元几何真值表_v1.1.md · 56 行 · sha256 eadc8838b330… · 2026-10-17 03:56 · <a href="../raw%3Fp=phys%252Ftop%252F单元几何真值表_v1.1.md">下载原文</a></p><div class="card"><h1 id="v11sow-6-b7a0-2026-10-17">单元几何真值表 v1.1（SOW-6 · 组长 b7a0 2026-10-17）</h1>
+<blockquote>
+<p><strong>⚠ v1.1 勘误（取代 v1 同名条目）</strong>：v1 的「单元 pitch=1.85µm」表述有误——1.85µm 是
+<strong>npn13G2 多指方向 C 轨 step</strong>（Nx 档 bbox 增量：Nx=3 bbox 10.4 = 6.7+2×1.85），不是
+<strong>PCell 实例间距</strong>。实例几何真值（2026-10-17 DRC 二分实测，官方 maximal deck）：
+- npn13G2 Nx=1 bbox = <strong>6.7 × 7.11 µm</strong>（B/E 引脚 y=−1.14/−0.01 不变，C 轨 Nx=1 时 y=+1.13）
+- <strong>实例最小 pitch = 7.40 µm</strong>（间距 6.7/6.75/7.0 → pSD.b 违规；7.4 起干净；mirror 行同验干净）
+- 行距 ≥ 7.85 µm；guard_ring tap 内缘离 npn bbox ≥ 1.5 µm（tap 入 substrate-tie 环带 →
+  LU.d1/npnG2.c/pSD.b 连锁违规实证）
+- 共质心原语 <code>hbtdiff_array</code> 默认 pitch=7.40 / row_pitch=7.85 已按此定版（lib13g2 v2）</p>
+</blockquote>
+<ul>
+<li>版本：v1.0（组长 b7a0，2026-10-17T03:2xZ，klayout 0.30.0 + 官方 PCell 实测提取）</li>
+<li>用途：b7e7 需求单第 8 项——M2 v1.0 坐标化的前置输入。坐标均为<strong>相对锚点</strong>（mkpc_at 摆放后引脚在 top 坐标，target=(0,0) 实测）。</li>
+<li>库本体：<code>phys/top/lib13g2.py</code> v1（冒烟件 <code>gen_smoke6.py</code> → <code>phys/top/gds/smoke6.gds</code> 105,524 B，net_check 零短路零悬空）</li>
+</ul>
+<h2 id="1-npn13g2hbtwe007u-le09u-xy0">1. npn13G2（HBT，we=0.07u le=0.9u；锚=集电极列 x、y=0）</h2>
+<table>
+<thead>
+<tr>
+<th>Nx</th>
+<th>bbox（µm）</th>
+<th>尺寸</th>
+<th>C (µm)</th>
+<th>B (µm)</th>
+<th>E (µm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>(−3.35,−3.33)~(+3.35,+3.78)</td>
+<td>6.70×7.11</td>
+<td>(0,+1.13)</td>
+<td>(0,−1.14)</td>
+<td>(0,−0.01)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>(−3.35,−3.33)~(+5.20,+3.78)</td>
+<td>8.55×7.11</td>
+<td>(0,+1.24)</td>
+<td>(0,−1.14)</td>
+<td>(0,−0.01)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>(−3.35,−3.33)~(+7.05,+3.78)</td>
+<td>10.40×7.11</td>
+<td>(0,+1.24)</td>
+<td>(0,−1.14)</td>
+<td>(0,−0.01)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>(−3.35,−3.33)~(+8.90,+3.78)</td>
+<td>12.25×7.11</td>
+<td>(0,+1.24)</td>
+<td>(0,−1.14)</td>
+<td>(0,−0.01)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>(−3.35,−3.33)~(+12.60,+3.78)</td>
+<td>15.95×7.11</td>
+<td>(0,+1.24)</td>
+<td>(0,−1.14)</td>
+<td>(0,−0.01)</td>
+</tr>
+<tr>
+<td>10</td>
+<td>(−3.35,−3.33)~(+20.00,+3.78)</td>
+<td>23.35×7.11</td>
+<td>(0,+1.24)</td>
+<td>(0,−1.14)</td>
+<td>(0,−0.01)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>单元 pitch = 1.85 µm</strong>（Nx 每加 1，右边界 +1.85；左边界恒 −3.35 = 隔离/环形区）。</li>
+<li>高度恒 7.11；B/E 引脚 y 恒定（−1.14 / −0.01）；C 轨 y：Nx=1 时 +1.13，Nx≥2 时 +1.24（布 C 轨时按 Nx 分档取）。</li>
+<li>三引脚 x 同列（单边引出）；镜像摆放 mirror=True 绕锚 y 轴镜像。</li>
+</ul>
+<h2 id="2-p1">2. 电阻（锚=P1 下端引脚中心）</h2>
+<table>
+<thead>
+<tr>
+<th>model</th>
+<th>参数</th>
+<th>bbox（µm）</th>
+<th>P1</th>
+<th>P2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rsil</td>
+<td>l=2u w=1u（Calculate=l）</td>
+<td>(−0.18,−0.53)~(+1.18,+2.53) 1.36×3.06</td>
+<td>(0,0)</td>
+<td>(0,+2.40)</td>
+</tr>
+<tr>
+<td>rhigh</td>
+<td>l=1u w=1u（Calculate=l）</td>
+<td>(−0.20,−0.61)~(+1.20,+1.61) 1.40×2.22</td>
+<td>(0,0)</td>
+<td>(0,+1.56)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>电阻横向 x 宽度≈1.2µm 级（含端头）；纵向 l 每 1µm 约 +1.2µm（端头固定偏移 ~1.2µm）。蛇形请按直条拼接（库 net_check 兜底短路检查）。</li>
+</ul>
+<h2 id="3-via_stack-bondpad">3. via_stack / bondpad</h2>
+<table>
+<thead>
+<tr>
+<th>PCell</th>
+<th>参数</th>
+<th>外接尺寸</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>via_stack</td>
+<td>M1↔M2, 2×2（vn=2x2, vt1=1x1）</td>
+<td>0.70×0.62</td>
+<td>中心=插入点；SOW-3 已验证组合。drv2/mix 减层 stack（187/124 件）按 b7e7 目标 R 参数化排布，库原语 <code>via()</code> 现成</td>
+</tr>
+<tr>
+<td>bondpad</td>
+<td><strong>默认参数（octagon）</strong></td>
+<td>80.00×80.01</td>
+<td>中心=插入点；<strong>唯一可用口径</strong>——2026-10-17 实证：shape='square' 分支 evaluate OOM（PDK pycell bug）；create_cell 带显式 params dict 一律创建失败（参数名映射未解）。顶层 pad 统一 octagon 80µm</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-api-v1">4. 库 API 与纪律（v1 现状）</h2>
+<ul>
+<li><code>Board(top_name)</code> → <code>rect/wire_h/wire_v/path/label</code>（µm 坐标；DBox/Text dbu 坑已处理）、<code>mkpc_at</code>（锚点摆放+镜像）、<code>via</code>、<code>bondpad</code>、<code>net_check(ALL)</code>（连通簇/短路/悬空自检）、<code>save</code>。</li>
+<li>需求单回应：①hbtdiff_array 原语（ABBA/共质心+dummy 注入）按 v2 计划跟 M2 设计稿一起落；②via_stack n 参数化已有基础（<code>via()</code> cols/rows）；⑤guard_ring / ⑥keepout v2 落；⑦net_check 镜像轴网名互换校验 v2 落。</li>
+<li>环境<strong>铁律</strong>：klayout 必须用 <code>pdk/kl_env030.sh</code>（0.30.0）——0.30.12 起不来（启动清 PYTHONPATH，SOW-3 报告 §4.1 已载）。</li>
+</ul>
+<h2 id="5">5. 版本注记</h2>
+<ul>
+<li>v1.0（2026-10-17T03:2xZ）：M1 冒烟（smoke6）随件发布；提取脚本实测（<code>Board.mkpc_at</code> target=(0,0) 逐档读 pin/bbox）。</li>
+</ul><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */.codehilite{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:8px 10px}</style></div></main></body></html>

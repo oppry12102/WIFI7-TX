@@ -1,0 +1,510 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wi-Fi 7 TX 模组 · 架构方案（architecture.md） · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="../index.html" class="">总览</a><a href="../spec.html" class="">规格</a><a href="architecture-md.html" class="">架构</a><a href="../docs.html" class="on">文档</a><a href="../circuit.html" class="">电路</a><a href="../layout.html" class="">版图</a><a href="../phys.html" class="">版图实证</a><a href="../dyn.html" class="">动态指标</a><a href="../scan.html" class="">ACPR 扫描</a><a href="../netlist.html" class="">网表</a><a href="../sim.html" class="">仿真</a><a href="../tree.html" class="">文件树</a><a href="../data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><p class="muted"><a href="../docs.html">← 文档库</a> · 顶层规格与报告 · architecture.md · 259 行 · sha256 290b92291fb9… · 2026-10-16 14:59 · <a href="../raw%3Fp=architecture.md">下载原文</a></p><div class="card"><h1 id="wi-fi-7-tx-architecturemd">Wi-Fi 7 TX 模组 · 架构方案（architecture.md）</h1>
+<ul>
+<li>版本：v1.5（组长 b7a0，2026-10-16）</li>
+<li>v1.5 变更（2026-10-16）：<strong>§2 追加 v1.5 链板实测升版注记</strong>（SOW-4 v015.1 合版判读收口，b7e7 确认）——
+  级间阻抗匹配落地见效：链级 CG −13.19 → <strong>+17.47 dB</strong>（+16~+19 dBm 输出档前置条件解除）；
+  drv 段第一限制级维持；P_REF 验收数按链板 −50.16 dBc 备案（单板 −61.5 为 50 Ω 应力口径不可互推）；
+  RL 收敛旋钮裁决不上（v015.1 为基线）；LO 口配电网 +36 mV 补记。v1.4 注记的实测结论以本注记为准。</li>
+<li>v1.4 变更（2026-10-16）：§0 功耗口径勘误——b7e7 v0.11 镜像回归 A 案（nx=10 rr=718 单实例，44.6 mA 尾流 + 2×2.26 mA 参考支路；勘误作废 46 mA/130 mW 并联组），MIX 112.5→<strong>123 mW</strong>，全链 645.5→<strong>656.0</strong> / 822.5→<strong>833.0 mW</strong>（&lt;1.0 W 结论不变，余量 167）；fde9 B1 硬验收到达（L8 PASS / M8 有条件 PASS 混合模口径 / M1-M7+L1+L7 全收 → <strong>L2 块级稳定性正式闭环</strong>），§8.4 拍板更新（v0.11 出稿解锁 + 重型档批准 + 增设 C 变体=M8 复验臂）。</li>
+<li>v1.3 变更：<strong>§8 线性度判据审计</strong>（−45dBc 双音代理判据从 802.11be 规范三层反推；IM3 机理改判开关级/IM2 主导入档，实测斜率 s≈2.1 dB/dB；判据「不过严但不充分」结论 + 测试点↔标称点换算通路 + 外推纪律）；§0/§2 功耗包络更新（v0.11 45mA 拍板入预算：mix 40→112.5 mW，6G 全链 573→<strong>645.5 mW</strong> ✓、2.4G 750→822.5 mW ✓&lt;1.0W）；§2 GM+混频行晶体管级口径注记；§7 风险登记补 IM2 失衡残差判据空白 + 判据外推纪律；v0.12 drv 轮升格为标称点合规闭环必要环节。</li>
+<li>v1.2 变更：§0 电压域映射定案——<strong>2.5 V 内部轨批准</strong>（b7e7 SOW-2 v0.9 晶体管级声明：Gilbert 双 Vbe 堆叠 1.8 V 无解，组长堆叠预算核算复核通过；1.8 V 双轨省 21 mW 选项第二轮再议）；功耗口径更新（行为级 73 mW → 晶体管级 201 mW 包络，含双 LO_BUF，待 I/Q 数量定案收口）；补器件级 P0 sanity 结论。</li>
+<li>v1.1 变更：新增 §0 工艺平台（SG13G2 落地）；§1 图注/§2 备注由「40nm 假设」改为 SG13G2 口径（行为级预算数字保留，晶体管级由 SOW-2 逐步替换）；§7 补风险 6。</li>
+<li>前置：spec.md v1.2（指标口径以 spec §2 为准）</li>
+</ul>
+<h2 id="0-v11-ihp-sg13g2-pdk">0. 工艺平台（v1.1 定稿：IHP SG13G2 开源 PDK）</h2>
+<p><strong>选定：IHP SG13G2，130 nm SiGe BiCMOS，Apache 2.0 开源</strong>（选型论证见 research/PDK_SG13G2_落地评估_2026-10-16.md）。</p>
+<p>已实测锚点（本组 ngspice-47 + PDK 模型实跑，pdk/sim/）：
+- SiGe HBT（npn13G2, Nx=4, Vce=1.2 V, typ 27 °C）：<strong>β 峰值 ~820；fT 382 GHz @ 3.8 mA → 434 GHz @ 9.6 mA</strong>（ft_ic_np13G2_Nx4.csv）。RF 有源级（混频器核心/驱动/PA 前级）以 HBT 为主力器件。
+  <strong>器件级 P0 sanity 闸门已过</strong>（2026-10-15 复测：fT 交点 383.2/434.2 GHz vs 锚 +0.31%/+0.05%，β 峰 812.9 vs 820 −0.87%；sim_report/sow2_results/d1_p0_sanity_typ_v1.json）。口径注记：锚点为 0 dB 交点法；-20 dB/dec 理想段外推因 VBIC 高频寄生变平偏低 ~18%（307/356 GHz）——批扫统一交点口径。corner 批扫（3 corner × 5 Vce × 25 Ic）进行中。
+  工作点校准（偏置链计算用）：Vbe=0.88 V @nx=6, Vce=1.2 V → Ic≈6.9 mA，<strong>β≈570</strong>（β 820 是 0.5 mA 量级峰区值，勿用于工作点电流预算）。
+- 仿真环境：sp 分析可用（RF port=VSRC 选项，含 donoise 噪声相关矩阵，已用 50Ω 直通校准）；<strong>hb 不在</strong>（Debian 构建 ngspice-47）→ P1dB/OIP3 走 tran 双音+FFT。
+- corner 体系：cornerHBT.lib 七段（typ/bcs/wcs × mismatch + typ_stat）；cornerMOSlv/hv、cornerRES、cornerCAP、cornerDIO 同构。MC 语法对齐官方测试台（pdk/sim/examples/）。</p>
+<p>电压域映射（v1.2 定案，b7e7 晶体管级 v0.9 + 组长堆叠预算复核）：
+| 架构 v1.0 假设 | SG13G2 实际域 | 说明 |
+|---|---|---|
+| 模拟/RF 1.1 V | <strong>2.5 V 内部轨（RF 有源链：MIX/DRV1/DRV2/LO_BUF）</strong> | Gilbert 双 Vbe 堆叠 + 开关对需 ≈2.3-2.4 V 共模，1.8 V 无解（堆叠预算：Vbe×2+Vce×2+Re+尾流合规≈2.8 V&gt;1.8 V）；来源 <strong>3.3 V IO 域 → LDO → 2.5 V</strong>（版图阶段落） |
+| 驱动级 1.8 V | 2.5 V 内部轨（DRV2 = HBT cascode，管级 Vce ≤1.2 V） | 1.8 V 双轨（DRV2 75→54 mW）第二轮再议：等 tran 实测 + PA 功率级落地一起对账 |
+| 功率级 2.0 V | <strong>待定：HV MOS 域 / HBT cascode 供电</strong> | b7e7 SOW-2 后续输出项 |
+| 核心数字 0.9 V | 1.2 V（LV MOS 标称域） | 130nm 数字效率低于 40nm 假设 → 见 §7 风险 6 |</p>
+<p>功耗口径（v1.4，晶体管级 + v0.11 拍板 + b7e7 勘误 A 案口径）：MIX 40→<strong>123</strong>（v0.11 尾流 44.6 mA×2.5V=111.5 + 参考支路 2×2.26 mA=11.3 mW，A 案镜像 nx=10 rr=718 单实例；OP 回填后可微调 rr 一次补到 45.0 mA）+ DRV1 20 + DRV2 75 + LO_BUF 33×2 ≈ <strong>284 mW 包络</strong>（2.5 V 轨，含双 LO_BUF；单 LO 分配 251 mW）；<strong>6G 全链 573→656.0 mW ✓≤1.0 W、2.4G 全链 750→833.0 mW ✓≤1.0 W</strong>（spec v1.2 已将 2.4G 上限 0.8→1.0 W，余量 167 mW）——45 mA 线（+83 mW 含参考增量，勘误口径）在功耗包络内成立，无需砍它处预算。1.8 V 双轨下限口径随 v0.11 换代重估（第二轮再议）。</p>
+<p>无源与互连：MIM/叉指电容（密度按模型卡口径：cap_cmomf base 0.372 fF/µm² + 0.305/层）、
+多种电阻（rsil/rhigh 等）、多层金属含厚顶层（transformer 可行性按 layout_plan v1.0 复核）。</p>
+<h2 id="1-tx">1. TX 链路拓扑</h2>
+<div class="codehilite"><pre><span></span><code> 数字前端(DFE)      模拟基带/RF（SG13G2 130nm SiGe BiCMOS，选定）     
+┌──────────────┐   ┌────────────────────────────────────────────────────┐
+│ Fs_bb=320Msps │   │  DAC(12b,1.28Gsps,IQ) → 重构LPF(4阶,fc≈420M)        │
+│ ×4插值 FIR    │──▶│    → VGA(0~15dB,0.5dB步) → GM级+无源正交混频器       │
+│ DC/IQ预矫正   │   │    → 驱动级 → 功率级(PA) → 片上transformer → 焊盘    │
+│ CFR(预留)     │   │       (25%占空LO混频)  (2.4G / 5-6G 双路)           │
+└──────────────┘   └──────────────┬─────────────────────────────────────┘
+       ▲                          │ 耦合器(-25dB)
+       │ 校准系数回写              ▼
+┌──────┴──────┐           ┌───────────────┐
+│ 校准/功控逻辑 │◀──────────│ RF功率检测+ADC │
+└─────────────┘           └───────────────┘
+       ▲
+┌──────┴───────────────────────────────┐
+│ LO 合成: PLL(ΣΔ分数N,BW≈800kHz)       │
+│ VCO 4.8–7.2GHz(双带) → ÷2(2.4G)/直通 │
+│ → 多相IQ → 25%占空 → LO分配缓冲      │
+└──────────────────────────────────────┘
+</code></pre></div>
+
+<p>要点：
+- <strong>直接变频（zero-IF）发射</strong>：无中频滤波/镜频抑制硬件负担，三频段共用基带带宽可编程。
+- <strong>双功率路</strong>：2.4 GHz 独立一路；5/6 GHz 共用宽带一路（transformer + 开关电容调谐覆盖
+  4.9–7.125 GHz）。理由：5/6 GHz 单路宽带可省面积；2.4 GHz 频率比悬殊（&gt;2×），分路效率优。
+- 25% 占空比无源混频器：较 50% 方案噪声/线性更优，LO 生成用脉冲整形。</p>
+<h2 id="2-6-ghz320-mhz4096-qam">2. 逐级链路预算（6 GHz、320 MHz、4096-QAM、最大输出档）</h2>
+<p>增益/线性度/功耗分配表（OP1dB 为输出参考；NF 仅对噪声敏感级给出）：</p>
+<table>
+<thead>
+<tr>
+<th>级</th>
+<th>增益 (dB)</th>
+<th>OP1dB (dBm)</th>
+<th>OIP3 (dBm)</th>
+<th>噪声贡献</th>
+<th>电流</th>
+<th>电源</th>
+<th>功耗</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DAC</td>
+<td>—（0~−15 dBm 输出）</td>
+<td>—</td>
+<td>—</td>
+<td>量化 −50 dB EVM</td>
+<td>23 mA</td>
+<td>1.1 V</td>
+<td>25 mW</td>
+</tr>
+<tr>
+<td>重构 LPF</td>
+<td>−2</td>
+<td>+5</td>
+<td>+8</td>
+<td>−55 dB EVM</td>
+<td>12 mA</td>
+<td>1.1 V</td>
+<td>13 mW</td>
+</tr>
+<tr>
+<td>VGA</td>
+<td>0~15 (0.5 步)</td>
+<td>+2 (0 dB 档)</td>
+<td>+12</td>
+<td>−48 dB(含混频)</td>
+<td>14 mA</td>
+<td>1.1 V</td>
+<td>15 mW</td>
+</tr>
+<tr>
+<td>GM+混频</td>
+<td>0</td>
+<td>+6</td>
+<td>+16</td>
+<td>DSB NF 9 dB</td>
+<td>30 mA</td>
+<td>1.1 V</td>
+<td>33 mW</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>v1.3 晶体管级口径注记（GM+混频行）</strong>：上行为行为级预算（无源正交混频假设）。SOW-2 晶体管级实际拓扑为
+<strong>有源 Gilbert cell</strong>（b7e7 v0.10 multi-tanh，SG13G2 HBT）：CG +2 dB（方案 A 目标）→ v010 实测链 CG −12.7 dB
+（drv 增益缺口 ~17 dB 未补，v0.12 轮）；OIP3 行为级 +16 dBm ↔ 晶体管级实测三点 −16.2/−8.2/+0.5 dBm
+（@IF −23/−17.9/−8 dBm/音，<strong>非三阶幅度依赖=IM2 主导混合路径</strong>，OIP3 标签禁直读外推，见 §8 审计）；
+电流 16→<strong>45 mA</strong>（v0.11 拍板，功耗 40→112.5 mW 已并入 §0 包络）。NF 9 dB 行待 L2 噪声测量（M7）回填。
+| 驱动级 | +6 | +17 | +27 | — | 55 mA | 1.8 V | 99 mW |
+| 功率级 (6G) | +17 | (PSAT +32) | — | −46 dB EVM(回退8dB) | 101 mA | 3.3 V | 333 mW |
+| LO(PLL+VCO) | — | — | — | IPN −48 dBc | 20 mA | 1.1 V | 22 mW |
+| LO 分配缓冲 | — | — | — | — | 15 mA | 1.1/1.8 V | 33 mW |
+| <strong>合计（6G 满功率）</strong> | 链总 21~36 dB | — | — | 合成 EVM <strong>−40.8 dB</strong> | — | — | <strong>≈573 mW ✓≤1.0W</strong> |</p>
+</blockquote>
+<ul>
+<li>2.4 GHz 满功率档（+23 dBm）：功率级 PAE 35% → 571 mW，全链 ≈ <strong>750 mW ✓≤0.8W</strong>。</li>
+<li>链总增益 21~36 dB：+18 dBm 输出时 DAC 工作于 0 ~ −15 dBm（VGA 联动），落在
+  12-bit DAC 线性最优区间（spec §2/§7 一致，已验算）。</li>
+<li>功率级 6G：PSAT +32 dBm、PAE ≥30% @ +18 dBm 平均（行为级预算口径保留；晶体管级实现
+  换 SG13G2 HBT cascode/HV MOS，由 SOW-2 替换本行数字——v1.1）。</li>
+</ul>
+<blockquote>
+<p><strong>v1.4 晶体管级实测口径更正（SOW-3 v2.3，2026-10-16 组长代跑，v014 定稿板）</strong>——
+上表增益列是<strong>行为级设计预算</strong>，晶体管级实测与之有三处实质差异，<strong>按下列数字为准</strong>：</p>
+<ol>
+<li><strong>链级 CG 真值 = −13.19 dB</strong>（相干窗逐 bin 直读，200 ns 整窗 / Δf = 5 MHz / 64 音 5…320 MHz）。
+   SOW-2 结项报告记的 <strong>−19.22 dB 偏低 6.0 dB</strong>，原因是<strong>回归口径</strong>而非仿真差异：
+   fourband 把 4 个基波取在 ±9/±11 MHz（非 ±10 MHz），500 ns 窗上与真实音不正交 →
+   24 频最小二乘把一根拆成两根（−3.9 dB）；且回归传 <code>2*ifamp</code> = 20 mV 而 v014 实际 15.8 mV（−2.05 dB）。
+   在同一份数据上复现旧回归值（−47.12 vs 记录 −47.17 dBV）→ 两值同源，差异可完全归因。</li>
+<li><strong>驱动段实测为净损耗</strong>（上表「驱动级 +6 dB」行）：单音逐级 混频器出 −39.85 dBV →
+   <strong>DRV1 −1.25 dB</strong> → <strong>DRV2 −2.09 dB</strong>（净 −3.3 dB）；三次独立测量（SOW-2 逐级功率 /
+   AC 读数 Gdd −3.5 dB / 本轮瞬态）同结论，而 v011a 链板头注规划 drv1+drv2 应有 +14~16 dB → <strong>差约 18 dB</strong>。
+   机理：级间 Zin ≈ 1/gm（2.6 / 9.1 Ω）被下一级 Rin 50 Ω 与 Cin 1 p（2.9 Ω）分压吃掉。
+   <strong>验证</strong>：只改阻值（Rin 50→1 kΩ、RL 25→100 Ω），链级单音增益 −13.19 → <strong>+8.34 dB（+21.5 dB）</strong>，
+   各级由负转正 → 归因闭合（是阻抗匹配问题，不是器件/偏置问题；Vbcas 1.80→2.05 V 扫仅动 0.05 dB 已排除共基管嫌疑）。</li>
+<li><strong>对架构表的影响</strong>：「合计 链总 21~36 dB」是<strong>设计目标</strong>，当前拓扑实测为负；
+   spec §4 的 +16~+19 dBm 输出档在<strong>级间阻抗匹配完成前不可达</strong>，功率级/DPD 讨论须等匹配闭环后再起。
+   处方已派 b7e7 做级间阻抗匹配联合优化（硬边界：各级 Vce &gt; 1.2 V、i_vcc ≤ 45 mA），
+   交付回填 op / sp / tran 三轴。详见 spec.md §12.3 与 WebUI <code>/dyn</code> 页。</li>
+</ol>
+<p><strong>v1.5 链板实测升版（SOW-4 v015.1 合版判读，2026-10-16 组长判读 + b7e7 确认收口）</strong>——
+上注记（v1.4）的第 1/2/3 条<strong>已被 v015.1 更新</strong>，按下述为准：
+1. <strong>级间阻抗匹配已落地</strong>（v015.1 合版）：链级 CG −13.19 → v014 +15.74 → <strong>v015.1 +17.47 dB</strong>
+   （+1.73），超 +14~16 目标带 1.5 dB；等功率判读已补偿（scale 0.014 等效），<strong>无指标损伤</strong>——
+   「+16~+19 dBm 输出档不可达」的<strong>前置条件解除</strong>，spec §4 输出档位讨论重新开门（仍受 §12.7
+   ACPR/输出功率实测约束）。
+2. <strong>drv 段第一限制级维持</strong>：链出与 mix 出同标度 ACPR 差 10.8 dB = drv 段自身失真托底；
+   后续再抠 ACPR，主战场在 <strong>drv 段回流路径</strong>（SOW-3 发射极 R 预算口径现成）。
+3. <strong>P_REF 验收数备案</strong>：ACPR1 @P_REF = <strong>−50.16 dBc</strong>（判据 −30 → 裕 20 dB）；
+   §12.6 单板 −61.5 dBc 为 50 Ω 应力口径<strong>不可互推</strong>。<strong>RL 收敛旋钮裁决不上</strong>
+   （v015.1 原样收讫为基线；RL 56~75 单参数预案保留备案）。
+4. <strong>LO 口配电网 +36 mV 补记</strong>：nlop/nlon DC 上移 +36 mV（经 Rloin 2 kΩ）；AC 侧 Cca/Ccb 隔直
+   不进 gm 对，drv 侧零扰动实测证实——容差内备案。
+依据：spec.md §12.7；判读纪要 <code>pdk/sim/r2run/判读纪要_v015.1_SOW4_2026-10-16.md</code>；
+版图准则定稿 <code>design_circuit/HBT级版图准则_v1.2_b7e7.md</code>（R-VIA-01 方案 2 随裁决入稿）。</p>
+</blockquote>
+<h2 id="3">3. 各模块设计要点（交电路设计岗的边界）</h2>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>关键要求</th>
+<th>悬而未决（SOW 中明确）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DAC</td>
+<td>12b/1.28Gsps、SFDR&gt;70dB 带内、动态非线性按 −50dB EVM 分配</td>
+<td>归一化电流舵 vs 四路电流舵、时钟占空稳定</td>
+</tr>
+<tr>
+<td>重构 LPF</td>
+<td>4 阶、fc≈420 MHz、@1.12 GHz 抑制≥45 dB、线性相位</td>
+<td>active-RC vs Gm-C；调谐方式</td>
+</tr>
+<tr>
+<td>VGA</td>
+<td>0~15 dB/0.5 dB 步进、±0.1 dB 平坦度/带</td>
+<td>分级结构与带内平坦</td>
+</tr>
+<tr>
+<td>GM+混频</td>
+<td>转换增益 0 dB、NF 9 dB、25% LO</td>
+<td>25% 占空产生电路、正交误差</td>
+</tr>
+<tr>
+<td>驱动级</td>
+<td>+6 dB、OP1dB +17 dBm(6G)</td>
+<td>中和电容稳定性</td>
+</tr>
+<tr>
+<td>功率级</td>
+<td>6G PSAT+32/2.4G +33 dBm、PAE 30/35%</td>
+<td>transformer 版图、调谐开关 Q 值</td>
+</tr>
+<tr>
+<td>PLL/VCO</td>
+<td>IPN ≤−48 dBc(1k–100M)、BW≈800 kHz</td>
+<td>VCO 双带覆盖、ΣΔ 噪声整形阶数</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-lo">4. LO 合成</h2>
+<ul>
+<li>PLL：ΣΔ 分数 N（三阶 2-1 MASH 假设），环out带宽 800 kHz；带内 −95 dBc/Hz、
+  VCO @1 MHz ≤ −129 dBc/Hz（spec §8 口径）。</li>
+<li>VCO 4.8–7.2 GHz 双子带；2.4 GHz 档 ÷2 直生、5/6 GHz 直通。</li>
+<li>正交：多相滤波器（RC-CR，两级）+ 25% 占空整形；正交误差预算 0.3°/0.05 dB（校准后，spec §7）。</li>
+</ul>
+<h2 id="5">5. 校准与功率检测辅助路</h2>
+<ul>
+<li>片上方向耦合器（−25 dB，假设）→ 对数 RF 检波器 → SAR ADC → 数字功控：
+  闭环精度 ±1.5 dB（spec S12），覆盖 +20~−20 dB 相对满功率。</li>
+<li>校准项与触发：LO 馈通（数字 DC 补偿，产测+运行粗调）、IQ 不平衡（产测一次 + 温漂查表）、
+  PA 温漂（运行时闭环跟踪，周期 100 ms）。</li>
+<li>观测路假设：产品无片内 TX→RX 回环；行为级验证用模型回环（仿真岗建）。</li>
+</ul>
+<h2 id="6">6. 数字前端与接口</h2>
+<ul>
+<li>×4 插值（半带级联 FIR，63 抽头等效）、通带纹波 ≤0.05 dB、阻带 @1.12 GHz ≥50 dB。</li>
+<li>DC/IQ 预矫正系数接口（校准回写）；CFR 预留（v1 不启用）。</li>
+<li>接口假设见 spec §6（DDR 640 MHz 或串行，集成时定）。</li>
+</ul>
+<h2 id="7">7. 风险登记（集成评审重点核对）</h2>
+<ol>
+<li>6 GHz 320 MHz 档 SEM 裕量（滚降+PA 宽带压缩的联合作用）——仿真岗重点角。</li>
+<li>4096-QAM EVM 全温全角保持 −38 dB 规范线（设计目标 −41）——PVT 蒙特卡洛。</li>
+<li>双路 PA 的 5/6 GHz 宽带覆盖（6.1–7.1 GHz 高端 PAE 跌落）。</li>
+<li>25% LO 占空误差→正交误差→EVM 灵敏度。</li>
+<li>功率检测在深回退的温度漂移（闭环精度假设）。</li>
+<li><strong>（v1.1 新增）130nm 数字效率</strong>：DFE/DAC/PLL 数字部分在 SG13G2 上的面积/功耗高于
+   原 40nm 假设口径——数字域重估在晶体管级稳定后进行；若 6G 满功耗逼近 1.0 W 包络，
+   优先压 PA 供电域效率（§0 电压域映射联动）。</li>
+<li><strong>（v1.3 新增）IM2 失衡残差判据空白</strong>：v010 链实测 IM2 −16.4 dBc（差频 2 MHz，带内）且逐级恒定
+   =开关级失衡（失调→偶次）指纹，理想对称结构下应为 0（M5 sanity 证实）。spec §7 EVM 预算表
+   <strong>无 IM2 行</strong>——LOFT 数字校准不救 RF 端偶次失真。45 mA 后 gm·Re ×2.8 此项随斜率 2:1 相对标定。
+   → fde9 波形级 OFDM EVM 确认任务必须含 IM2 带内分量口径（§8.5-④）。</li>
+<li><strong>（v1.3 新增）代理判据外推纪律</strong>：IM3 非三阶机理（§8.3，s≈2.1 dB/dB）下，禁止以 2:1 斜率把
+   测试点 IM3c 外推到标称工作点或高电平——所有跨电平结论必须用实测斜率段（低电平段）换算；
+   高电平段（&gt;−18 dBm/音）已进入压缩（s≈0.76），外推无效。</li>
+</ol>
+<h2 id="8-v13-b7e7">8. 线性度判据审计（v1.3 新增，组长主笔；b7e7 终局取舍依据）</h2>
+<blockquote>
+<p>审计对象：SOW-2 任务书对 mixer/链定的「链出 IM3 低边 ≤ −45 dBc」双音代理判据。
+审计问题：①判据从 802.11be 规范怎么推出来、严不严；②实测 −40.1 dBc 的差距物理上是什么；
+③45 mA 组合拳是否必须（+83 mW 含参考支路代价谁背书，v1.4 勘误口径）；④判据达成 ≠ 系统合规，缺口在哪、谁补。</p>
+</blockquote>
+<h3 id="81">8.1 三层判据链（规范 → 系统 → 块）</h3>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>判据</th>
+<th>出处/口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>规范层</td>
+<td>4096-QAM EVM ≤ <strong>−38 dB</strong>（发射机合规线）；SEM/杂散管带外</td>
+<td>802.11be（spec §2 双线制引用）</td>
+</tr>
+<tr>
+<td>系统层</td>
+<td>全链 RSS ≤ <strong>−41 dB</strong>（设计目标）/红线 −38；PVT MC max −39.7</td>
+<td>spec §7 v1.2 冻结；fde9 波形级 −41.8（含成形）已闭合</td>
+</tr>
+<tr>
+<td>块层</td>
+<td>VGA/混频 AM-AM/AM-PM 分配 <strong>−46 dB</strong>（RSS 之一项，设计引导值非硬闸）</td>
+<td>spec §7（R-08 冻结）；分配表 RSS −38.8 为全分配保守堆叠</td>
+</tr>
+<tr>
+<td>代理层</td>
+<td>链出 IM3 低边 ≤ <strong>−45 dBc</strong>（双音，IF −23 dBm/音 测试口径）</td>
+<td>SOW-2 任务书；<strong>本节审计对象</strong></td>
+</tr>
+</tbody>
+</table>
+<p>换算（代理层 ↔ 块层）：双音每音 −23 dBm/音下，IM3 边带 −45 dBc（相对单音）⇔ 两个边带总交调功率 /
+双音总功率 = 10^(−4.5) ⇔ <strong>EVM 贡献 −45.0 dB</strong>——与块分配 −46 dB 差 1 dB（判据略松 1 dB，双边带对称口径）。
+<strong>结论①：判据不过严</strong>（上口 04:10Z 代理审计结论维持，本次给出推导固化）。</p>
+<h3 id="82-im3-im2">8.2 实测差距的物理归属（IM3 改判开关级/IM2 主导，正式入档）</h3>
+<ul>
+<li>v010 链实测：IM3 低边 <strong>−40.14 dBc</strong> @ IF −23 dBm/音（对判据差 4.9 dB）；上下边带不对称 5~10 dB。</li>
+<li>mixer 单板 M3 三点（−23/−17.9/−8 dBm/音 → OIP3 −16.2/−8.2/+0.5 dBm）：低电平段 OIP3 斜率
+  <strong>+1.56 dB/dB</strong> ⇒ IM3 绝对斜率 <strong>s = 2β−1 ≈ 2.13 dB/dB</strong>（三阶应为 3，二阶为 2）——介于其间偏二阶；
+  高电平段 s≈0.76（压缩区）。</li>
+<li>三条旁证（b7e7 判读，收录入档）：①IM3 上下边带不对称=开关级指纹（gm doublet 中心对称给不出）；
+  ②OIP3 漂移介于二阶/三阶=IM2 主导+混合路径自洽；③尾流节点共模包络→调制换向点机理
+  （ntail FFT 探针 2 MHz 分量，45 mA 后应缩 ~2.8×，判别实验必选）。</li>
+<li><strong>结论②：mixer 线性度瓶颈正式改判「开关级/尾流（IM2 主导混合路径）」</strong>，v1.0~v1.2 的 gm 级
+  （multi-tanh 双 gm 对）假设降级为已验证非主导路径（结构保留：OP 健康、CG 税符合模型）。</li>
+</ul>
+<h3 id="83">8.3 判据的两种语义与「不充分」结论</h3>
+<table>
+<thead>
+<tr>
+<th>语义</th>
+<th>口径</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(a) SOW-2 块级验收口径</td>
+<td>双音 IF −23 dBm/音，v0.10↔v0.11 同口径可比</td>
+<td>v010 −40.1 → 差 4.9 dB；45 mA 预期 −44.6~−49.1 → <strong>压线~达标</strong></td>
+</tr>
+<tr>
+<td>(b) 系统合规口径</td>
+<td>标称工作点（mixer IF 输入 −16~−18 dBm/音 平均，档位联动区间）下带内交调 EVM</td>
+<td>换算通路见下，<strong>未闭合</strong></td>
+</tr>
+</tbody>
+</table>
+<p>换算通路（低电平段 s≈2.1）：电平 +ΔdB ⇒ IM3c 恶化 (s−1)·Δ ≈ <strong>1.1·Δ dB</strong>。
+测试点 −45 dBc 判据 ⇔ 标称点（+5~7 dB）≈ <strong>−38~−39.5 dBc</strong> → EVM 贡献 −38~−39.5 dB：
+<strong>够红线 −38 的边缘、不够块分配 −46（差 6~8 dB）</strong>。三阶假设（s=3，2·Δ）下鸿沟是 10~14 dB——
+IM2 主导斜率救回一半，这是判据「不充分但不致命」的定量原因。
+<strong>结论③：−45 dBc 判据必要且方向正确，但达成它 ≠ 标称点合规</strong>；合规闭环靠三件事：
+①45 mA 把标称点抬到 −43.6 dBc（收益上沿）；②v0.12 drv 轮增益补齐后的<strong>电平重配</strong>——VGA 档位联动
+把 mixer 输入电平再压 3~5 dB（DAC 回退+VGA 补，噪声/量化代价换线性度，波形级核，免费杠杆）；
+③fde9 波形级 OFDM EVM 终审（含 IM2 带内分量，§8.5-④）。</p>
+<p>RSS 快算（背书 ③-①的充分性上沿）：VGAMIX 贡献若到 −43.6 dB，其余块取设计值（DAC−53/LPF−58/
+LO−44.1/IQ·LOFT−55/PA−57.2@DPD20）→ 全链 RSS ≈ <strong>−40.1 dB</strong>（贴设计目标 −41，红线 −38 裕 2.1）；
+若 45 mA 只兑现下沿 −44.6（标称 −39.1）→ RSS ≈ <strong>−37.1 dB 破红线</strong> → 靠 ③-② 电平重配补。
+<strong>故 45 mA 拍板维持（必要性成立），v0.12 drv 轮升格为合规闭环必要环节</strong>（不再只是增益缺口修复）。</p>
+<h3 id="84-45-ma-v011">8.4 45 mA 组合拳拍板记录（v0.11）</h3>
+<ul>
+<li>拍板（2026-10-16 06:4x，回 b7e7 #46/#47）：<strong>方向批准 45 mA 先行 + ntail FFT 探针必选 +
+  一板两变体（A=纯 45 mA；B=A+LO 斜率三件套 Re12→4Ω+尾流16mA+EF Re 40→20Ω，判别实验性质）</strong>。</li>
+<li>fde9 B1 硬验收（2026-10-16 06:46Z 到）：<strong>L8 PASS；M8 有条件 PASS（混合模 Sdd 口径为准，单端口
+  字面 FAIL 记录在案，系 LO 半端口强互耦 Rollett 口径失真）；M1-M7+L1+L7 全收 → L2 块级稳定性
+  正式闭环 ✅</strong>。v0.11 出稿解锁；M8 复验=v0.11 后按混合模口径复跑。</li>
+<li>组长拍板（v0.11 任务书，2026-10-16）：<strong>重型档批准</strong>（tran 200n→2.5µs ≈4.9 个包络周期；投件包
+  =v0.11 主版 + v0.10p 对照版，锚走路 (b)——本地已核无 2.5µs 长窗 raw）；增设 <strong>C 变体=M8 复验臂</strong>
+  （A + LO 口平衡去耦串联阻尼 10 Ω 中值单点，独立臂不混 A/B 归因；三版 sp 复验 + 600n 双音对照
+  查 IM3 恶化）；预备案阻尼扫描（5~15Ω 三点 / RC snubber）留 v0.12，除非 C 臂数据显示必要。</li>
+<li>功耗：+83 mW（44.6 mA 尾流 + 参考支路，v1.4 勘误口径）由本节合规逻辑 + §0 包络（656.0/833.0 mW
+  &lt; 1.0 W）双背书。</li>
+<li>tank RL <strong>不进 v0.11</strong>（归因纪律；留 v0.12 drv 轮主菜，凭 A/B 读数定 CG 补偿目标）。</li>
+</ul>
+<h3 id="85">8.5 遗留待办（判据体系闭环清单）</h3>
+<ul>
+<li>① 45 mA A/B 实测后<strong>重标斜率</strong>：若低电平段 s 回归 3（换向路径占比变大），§8.3 换算恶化 2 dB/dB，
+  任务书 v3 的 M3 判据需收紧 ~5 dB（判据谈判顶上预案）。</li>
+<li>② M7（噪声）回填 §2 表 NF 行；M8（稳定性）结论落 §7 风险 6 关联注记（&gt;10 G 谱半径 1.46 留痕，
+  特征向量集中 LO/IF 口=寄生域局域环路，v0.11 应用域不复查）。</li>
+<li>③ 任务书 v3 的 M3 字段改「测试点直读 + 斜率标定」双字段（外推纪律硬编码）。</li>
+<li>④ <strong>fde9 波形级 OFDM EVM 终审任务</strong>（drv 轮增益补齐后）：含 IM2 带内分量口径（§7 风险 7）、
+  电平重配档位扫描、IM3 弥散谱 EVM（非双音集中口径）——此项是 (b) 语义的唯一裁判。</li>
+<li>⑤ LO 斜率 lever（B 变体）读数②显著时进 v0.12 候选，判据改「换向窗口缩短」。</li>
+</ul>
+<p>—— 交付衔接：电路设计岗按 §2/§3/§8 出晶体管级行为参数表（SG13G2 器件，SOW-2；§8.4 v0.11 拍板为准）；仿真验证岗按 spec §11 + 任务书（§8.5 清单进任务书 v3）——</p><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */.codehilite{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:8px 10px}</style></div></main></body></html>

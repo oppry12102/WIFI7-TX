@@ -1,0 +1,57 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仿真 · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="index.html" class="">总览</a><a href="spec.html" class="">规格</a><a href="docs/architecture-md.html" class="">架构</a><a href="docs.html" class="">文档</a><a href="circuit.html" class="">电路</a><a href="layout.html" class="">版图</a><a href="phys.html" class="">版图实证</a><a href="dyn.html" class="">动态指标</a><a href="scan.html" class="">ACPR 扫描</a><a href="netlist.html" class="">网表</a><a href="sim.html" class="on">仿真</a><a href="tree.html" class="">文件树</a><a href="data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><h1>仿真总览</h1><p class="muted">晶体管级仿真在 IHP SG13G2 开源 PDK + ngspice-47 环境完成；原始波形与全量结果文件保留在本机，可按需下载。</p><div class="grid g2"><div class="card"><a href="sim/op.html"><b>OP27 工作点</b></a><br><span class="muted small">81 deck（3 板 × 27 角）· 判据域 15/15 · 锚 δ -0.037mV · i_vcc 44.683mA</span></div><div class="card"><a href="sim/sp.html"><b>sp 频域全 S 谱</b></a><br><span class="muted small">27 角 × 61 频点（0.1~100G）· eig 带内 1.029 · Scc_LO 1.0031/1.0859</span></div><div class="card"><a href="sim/tran.html"><b>tran 时域波形</b></a><br><span class="muted small">2.5µs 双音：mix CG -19.15dB/音 · OIP3 -13.17dBm · 链级 CG -19.22dB</span></div><div class="card"><a href="sim/device.html"><b>器件特性 d1</b></a><br><span class="muted small">351 点 corner 网格（typ/bcs/wcs × Vce × Ic）· ft/gm/β</span></div><div class="card"><a href="sim/linearity.html"><b>线性度 / 噪声 / S（单板）</b></a><br><span class="muted small">11 组 B1 批次数据（typ/t27/v2500）</span></div><div class="card"><a href="sim/iter.html"><b>迭代路径与判读</b></a><br><span class="muted small">v011a→v012→v013→v014 四轮，四步判据逐条对照</span></div></div></main></body></html>

@@ -1,0 +1,39 @@
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/liblstream.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/libmaly.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/libmebes.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/lay_plugins/liblay_plugin.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/lay_plugins/libmaly_ui.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/lay_plugins/libmebes_ui.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/liblstream.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/libmaly.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/libmebes.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/liblstream.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/libmaly.so
+ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/libmebes.so
+Could not import tkinter. No callback support.
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+Warning: Python package 'psutil' not found!
+[guard_ring] ptap×50 环 (20.0,-8.0)~(60.0,8.0) pg=(20.0, 0.0) ng=(58.0, 0.0)
+[A] 双环返回 {'pg': (20.0, 0.0), 'ng': (58.0, 0.0), 'n_tap': 50}
+[resistor] RE1 rsil 目标=30.0Ω → grid 落位 l=2.14µm w=0.5µm 名义 R=29.96Ω
+  Q1       hbt  C=(40.000,1.130) B=(40.000,-1.140) E=(40.000,-0.007)
+  RE1      res  P1=(28.000,-1.000) P2=(28.000,1.540)
+[keepout] (64.0,-8.0)~(78.0,8.0) KEEPOUT_tank_L1
+[keepout] (14.0,12.0)~(30.0,20.0) KEEPOUT_digital_ph
+[net_check/ALL] 簇=5 标注=5 短路嫌疑=无 悬空=[]
+bbox=(14,-8.42;78,20)  →  /data/workspace/phys/top/gds/m2lib_v2b.gds
+M2LIB V2B SMOKE OK

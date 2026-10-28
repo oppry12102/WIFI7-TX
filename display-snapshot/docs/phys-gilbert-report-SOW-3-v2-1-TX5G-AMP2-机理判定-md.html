@@ -1,0 +1,375 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOW-3 v2.1 · TX5G_AMP2 寄生机理判定 + 对 v2.0 结论的两处更正 · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="../index.html" class="">总览</a><a href="../spec.html" class="">规格</a><a href="architecture-md.html" class="">架构</a><a href="../docs.html" class="on">文档</a><a href="../circuit.html" class="">电路</a><a href="../layout.html" class="">版图</a><a href="../phys.html" class="">版图实证</a><a href="../dyn.html" class="">动态指标</a><a href="../scan.html" class="">ACPR 扫描</a><a href="../netlist.html" class="">网表</a><a href="../sim.html" class="">仿真</a><a href="../tree.html" class="">文件树</a><a href="../data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><p class="muted"><a href="../docs.html">← 文档库</a> · 版图准则与实证（组长） · phys/gilbert/report/SOW-3_v2.1_TX5G_AMP2_机理判定.md · 145 行 · sha256 188ab475c9b1… · 2026-10-16 11:56 · <a href="../raw%3Fp=phys%252Fgilbert%252Freport%252FSOW-3_v2.1_TX5G_AMP2_机理判定.md">下载原文</a></p><div class="card"><h1 id="sow-3-v21-tx5g_amp2-v20">SOW-3 v2.1 · TX5G_AMP2 寄生机理判定 + 对 v2.0 结论的两处更正</h1>
+<ul>
+<li>时间：2026-10-16 11:33–11:37Z（UTC）· 组长 b7a0</li>
+<li>起因：v2.0 把 33.5dB 的落差归因为「发射极路径 + 地轨」，但<strong>没有分清是小信号阻抗失配还是直流偏置漂移</strong>，
+  这两种机理的处方完全相反。v2.1 用三个判据实验把机理钉死，顺带查出 v2.0 里有两处口径/处方要更正。</li>
+<li>脚本（全部可复现，秒级）：</li>
+<li><code>phys/gilbert/sim/attrib_amp2.py</code> → 逐网/渐进归因 → <code>attrib_amp2.json/.md</code></li>
+<li><code>phys/gilbert/sim/mech_amp2.py</code> → 单因子缩放判据实验 → <code>mech_amp2.json</code></li>
+<li><code>phys/gilbert/sim/opcheck_amp2.py</code> → 各工况直流工作点 → <code>opcheck_amp2.json</code></li>
+</ul>
+<h2 id="00-v22-v014-2026-10-16-1156z">0.0 【v2.2 追加更正】回流预算表已按 v014 实测重出（2026-10-16 11:56Z）</h2>
+<p>机理结论（本报告主体）<strong>不变</strong>。但凡引用「各级发射极回流预算」的，以
+<code>design_circuit/HBT级版图准则_发射极路径与地轨回流_v1.1.md</code> 为准，本报告早期版本里的
+「drv2 Re=8.7Ω → 预算 ≤0.14Ω」已作废：</p>
+<ul>
+<li><strong>Re 实为 1.5Ω/边</strong>（v014 定稿板网表 <code>Re1/Re2</code> 行）——8.7Ω 是从 gm_eff=96mS 反解出来的错值。</li>
+<li>Ze 折算改用 <strong>模型实测 gm</strong>（Ic/VT 会把预算放宽 15~45%，理想因子 n=1.30~1.76）。</li>
+<li>新预算：drv2 <strong>≤0.078Ω</strong>（最紧）· 限幅对 ≤0.160Ω · drv1 ≤0.250Ω · gm 对 ≤0.300Ω · EF ≤0.898Ω。</li>
+<li>预算线有实测曲线背书：<strong>Rp=0.078Ω/边 的实测代价仅 −0.093dB</strong>（v014 网表串 Rp 扫描，ΔGdd）。</li>
+<li>「PA 级必须上厚金属」改写为「必须<strong>双层并联 + 单层 ≥10µm</strong>」——卡点是 EM 与 via 规模，不是电阻。</li>
+</ul>
+<h2 id="0-v20">0. 先更正两处口径/处方（v2.0 的错，以本报告为准）</h2>
+<h3 id="1a0-441-db">更正①：「A0 = +4.41 dB 增益」是<strong>绝对电平</strong>，不是电压增益</h3>
+<p><code>Vb1 ... AC 0.05</code>（50mV 激励），报告里的 A0 取的是 <code>20log10|v(out)|</code>，即 <strong>dBV</strong>。
+同口径的<strong>电压增益 = A0 − (−26.02) = A0 + 26.02</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>口径</th>
+<th>前仿真</th>
+<th>后仿真（标称 PEX）</th>
+<th>落差</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dBV（v2.0 报告写的数）</td>
+<td>+4.41</td>
+<td>−29.06</td>
+<td>33.47 dB</td>
+</tr>
+<tr>
+<td><strong>电压增益</strong>（除掉 50mV）</td>
+<td><strong>+30.43 dB</strong></td>
+<td><strong>−3.04 dB</strong></td>
+<td><strong>33.47 dB</strong></td>
+</tr>
+</tbody>
+</table>
+<p>落差不受影响（前后同参），但<strong>任何拿「+4.41dB 增益」去对增益指标的人会差 26dB</strong>。
+<code>mech_amp2.py</code> 起一律输出 <code>gain_dB</code>（电压增益）与 <code>out_dBV</code>（绝对电平）两个字段。</p>
+<h3 id="2-r">更正②：「把退化电阻加大到 ≫ 金属 R」是<strong>错处方</strong>（本拓扑下）</h3>
+<p>v2.0 结论写的是「要么加大退化、要么当大电流线布」。固定 Vbe 偏置下加大 Re 实测是<strong>反效果</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>RRS1/RRE2 缩放</th>
+<th>45.8×1</th>
+<th>×2</th>
+<th>×4</th>
+<th>×8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>电压增益 (dB)</td>
+<td><strong>−3.04</strong></td>
+<td>−8.36</td>
+<td>−9.13</td>
+<td>−11.77</td>
+</tr>
+<tr>
+<td>Ic1 (mA)</td>
+<td>2.450</td>
+<td>2.028</td>
+<td>1.501</td>
+<td>0.897</td>
+</tr>
+</tbody>
+</table>
+<p>加大 Re → 电流被饿（Ic1 掉到 0.9mA）→ 增益更差。<strong>正确处方只有一条：把回流路径电阻降下来</strong>。
+（若确实需要大 Re，必须同时把基极偏置改成电流源/带隙基准，否则就是拿增益换偏置稳定度。）</p>
+<h2 id="1-335db-pex">1. 结构等价性已证明：33.5dB 是真落差，不是 PEX 建模范式带来的</h2>
+<p>把 PEX 网表的<strong>所有串联电阻和 via 电阻全部置零</strong>，得到的增益：</p>
+<div class="codehilite"><pre><span></span><code>前仿真（零寄生理想网表）      = +30.43 dB
+PEX 网表全 R 归零（含 via）   = +30.43 dB     ← 逐位一致
+</code></pre></div>
+
+<p>即 PEX 的集总建模范式（每网一 hub、每引脚 R/2、C/2）与理想网表<strong>完全等价</strong>，
+33.47dB 的落差<strong>全部来自提取出来的真实版图电阻</strong>，没有建模范式误差、没有口径陷阱。
+（顺带查过：前仿真 HBT 衬底接 0、后仿真接内部 vss 引脚，两者对结果无影响，衬底不取流。）</p>
+<h2 id="2-a-b">2. 机理判定：<strong>(a) 小信号发射极阻抗失配</strong>，不是 (b) 直流偏置漂移</h2>
+<h3 id="1e1">判据 1：只缩放发射极路径电阻（E1）</h3>
+<table>
+<thead>
+<tr>
+<th>发射极路径 R ×k</th>
+<th>×1</th>
+<th>×0.5</th>
+<th>×0.25</th>
+<th>×0.1</th>
+<th>×0.05</th>
+<th>×0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>电压增益 (dB)</td>
+<td>−3.04</td>
+<td>+4.11</td>
+<td>+8.00</td>
+<td>+10.50</td>
+<td>+11.37</td>
+<td><strong>+13.96</strong></td>
+</tr>
+<tr>
+<td>Ic1 (mA)</td>
+<td>2.450</td>
+<td>2.483</td>
+<td>2.503</td>
+<td>2.515</td>
+<td>2.519</td>
+<td>2.533</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>电流只动了 <strong>3.4%</strong>（2.45→2.53mA），Vce 始终 1.2~1.36V，<strong>没有 quasi-sat、没有塌陷</strong> → 排除 (b)。</li>
+<li>增益随 R 缩小<strong>单调回升并在 ~+14dB 饱和</strong> → 确认是<strong>小信号分压</strong>：这一级发射极节点的小信号阻抗
+  Ze ≈ Re∥1/gm = 45.8∥(1/gm)，金属 R 直接进分母。</li>
+<li>注意饱和值 +13.96dB 仍比前仿真 +30.43dB 低 <strong>16.5dB</strong> → 发射极路径只解释了一半。</li>
+</ul>
+<h3 id="2e3">判据 2：分离「地轨回流」与「发射极走线」（E3）</h3>
+<table>
+<thead>
+<tr>
+<th>工况</th>
+<th>电压增益 (dB)</th>
+<th>相对标称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标称</td>
+<td>−3.04</td>
+<td>—</td>
+</tr>
+<tr>
+<td>只归零 <strong>vss 地轨</strong>（7.64Ω）</td>
+<td>+9.17</td>
+<td><strong>+12.2 dB</strong></td>
+</tr>
+<tr>
+<td>只归零 <strong>et1m2</strong>（M2 发射极走线 3.50Ω）</td>
+<td>+11.03</td>
+<td><strong>+14.1 dB</strong></td>
+</tr>
+<tr>
+<td>vss + 全部发射极网络</td>
+<td>+36.99</td>
+<td>+40.0 dB</td>
+</tr>
+</tbody>
+</table>
+<p>单网归零（其余保留）全表见 <code>phys/gilbert/sim/attrib_amp2.md</code>：最大两项是
+<strong>et1m2 +14.1dB、vss +12.2dB</strong>，其余每网都在 ±3dB 以内
+（et1m1 +4.3、out +0.7、cb2 −0.1、vcc −1.1、rc −1.4、et2m1 −0.8、et2m2 −2.5 dB）。</p>
+<blockquote>
+<p>vss 地轨的直流账：4 个引脚各 R/2 = 3.82Ω；stage1 回流 2.45mA → 9mV、stage2 回流 6.76mA → 26mV，
+两级发射极电位合计被抬高约 35mV（v2.0 报的 35mV 就是这个数）。</p>
+</blockquote>
+<h3 id="3">判据 3：非单调性——集电极/供电路径的电阻也会大幅影响增益（重要方法论）</h3>
+<p>在「vss + 发射极已归零」的基础上<strong>继续</strong>归零别的网：</p>
+<table>
+<thead>
+<tr>
+<th>再归零</th>
+<th>不动</th>
+<th>归零 rc</th>
+<th>归零 vcc</th>
+<th>归零 out</th>
+<th>归零 cb2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>电压增益 (dB)</td>
+<td><strong>36.99</strong></td>
+<td>31.69</td>
+<td>31.82</td>
+<td>37.78</td>
+<td>36.98</td>
+</tr>
+</tbody>
+</table>
+<p><strong>把 rc / vcc 的串联电阻归零，增益反而掉 5dB。</strong> 这说明本级增益不是「gm×RL」单级模型能描述的，
+而是被「发射极退化 + 级间耦合电阻 RC + 共用供电」构成的<strong>反馈环路</strong>支配，
+环路阻抗变了增益就变，<strong>方向甚至与直觉相反</strong>。</p>
+<blockquote>
+<p>方法论结论（比结论本身更重要）：
+<strong>「电阻小 = 影响小」在多级有源电路里是错的</strong>；PEX 敏感度必须<strong>逐网实测</strong>，
+而且<strong>渐进归零的顺序会影响结论</strong>——各网贡献<strong>不可相加</strong>。</p>
+</blockquote>
+<h3 id="via">via 不是问题</h3>
+<p>via_stack 0.15Ω → 0 只值 <strong>1.94dB</strong>（+30.43 → +28.49）。v2.0 里「via 扫到 1.0Ω 再掉 2.6dB」
+是对的，但它不是主因，别把它当设计重点。</p>
+<h2 id="3_1">3. 修正后的结论（可直接引用的版本）</h2>
+<blockquote>
+<p>TX5G_AMP2 两级 HBT 放大级：前仿真 +30.43 dB → 后仿真（第一阶几何 PEX）−3.04 dB，<strong>落差 33.5 dB</strong>。
+机理是<strong>发射极节点小信号阻抗被版图回流电阻分压</strong>（Ze ≈ Re∥1/gm，只有几欧姆），
+不是直流偏置漂移（Ic 仅漂 3.4%，无 quasi-sat）。
+其中 <strong>M2 发射极走线（3.5Ω）单网归零回收 +14.1dB、vss 地轨（7.64Ω）回收 +12.2dB</strong>，
+发射极路径整体归零回收 17.0dB；<strong>剩余约 16.5dB</strong> 来自级间/集电极/供电路径与反馈环路的相互作用
+（这部分<strong>非单调</strong>：归零 rc/vcc 反而再掉 5dB，需逐网实测）。
+唯一有效处方：<strong>降低发射极回流路径（含地轨）电阻</strong>；加大退化电阻在本拓扑下是反效果。</p>
+</blockquote>
+<h2 id="4">4. 由此推出的版图准则（已同步进设计手册）</h2>
+<p>见 <code>design_circuit/HBT级版图准则_发射极路径与地轨回流_v1.md</code>（组长发布，v1）。
+核心三条：</p>
+<ul>
+<li><strong>R-EMIT-01</strong> 发射极路径（金属 + via + 地轨回流）总串联电阻 ≤ <strong>0.1×Ze</strong>，Ze = Re∥1/gm；
+  代入本项目各级：mixer gm 对 ≤0.27Ω、drv1 ≤0.54Ω、drv2 ≤0.14Ω。</li>
+<li><strong>R-GND-01</strong> 地轨回流电阻压降 <strong>I×R ≤ 5mV/级</strong>（本块实测 2.45mA×3.82Ω = 9mV、6.76mA×3.82Ω = 26mV，
+  两级合计 35mV 的直流抬升；vss 单网归零值 +12.2dB）。</li>
+<li><strong>R-CHK-01</strong> 任何多级有源块的 PEX 敏感度<strong>逐网实测</strong>并入签核，禁止用「几欧姆可以忽略」推断。</li>
+</ul>
+<h2 id="5">5. 复现</h2>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>phys/gilbert/sim/attrib_amp2.py<span class="w">     </span><span class="c1"># 逐网 + 渐进归因（约 0.5s）</span>
+python3<span class="w"> </span>phys/gilbert/sim/mech_amp2.py<span class="w">       </span><span class="c1"># 单因子缩放判据实验（约 0.5s）</span>
+python3<span class="w"> </span>phys/gilbert/sim/opcheck_amp2.py<span class="w">    </span><span class="c1"># 各工况直流工作点（约 0.2s）</span>
+</code></pre></div>
+
+<p>（都依赖 <code>phys/gilbert/pex/amp2_post.cir</code>，该文件由 <code>extract_pex_amp2.py</code> 从 GDS 现场生成；
+三个脚本都只读原网表、另写临时副本，归零一律用 <code>1e-6Ω</code> 而非 <code>0Ω</code>——ngspice 会把 <code>0Ω</code> 改写成
+<code>1e-12Ω</code>、且 <code>0fF</code> 电容留在电路里改变直流解，这条坑 v2.0 已经踩过。）</p><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */.codehilite{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:8px 10px}</style></div></main></body></html>

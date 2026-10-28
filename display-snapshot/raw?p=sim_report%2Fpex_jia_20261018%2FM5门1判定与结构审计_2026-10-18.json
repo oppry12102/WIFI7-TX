@@ -1,0 +1,186 @@
+{
+ "回执": "M5 口径甲代入 · 双门判定（b7a0 四裁执行）",
+ "时间_UTC": "2026-10-18T02:5xZ",
+ "口径依据": "b7a0《M5 PEX 口径裁定（组长四裁）》2026-10-18（8510 design/sow6/M5口径裁定_b7a0四裁_2026-10-18.md, sha 2859c0ec…）",
+ "裁定执行": {
+  "裁定一_口径甲": "已实现：m5_pex_substitute_jia.py（白名单逐条替换 L0 实物件，deck 理想件逐字保留；端口序逐字核对）",
+  "裁定二_护栏1": "逐件「原 cdl 行 → X 行」映射日志留档：pex_subst_audit_jia.md（sha d4b920e5e9310dea）",
+  "裁定二_护栏2": "门1 回归 Δ=0 机器闸：前仿 .op 重跑复现 A0′=0.000000 PASS（ref=typ_v015_1.raw, dut=base_probe.raw）",
+  "裁定三_双门": "0.05 dB 操作门 + 0.5 dB 工程门（27 角）均按裁定执行；本次门1 未过 → 未进动态、未点火 27 角",
+  "裁定四_cmim": "按 area 面项 771.573 fF（-0.44% 备案）；派生层已按面项实现"
+ },
+ "门1_op零扰动": {
+  "verdict": "FAIL",
+  "A0p_max": null,
+  "reason": "OP 无解：singular matrix: check node xmi.nsens；dynamic gmin stepping / true gmin stepping / source stepping 依次失败 → \"The operating point could not be simulated successfully\"",
+  "raw": "sow6/m5/pex_jia_op_screen.raw",
+  "log": "sow6/m5/pex_jia_op_screen.log",
+  "log_sha256": "56f4eb8b51f724f53da741030fa8b1c9a6c2cf8b2d0c93856a18db562d965b63",
+  "err_lines": [
+   "Warning: singular matrix:  check node xmi.nsens",
+   "Warning: singular matrix:  check node xmi.nsens",
+   "Warning: singular matrix:  check node xmi.nsens",
+   "Warning: singular matrix:  check node xmi.nsens",
+   "Warning: singular matrix:  check node xmi.nsens",
+   "Warning: singular matrix:  check node xmi.nsens",
+   "Warning: Dynamic gmin stepping failed",
+   "Warning: True gmin stepping failed"
+  ]
+ },
+ "门2_动态对拍": {
+  "verdict": "未评（门1 未过，按口令②不进动态）",
+  "anchor_dB": 17.4465
+ },
+ "静态结构审计": {
+  "结论": "31/31 HBT 基极与发射极同名（粘连），8 件 R 自环，7 个 deck 网被并没 → 提取侧「幻影焊」未解",
+  "stages": {
+   "gilbert_mix": {
+    "HBT_b_eq_e": 15,
+    "HBT_total": 15,
+    "R_selfloop": 4,
+    "deck_nets_vanished": [
+     "hbt_mirror",
+     "lopd",
+     "nsens",
+     "nswa",
+     "nswb",
+     "ntailb",
+     "rfon",
+     "rfop"
+    ],
+    "cdl_new_nets": [],
+    "merged_domain_warnings": [
+     {
+      "names": [
+       "gnd",
+       "nsens",
+       "ntaila"
+      ],
+      "chosen": "ntaila"
+     },
+     {
+      "names": [
+       "lond",
+       "lopd",
+       "nswa",
+       "rfon",
+       "rfop"
+      ],
+      "chosen": "lond"
+     }
+    ]
+   },
+   "drv1": {
+    "HBT_b_eq_e": 4,
+    "HBT_total": 4,
+    "R_selfloop": 2,
+    "deck_nets_vanished": [
+     "hbt_mirror",
+     "ntail"
+    ],
+    "cdl_new_nets": [
+     "nref"
+    ],
+    "merged_domain_warnings": []
+   },
+   "drv2": {
+    "HBT_b_eq_e": 12,
+    "HBT_total": 12,
+    "R_selfloop": 2,
+    "deck_nets_vanished": [
+     "ccas2",
+     "hbt_mirror",
+     "nbcas",
+     "ntail"
+    ],
+    "cdl_new_nets": [
+     "nref"
+    ],
+    "merged_domain_warnings": []
+   }
+  }
+ },
+ "测量噪声底_门限有效性": {
+  "前仿 typ CG（重跑复现）_dB": 17.446489113733694,
+  "锚_dB": 17.4465,
+  "Δ_dB": -1.0886266306187053e-05,
+  "前仿 .op 重跑 A0′": 0.0,
+  "说明": "ngspice-47 同 deck 重跑逐位复现（Δ~1e-5 dB）→ 0.05 dB 操作门 ≈ 4600× 噪声底，门限判读有效"
+ },
+ "27角": {
+  "状态": "未点火（双门未过）",
+  "runner": "sow6/m5/sow6_pvt27_runner.py（dry-run 过，待双门过即点火）"
+ },
+ "请求裁决项": [
+  "R1：b7e7 的 deck 修复版 cdl（解体=归位）到货后我方即刻重跑门1/门2（代入器与派生层已就位，无需再请示）",
+  "R2：若 deck 修复后 b==e 粘连仍在（=版图真短），按判读纪要《…幻影焊判决…》走回改流程，不以改名掩盖",
+  "R3：口径甲中「cdl 实物孪生件剔除」规则请备案确认（已剔除 5 件：mix R15/R16、drv1 R8/R9、drv2 R11/R12，防与 deck 保留的 RL 45/100Ω 重复计入）"
+ ],
+ "sha256": {
+  "cdl_mix": {
+   "path": "sim_report/pex_v27/pex_mix_v27.cdl",
+   "bytes": 2474,
+   "sha256": "33e9e75451ab5cb8e222ca6f728ff2a1514bbffefa8011b4ee6852be9c8ac07b"
+  },
+  "cdl_drv1": {
+   "path": "sim_report/pex_v27/pex_drv1_v19.cdl",
+   "bytes": 939,
+   "sha256": "ae4feb76076ae01c64d17a75009ef6936f7d7f1199a0e366ab32f2b0d2d00e3d"
+  },
+  "cdl_drv2": {
+   "path": "sim_report/pex_v27/pex_drv2_v19.cdl",
+   "bytes": 1559,
+   "sha256": "1f5e0cd837b9af17cc36f2c1e6c6ddc1d0804b87dbedcb9c2b7cba211f373bf8"
+  },
+  "deck_base_v015_1": {
+   "path": "sow6/pdk/sim/v015_1/chain_top_tb_v015_1.sp",
+   "bytes": 22104,
+   "sha256": "3b6a305ec3566cf3316c8b17a922a8e95d311581d5a7597fc086cfebabbaff26"
+  },
+  "deck_pex_jia": {
+   "path": "sow6/pdk/sim/v015_1/chain_top_tb_v015_1_pex_jia.sp",
+   "bytes": 23928,
+   "sha256": "77b26e5c1c82596fdf7b2b37aed10ae4e282907ca76806751027f832d1c017fa"
+  },
+  "deck_pex_jia_op": {
+   "path": "sow6/pdk/sim/v015_1/chain_top_tb_v015_1_pex_jia_op.sp",
+   "bytes": 23067,
+   "sha256": "e1f475e6fab1a3b45bcbfd11c5cd3fcc32718e2e6f990abf3a1440581c0d9ee4"
+  },
+  "devmodels": {
+   "path": "sow6/m5/pex_devmodels.lib",
+   "bytes": 5135,
+   "sha256": "90174e7e3dec69b99e0993bb7437920b2284189da77f996226b9485cbce2e247"
+  },
+  "raw_pre_typ_tran": {
+   "path": "sow6/m5/typ_v015_1_tran.raw",
+   "bytes": 195200525,
+   "sha256": "76f047746a6af1b8ad952d954055e322d04f80c941d3e850afa6d1da25b3a2f6"
+  },
+  "raw_pre_typ_op": {
+   "path": "sow6/m5/typ_v015_1.raw",
+   "bytes": 435,
+   "sha256": "00d973a6f1935c021f6f2a61099b63605100a64fbeceacd9b3a7548c81558443"
+  },
+  "raw_pre_op_reprobe": {
+   "path": "sow6/m5/base_probe.raw",
+   "bytes": 435,
+   "sha256": "d5c09b80f8e8300e2ee3aebc6c03675a8fefc166fb1e98dc5e54a77dc8385c01"
+  },
+  "log_op_screen": {
+   "path": "sow6/m5/pex_jia_op_screen.log",
+   "bytes": 14129,
+   "sha256": "56f4eb8b51f724f53da741030fa8b1c9a6c2cf8b2d0c93856a18db562d965b63"
+  },
+  "audit_map": {
+   "path": "sow6/m5/pex_subst_audit_jia.md",
+   "bytes": 15869,
+   "sha256": "d4b920e5e9310deaca52e14ee8a726aa129f807e765ed6318bfcada16bb4106f"
+  },
+  "audit_struct": {
+   "path": "sow6/m5/pex_struct_audit.md",
+   "bytes": 6677,
+   "sha256": "7ff51e7602706fa85cea10fbee5063617213915e3454f414d7b55862add25830"
+  }
+ }
+}

@@ -1,0 +1,1 @@
+[config] config.toml 顶层 不认识的键：instance_id、limits、mission、roots——已忽略（方向不归配置面了——直接写 workspace/playbook/初心.md（文件即一切）；根信息不归配置面了——直接写 workspace/playbook/根智能体.json（机器从不读 config，只读那个文件）；节律与阈值归机器常数（max_rounds 走 CLI --rounds）；身份不归配置面了——直接写 workspace/playbook/我的身份.md（机器的 _my_id() 本来就从那儿读 id））；请对照 config.template.toml 更正（拼错=没配，不会生效）。

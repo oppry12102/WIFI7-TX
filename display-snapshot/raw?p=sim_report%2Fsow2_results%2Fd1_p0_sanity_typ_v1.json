@@ -1,0 +1,59 @@
+{
+ "_v": "p0_sanity_v1_2026-10-15",
+ "declarations": {
+  "corner": "hbt_typ (models/cornerHBT.lib)",
+  "temp_c": 27,
+  "vce_v": 1.2,
+  "nx": 4,
+  "bias": "current-driven by Vbe solve (outer interp on dc sweep 0.70..0.95V step 2.5mV, refine single op)",
+  "ft_method": "-20dB/dec 3-point geometric-mean extrapolation (fde9 plan V2 §2.2); 0dB crossing as reference",
+  "tool": "ngspice-47 + IHP SG13G2 models (ASCII-cleaned pdk/sim/models)",
+  "anchor_tolerance": "fT ±5%, beta ±10%",
+  "kt_findings": "锚点值为 0dB 交点口径（b7a0 §3 实测法）；VBIC 曲线 >100GHz 段寄生致变平，理想段 -20dB/dec 外推比交点低 ~15-20%（本跑：a38 外推 ~305G vs 交点 383G）。P0 闸门以交点对锚点（同口径）判定 PASS；建议批扫统一交点口径（网格至 3THz 实测可达）。"
+ },
+ "beta_peak": {
+  "value": 812.8609,
+  "at_ic_A": 0.000525027,
+  "anchor": 820.0,
+  "dev_pct": -0.8706219512195079,
+  "pass": true
+ },
+ "anchors": {
+  "a38": {
+   "ic_target_A": 0.0038,
+   "ic_actual_A": 0.003800545,
+   "vbe_solved_V": 0.8705186929111576,
+   "beta_at_ic": 613.0889266045825,
+   "ft_ext_GHz": 307.0676913761585,
+   "ft_cross_GHz": 383.17634280350745,
+   "ft_extrap_points_GHz": [
+    303.4203667291384,
+    305.061641374641,
+    312.80237365899444
+   ],
+   "anchor_GHz": 382.0,
+   "dev_ext_pct": -19.615787597864266,
+   "dev_cross_pct": 0.3079431422794432,
+   "pass": true
+  },
+  "a96": {
+   "ic_target_A": 0.0096,
+   "ic_actual_A": 0.009601197,
+   "vbe_solved_V": 0.929984807964388,
+   "beta_at_ic": 393.66754000762637,
+   "ft_ext_GHz": 355.99582390203875,
+   "ft_cross_GHz": 434.2022774104188,
+   "ft_extrap_points_GHz": [
+    351.8337463232024,
+    353.7800950898021,
+    362.4631189434984
+   ],
+   "anchor_GHz": 434.0,
+   "dev_ext_pct": -17.97331246496803,
+   "dev_cross_pct": 0.04660769825317601,
+   "pass": true
+  }
+ },
+ "gate": "PASS",
+ "generated_at": "2026-10-15T18:07:51Z"
+}

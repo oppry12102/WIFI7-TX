@@ -1,0 +1,720 @@
+{
+ "job_id": "jd204b7202aff",
+ "quest": "调研：模拟/射频（RFIC）芯片设计的免费开源 EDA 工具、社区与最佳实践，重点是 Wi-Fi 7（802.11be）射频发射机（TX）链路设计。当前时间 2026 年 10 月，请优先采用近两年（2024-2026）的信息。\n\n请覆盖以下子问题：\n1. 免费开源 EDA 工具全景（截至 2026）：\n   - 电路仿真：SPICE 类（ngspice、Xyce、Qucs/Qucs-S 等）对 RFIC 的适用性与局限；Verilog-A 建模支持。\n   - 版图与 PDK：Magic、KLayout、OpenLane 等开源流程；开源 PDK 生态（SkyWater sky130、GF180MCU、IHP SG13G2 SiGe BiCMOS 等）对射频设计的支持程度（器件 fT/fmax、RF 电感/无源器件模型）。\n   - 电磁仿真：openEMS、Elmer FEM、MEEP 等对射频无源件（电感/巴伦/匹配网络/传输线）的实用性。\n   - 系统级/行为级：Python 生态（scikit-rf、numpy/scipy 自建链路仿真、gdsfactory 等）在 RF 链路预算与行为级建模的角色。\n   - 商业工具的免费/学术资源（Keysight ADS、Cadence、NI AWR 的学术版/试用）作对比参照。\n2. 社区：活跃的开源 EDA/RFIC 社区（论坛、GitHub 组织、Discord/Slack、ORConf 等会议）、中文社区；去哪里提问、找 PDK 与开源 IP。\n3. 优秀实践：用开源工具流完成 RFIC/无线收发机设计的有名案例（论文、GitHub 项目、开源 tapeout，如 TinyTapeout/chipIgnite/IHP Open PDK 设计竞赛中的射频项目）；行为级+晶体管级混合验证流程的最佳实践；WiFi/802.11 收发机的开源实现代表项目。\n4. Wi-Fi 7（802.11be）TX 射频设计业界最新进展（2024-2026）：主流商用方案（高通/博通/联发科/MaxLinear 等）的射频架构趋势（直接变频、DPLL、数字预失真 DPD、集成度）；关键指标演进（4096-QAM 的 EVM 要求、320MHz 带宽、6GHz 频段、MLO 对射频前端的要求）；学术前沿（ISSCC/JSSC 上 802.11be 收发机代表性工作）。\n5. 落地建议：对一个已完成行为级链路仿真（Python：EVM/SEM/ACLR/PVT 蒙特卡洛）、下一步要走向晶体管级设计的 Wi-Fi7 TX ASIC 小组，推荐的开源工具链组合与学习路径、可复用资源。\n\n输出要求：关键结论给出来源 URL；区分「事实」与「推断」；标注信息时效。",
+ "status": "done",
+ "created_at": "2026-10-15T10:00:40Z",
+ "finished_at": "2026-10-15T10:23:16Z",
+ "events": [
+  {
+   "ts": "2026-10-15T10:00:40Z",
+   "kind": "status",
+   "payload": {
+    "status": "running"
+   }
+  },
+  {
+   "ts": "2026-10-15T10:01:42Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 1,
+    "brain": "glm-5.3",
+    "model": "glm-5.3",
+    "llm_ms": 62688
+   }
+  },
+  {
+   "ts": "2026-10-15T10:01:42Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 1,
+    "tool": "kb_search",
+    "args": {
+     "k": 8,
+     "query": "开源 EDA RFIC 射频芯片 ngspice Qucs-S IHP sky130"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:01:42Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 1,
+    "tool": "kb_search",
+    "args": {
+     "k": 8,
+     "query": "Wi-Fi 7 802.11be 射频发射机 EVM 4096-QAM"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:01:43Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 1,
+    "tool": "web_search",
+    "args": {
+     "max_results": 8,
+     "query": "ngspice 45 release notes harmonic balance RF analysis 2024 2025"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:01:44Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 1,
+    "tool": "web_search",
+    "args": {
+     "max_results": 8,
+     "query": "IHP SG13G2 open source PDK SiGe BiCMOS fT fmax RF design 2024"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:01:52Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 2,
+    "brain": "glm-5.3",
+    "model": "glm-5.3",
+    "llm_ms": 8701
+   }
+  },
+  {
+   "ts": "2026-10-15T10:02:24Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 2,
+    "tool": "ddg",
+    "args": {
+     "max_results": 8,
+     "query": "ngspice release 45 44 news RF simulation Verilog-A 2025"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:02:26Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 2,
+    "tool": "ddg",
+    "args": {
+     "max_results": 8,
+     "query": "IHP SG13G2 open source PDK SiGe BiCMOS 130nm fT 350 GHz"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:02:28Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 2,
+    "tool": "ddg",
+    "args": {
+     "max_results": 8,
+     "query": "openEMS scikit-rf open source RF EDA tools 2025"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:02:30Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 2,
+    "tool": "openalex",
+    "args": {
+     "max_results": 6,
+     "query": "802.11be Wi-Fi 7 transmitter transceiver RF CMOS ISSCC"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:02:38Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 3,
+    "brain": "glm-5.3",
+    "model": "glm-5.3",
+    "llm_ms": 7536
+   }
+  },
+  {
+   "ts": "2026-10-15T10:02:43Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 3,
+    "tool": "read_page",
+    "args": {
+     "depth": "text",
+     "url": "https://ngspice.sourceforge.io/news.html"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:02:44Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 3,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://github.com/IHP-GmbH/IHP-Open-PDK"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:02:51Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 3,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://openems.de/start/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:10Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 4,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 19041
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:12Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 4,
+    "tool": "jina_read",
+    "args": {
+     "depth": "text",
+     "url": "https://ngspice.sourceforge.io/news.html"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:18Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 4,
+    "tool": "jina_read",
+    "args": {
+     "depth": "summary",
+     "url": "https://openems.de/index.php/start/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:24Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 4,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://ra3xdh.github.io/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:39Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 5,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 14807
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:41Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 5,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://openems.de/index.php/Main_Page"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:44Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 5,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://sourceforge.net/p/ngspice/news/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:45Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 5,
+    "tool": "google_news",
+    "args": {
+     "max_results": 8,
+     "query": "\"802.11be\" transceiver ISSCC CMOS"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:03:46Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 5,
+    "tool": "web_search",
+    "args": {
+     "max_results": 8,
+     "query": "Wi-Fi 7 4096-QAM EVM requirement -35 dB 320 MHz transmitter"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:04:19Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 6,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 33213
+   }
+  },
+  {
+   "ts": "2026-10-15T10:04:20Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 6,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://github.com/thliebig/openEMS-Project"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:04:39Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 6,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://en.wikipedia.org/wiki/IEEE_802.11be"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:04:41Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 6,
+    "tool": "openalex",
+    "args": {
+     "max_results": 6,
+     "query": "802.11be"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:04:53Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 6,
+    "tool": "web_search_cn",
+    "args": {
+     "max_results": 8,
+     "query": "开源 EDA 射频 芯片设计 社区 ngspice xschem 论坛"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:05:15Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 7,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 21959
+   }
+  },
+  {
+   "ts": "2026-10-15T10:05:16Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 7,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://scikit-rf.readthedocs.io/en/latest/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:05:17Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 7,
+    "tool": "web_search",
+    "args": {
+     "max_results": 8,
+     "query": "ISSCC 2025 802.11be Wi-Fi 7 transceiver paper direct-conversion"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:05:17Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 7,
+    "tool": "web_search",
+    "args": {
+     "max_results": 8,
+     "query": "Qualcomm Broadcom MediaTek MaxLinear Wi-Fi 7 chipset RF architecture DPD 6GHz"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:05:58Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 8,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 40448
+   }
+  },
+  {
+   "ts": "2026-10-15T10:05:59Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 8,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://ihp-open-pdk-docs.readthedocs.io/en/latest/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:06:18Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 8,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://github.com/iic-jku/IIC-OSIC-TOOLS"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:06:20Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 8,
+    "tool": "openalex",
+    "args": {
+     "max_results": 6,
+     "query": "Wi-Fi 7 transceiver RFIC"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:06:28Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 8,
+    "tool": "web_search_cn",
+    "args": {
+     "max_results": 8,
+     "query": "Wi-Fi 7 芯片 高通 联发科 博通 4096-QAM 320MHz 射频前端"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:07:07Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 9,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 39562
+   }
+  },
+  {
+   "ts": "2026-10-15T10:07:11Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 9,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://ngspice.sourceforge.net/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:07:12Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 9,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://github.com/open-sdr/openwifi"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:07:18Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 9,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://tinytapeout.com/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:07:28Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 9,
+    "tool": "web_search_cn",
+    "args": {
+     "max_results": 6,
+     "query": "ISSCC Wi-Fi 7 802.11be 收发机 4096-QAM 芯片 论文"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:07:58Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 10,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 30202
+   }
+  },
+  {
+   "ts": "2026-10-15T10:07:59Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 10,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "https://sourceforge.net/p/ngspice/activity/feed"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:08:02Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 10,
+    "tool": "read_page",
+    "args": {
+     "depth": "summary",
+     "url": "http://opencircuitdesign.com/magic/"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:08:10Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 10,
+    "tool": "web_search_cn",
+    "args": {
+     "max_results": 6,
+     "query": "Efabless 关闭 chipIgnite 开源芯片流片 2025"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:08:19Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 10,
+    "tool": "web_search_cn",
+    "args": {
+     "max_results": 6,
+     "query": "ISSCC 2025 Wi-Fi 7 radio 收发 宣讲"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:08:49Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 11,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 30126
+   }
+  },
+  {
+   "ts": "2026-10-15T10:08:50Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 11,
+    "tool": "bing_rss",
+    "args": {
+     "max_results": 6,
+     "query": "ORConf 2025 open source silicon conference"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:08:50Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 11,
+    "tool": "bing_rss",
+    "args": {
+     "max_results": 6,
+     "query": "IHP SG13G2 SiGe HBT fT fmax GHz open PDK"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:08:50Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 11,
+    "tool": "bing_rss",
+    "args": {
+     "max_results": 6,
+     "query": "ISSCC 2024 802.11be Wi-Fi 7 radio transceiver paper"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:08:51Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 11,
+    "tool": "web_search",
+    "args": {
+     "max_results": 6,
+     "query": "Keysight ADS free academic license NI AWR university program Cadence academic"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:09:48Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 12,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 57040
+   }
+  },
+  {
+   "ts": "2026-10-15T10:09:50Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 12,
+    "tool": "read_page",
+    "args": {
+     "depth": "text",
+     "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/CHANGELOG.md"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:09:52Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 12,
+    "tool": "openalex",
+    "args": {
+     "max_results": 5,
+     "query": "open source PDK SiGe BiCMOS tapeout RF amplifier"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:10:02Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 12,
+    "tool": "web_search_cn",
+    "args": {
+     "max_results": 6,
+     "query": "TinyTapeout 模拟 射频 LNA 混频器 开源 芯片 项目"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:12:29Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 13,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 146342
+   }
+  },
+  {
+   "ts": "2026-10-15T10:12:29Z",
+   "kind": "tool_call",
+   "payload": {
+    "round": 13,
+    "tool": "remember",
+    "args": {
+     "event_date": "2026-10-15",
+     "source": "github.com/IHP-GmbH/IHP-Open-PDK + github.com/IHP-GmbH/IHP-Open-PDK/blob/main/CHANGELOG.md + doi.org/10.5281/zenodo.21508491 + m.sohu.com/a/866090434_121948415 + caifuhao.eastmoney.com/news/20250828091910556412710（2026-10-15 实测 read_page）",
+     "tags": [
+      "开源EDA",
+      "RFIC",
+      "IHP-Open-PDK",
+      "SG13G2",
+      "TinyTapeout",
+      "ngspice",
+      "Qucs-S",
+      "scikit-rf",
+      "openEMS",
+      "Wi-Fi7"
+     ],
+     "text": "开源 EDA/RFIC 生态实测结论（2026-10-15 检索验证）：(1) IHP-Open-PDK（github.com/IHP-GmbH/IHP-Open-PDK）为 130nm BiCMOS 开源 PDK，定位 Analog/Mixed-Signal/RF，Apache 2.0，SG13G2 节点，2026-09-01 未发布版 CHANGELOG 新增大量 RF 内容：RF MOSFET PyCells、MoM 电容 PCell（cap_cmomf/cap_mom/cap_cmimi）、rfcmim、KLayout 电感金属栈可配置、Magic LVS 电感识别、肖特基二极管 SBD、HBT 测试结构 GDS、gds2palace 子模块（AWS Palace EM 提取，兼容 scikit-rf 2.0）；官方文档 ihp-open-pdk-docs.readthedocs.io 自述仍为 preview/alpha，不可用于生产。器件 fT/fmax 具体数值未见于 README/docs 首页（勿凭记忆写 350GHz）。(2) IIC-OSIC-TOOLS（github.com/iic-jku/IIC-OSIC-TOOLS，JKU）Docker 一体化镜像支持 SKY130/GF180/IHP130 模数混合流，Ubuntu 24.04，2025.01 起。 (3) Qucs-S（ra3xdh.github.io）最新稳定版 26.1.1，26.1.0 于 2026-04-09 发布，2024-2026 保持月度级更新，后端支持 ngspice/Xyce/QucsatorRF/SpiceOpus，GitHub discussions 为支持论坛。(4) ngspice 官网 ngspice.sourceforge.io 被 Cloudflare 拦截无法直读；SourceForge 活动流（2026-10-15）显示开发线为 pre-master-48、社区活跃（Dietmar Warning 等）。(5) openEMS（github.com/thliebig/openEMS-Project）为 FDTD 电磁求解器，Octave/Matlab+Python 接口，官网 openems.de 多次抓取失败（GitHub Pages 404/被拦），README 自述文档站 docs.openEMS.de。(6) 开源 RF tapeout 案例：Patrick Fath \"Towards a practical open source RF SoC design flow: Lessons from a 40 GHz tapeout in IHP SG13G2\"（Zenodo DOI 10.5281/zenodo.21508491，2026-07-06），流程 IIC-OSIC-TOOLS+Xschem+ngspice/Xyce+KLayout，post-layout 0.15–44.7GHz、-56dBm、62dB 动态范围，指出开源生态最大缺口=寄生提取流程未完全验证。(7) Efabless 2025 年倒闭（搜狐 m.sohu.com/a/866090434_121948415，曾与 50 学术机构合作、80 项商业设计），波及 TinyTapeout；TinyTapeout 2025-08-28 宣布回归（东方财富 caifuhao），改用 LibreLane 后端，当前提供 SKY26d/GF26c 班车 + IHP/SKY/GF 模板（含 SKY Analog 模拟模板）+ Discord 社区。(8) scikit-rf（scikit-rf.readthedocs.io）BSD 协议 RF/Microwave Python 库，含 Circuit/Calibration/De-embedding/Vector Fitting/Virtual Instruments，2026 仍在持续被引用。(9) openwifi（github.com/open-sdr/openwifi）为 SDR 基带全栈 802.11a/g/n 开源实现（FPGA+AD9361，AGPLv3 双许可，70MHz–6GHz 频率范围 app note），非 ASIC RF。"
+    }
+   }
+  },
+  {
+   "ts": "2026-10-15T10:15:12Z",
+   "kind": "llm_round",
+   "payload": {
+    "round": 14,
+    "brain": "glm-5.3-flash-cn",
+    "model": "glm-5.3-flash",
+    "llm_ms": 163452
+   }
+  },
+  {
+   "ts": "2026-10-15T10:23:16Z",
+   "kind": "status",
+   "payload": {
+    "status": "done",
+    "elapsed_s": 1355.9,
+    "rounds": 13,
+    "stop_reason": "completed"
+   }
+  }
+ ],
+ "event_count": 61
+}

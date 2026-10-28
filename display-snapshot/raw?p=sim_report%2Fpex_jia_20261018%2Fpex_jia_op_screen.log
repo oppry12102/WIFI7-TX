@@ -1,0 +1,234 @@
+Warning: can't find the initialization file spinit.
+Warning: singular matrix:  check node xmi.nsens
+
+Note: Starting dynamic gmin stepping
+Warning: singular matrix:  check node xmi.nsens
+
+Warning: singular matrix:  check node xmi.nsens
+
+Warning: singular matrix:  check node xmi.nsens
+
+Warning: singular matrix:  check node xmi.nsens
+
+Warning: singular matrix:  check node xmi.nsens
+
+Warning: Dynamic gmin stepping failed
+Note: Starting true gmin stepping
+Warning: True gmin stepping failed
+Note: Starting source stepping
+Warning: source stepping failed
+Note: Transient op started
+Error: Transient op failed, timestep too small
+
+
+Error: The operating point could not be simulated successfully.
+    Any of the following steps may fail.!
+
+
+Note: No compatibility mode selected!
+
+
+Circuit: * ============================================================================
+
+binary raw file "/data/workspace/sow6/m5/pex_jia_op_screen.raw"
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+No. of Data Columns : 249  
+
+DC solution failed -
+
+Last Node Voltages
+------------------
+
+Node                                   Last Voltage        Previous Iter
+----                                   ------------        -------------
+nvcc                                              0                 -nan
+nifp_t                                            0                 -nan
+nifn_t                                            0                 -nan
+nlop_t                                            0                 -nan
+nlon_t                                            0                 -nan
+xlb.bin                                           0                 -nan
+xlb.bb1                                           0                 -nan
+xlb.efp                                           0                 -nan
+xlb.xq1.s1                                        0                 -nan
+xlb.xq1.t                                         0                 -nan
+xlb.efn                                           0                 -nan
+xlb.xq2.s1                                        0                 -nan
+xlb.xq2.t                                         0                 -nan
+xlb.ntaila                                        0                 -nan
+xlb.nbias1                                        0                    0
+xlb.nsens                                         0                 -nan
+xlb.xqs.s1                                        0                 -nan
+xlb.xqs.t                                         0                 -nan
+xlb.nvtop                                         0                    0
+xlb.xbia.nref                                     0                 -nan
+xlb.xbia.xqr.s1                                   0                 -nan
+xlb.xbia.xqr.t                                    0                 -nan
+xlb.xbia.xqo.s1                                   0                 -nan
+xlb.xbia.xqo.t                                    0                 -nan
+xlb.b3p                                           0                 -nan
+xlb.nbias2                                        0                    0
+xlb.b3n                                           0                 -nan
+nblop                                             0                 -nan
+xlb.t1                                            0                 -nan
+xlb.xq3.s1                                        0                 -nan
+xlb.xq3.t                                         0                 -nan
+nblon                                             0                 -nan
+xlb.t2                                            0                 -nan
+xlb.xq4.s1                                        0                 -nan
+xlb.xq4.t                                         0                 -nan
+xlb.ntailb                                        0                 -nan
+xlb.xbib.nref                                     0                 -nan
+xlb.xbib.xqr.s1                                   0                 -nan
+xlb.xbib.xqr.t                                    0                 -nan
+xlb.xbib.xqo.s1                                   0                 -nan
+xlb.xbib.xqo.t                                    0                 -nan
+nbcm                                              0                    0
+nlop                                              0                 -nan
+nlon                                              0                 -nan
+xmi.nsens                                         0               0.0004 *
+xmi.nbiasl                                        0                    0
+xmi.nbiash                                        0                    0
+xmi.nifbias                                       0                    0
+xmi.nvtop                                         0                    0
+xmi.na1p                                          0                 -nan
+xmi.na2n                                          0                 -nan
+xmi.nb1p                                          0                 -nan
+xmi.nb2n                                          0                 -nan
+nmixp                                             0                 -nan
+nmixn                                             0                 -nan
+xmi.lond                                          0                 -nan
+xmi.e1a                                           0                 -nan
+xmi.xq1.s1                                        0                 -nan
+xmi.xq1.t                                         0                 -nan
+xmi.e1b                                           0                 -nan
+xmi.xq2.s1                                        0                 -nan
+xmi.xq2.t                                         0                 -nan
+xmi.nswb                                          0                 -nan
+xmi.e2b                                           0                 -nan
+xmi.xq3.s1                                        0                 -nan
+xmi.xq3.t                                         0                 -nan
+xmi.e2a                                           0                 -nan
+xmi.xq4.s1                                        0                 -nan
+xmi.xq4.t                                         0                 -nan
+xmi.ntaila                                        0                 -nan
+xmi.xq5.s1                                        0                 -nan
+xmi.xq5.t                                         0                 -nan
+xmi.xq6.s1                                        0                 -nan
+xmi.xq6.t                                         0                 -nan
+xmi.xq7.s1                                        0                 -nan
+xmi.xq7.t                                         0                 -nan
+xmi.xq8.s1                                        0                 -nan
+xmi.xq8.t                                         0                 -nan
+xmi.ntailb                                        0                 -nan
+xmi.xq9.s1                                        0                 -nan
+xmi.xq9.t                                         0                 -nan
+xmi.xq10.s1                                       0                 -nan
+xmi.xq10.t                                        0                 -nan
+xmi.xq11.s1                                       0                 -nan
+xmi.xq11.t                                        0                 -nan
+xmi.xq12.s1                                       0                 -nan
+xmi.xq12.t                                        0                 -nan
+xmi.xq13.s1                                       0                 -nan
+xmi.xq13.t                                        0                 -nan
+xmi.xq14.s1                                       0                 -nan
+xmi.xq14.t                                        0                 -nan
+xmi.xq15.s1                                       0                 -nan
+xmi.xq15.t                                        0                 -nan
+ntap1                                             0                    0
+ntap2                                             0                    0
+xd1.bin                                           0                 -nan
+xd1.bb1                                           0                 -nan
+xd1.nbias                                         0                    0
+nd1p                                              0                 -nan
+nd1n                                              0                 -nan
+xd1.e1                                            0                 -nan
+xd1.xq1.s1                                        0                 -nan
+xd1.xq1.t                                         0                 -nan
+xd1.e2                                            0                 -nan
+xd1.xq2.s1                                        0                 -nan
+xd1.xq2.t                                         0                 -nan
+xd1.ntail                                         0                 -nan
+xd1.nref                                          0                 -nan
+xd1.xq3.s1                                        0                 -nan
+xd1.xq3.t                                         0                 -nan
+xd1.xq4.s1                                        0                 -nan
+xd1.xq4.t                                         0                 -nan
+xd2.bin                                           0                 -nan
+xd2.bb1                                           0                 -nan
+xd2.nbias                                         0                    0
+xd2.nbcas                                         0                    0
+noutp                                             0                 -nan
+noutn                                             0                 -nan
+xd2.ccas1                                         0                 -nan
+xd2.xq1.s1                                        0                 -nan
+xd2.xq1.t                                         0                 -nan
+xd2.xq2.s1                                        0                 -nan
+xd2.xq2.t                                         0                 -nan
+xd2.xq3.s1                                        0                 -nan
+xd2.xq3.t                                         0                 -nan
+xd2.xq4.s1                                        0                 -nan
+xd2.xq4.t                                         0                 -nan
+xd2.ntail                                         0                 -nan
+xd2.nref                                          0                 -nan
+xd2.xq5.s1                                        0                 -nan
+xd2.xq5.t                                         0                 -nan
+xd2.xq6.s1                                        0                 -nan
+xd2.xq6.t                                         0                 -nan
+xd2.xq7.s1                                        0                 -nan
+xd2.xq7.t                                         0                 -nan
+xd2.xq8.s1                                        0                 -nan
+xd2.xq8.t                                         0                 -nan
+xd2.xq9.s1                                        0                 -nan
+xd2.xq9.t                                         0                 -nan
+xd2.xq10.s1                                       0                 -nan
+xd2.xq10.t                                        0                 -nan
+xd2.xq11.s1                                       0                 -nan
+xd2.xq11.t                                        0                 -nan
+xd2.xq12.s1                                       0                 -nan
+xd2.xq12.t                                        0                 -nan
+b.xmi.bvt#branch                                  0              -0.8359 *
+b.xmi.bvifb#branch                                0               0.6961 *
+b.xmi.bvbh#branch                                 0               0.7111 *
+b.xmi.bvbl#branch                                 0               0.6811 *
+b.xlb.bv2#branch                                  0               0.4421 *
+b.xlb.bvt#branch                                  0              -0.8359 *
+b.xlb.bv1#branch                                  0               0.4141 *
+l.xd2.lt2#branch                                  0                 -nan
+l.xd2.lt1#branch                                  0                 -nan
+l.xd1.lt2#branch                                  0                 -nan
+l.xd1.lt1#branch                                  0                 -nan
+l.xmi.lt2#branch                                  0                 -nan
+l.xmi.lt1#branch                                  0                 -nan
+l.xlb.lt2#branch                                  0                 -nan
+l.xlb.lt1#branch                                  0                 -nan
+v.xd2.vbcas#branch                                0             doAnalyses: OP:  Timestep too small; trouble with xlb.xq1:npn13g2_nx_vbic-instance q.xlb.xq1.qnpn13g2
+
+
+run simulation(s) aborted
+    2.05 *
+v.xd2.vb#branch                                   0                 1.25 *
+v.xd1.vb#branch                                   0                  1.2 *
+vbcm#branch                                       0                 2.35 *
+vlon#branch                                       0                 1.25 *
+vlop#branch                                       0                 1.25 *
+vifn#branch                                       0                1.532 *
+vifp#branch                                       0                1.532 *
+vcc#branch                                        0                  2.5 *
+
+
+Total analysis time (seconds) = 0.206921
+
+Total elapsed time (seconds) = 0.219 
+
+Total DRAM available = 3659.902 MB.
+DRAM currently available =  670.105 MB.
+Maximum ngspice program size =   30.574 MB.
+Current ngspice program size =   14.512 MB.
+
+Shared ngspice pages =   11.336 MB.
+Text (code) pages =    6.594 MB.
+Stack = 0 bytes.
+Library pages =    3.195 MB.
+

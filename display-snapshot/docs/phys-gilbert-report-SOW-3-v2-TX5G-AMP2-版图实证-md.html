@@ -1,0 +1,489 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOW-3 v2.0 · TX5G_AMP2（两级 HBT 放大级）版图实证 —— 从版图到后仿真的全链记录 · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="../index.html" class="">总览</a><a href="../spec.html" class="">规格</a><a href="architecture-md.html" class="">架构</a><a href="../docs.html" class="on">文档</a><a href="../circuit.html" class="">电路</a><a href="../layout.html" class="">版图</a><a href="../phys.html" class="">版图实证</a><a href="../dyn.html" class="">动态指标</a><a href="../scan.html" class="">ACPR 扫描</a><a href="../netlist.html" class="">网表</a><a href="../sim.html" class="">仿真</a><a href="../tree.html" class="">文件树</a><a href="../data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><p class="muted"><a href="../docs.html">← 文档库</a> · 版图准则与实证（组长） · phys/gilbert/report/SOW-3_v2_TX5G_AMP2_版图实证.md · 183 行 · sha256 25b82bac2a5b… · 2026-10-16 11:37 · <a href="../raw%3Fp=phys%252Fgilbert%252Freport%252FSOW-3_v2_TX5G_AMP2_版图实证.md">下载原文</a></p><div class="card"><h1 id="sow-3-v20-tx5g_amp2-hbt">SOW-3 v2.0 · TX5G_AMP2（两级 HBT 放大级）版图实证 —— 从版图到后仿真的全链记录</h1>
+<blockquote>
+<p>⚠️ <strong>2026-10-16 11:37Z 组长增补更正（详见 <code>SOW-3_v2.1_TX5G_AMP2_机理判定.md</code>）</strong>：
+1. <strong>本文所有「A0 (dB)」是绝对电平 dBV</strong>（激励 <code>AC 0.05</code>），不是电压增益。
+   同口径<strong>电压增益 = A0 + 26.02 dB</strong>：前仿真 +4.41 dBV = <strong>+30.43 dB 增益</strong>，
+   后仿真 −29.06 dBV = <strong>−3.04 dB 增益</strong>，落差 33.47 dB（落差不变，前后同参）。
+2. <strong>本文 §7 的处方「要么加大退化电阻」在固定 Vbe 偏置下是错的</strong>（实测 Re×2/×4/×8 使增益
+   单调变差 −8.36/−9.13/−11.77 dB，Ic1 从 2.45 掉到 0.90 mA）。唯一有效处方是<strong>降低回流路径电阻</strong>。
+3. 机理已判定为<strong>小信号发射极阻抗失配</strong>（非直流偏置漂移）；并且<strong>各网贡献不可相加</strong>，
+   归零 rc/vcc 反而再掉 5dB（非单调）。
+4. 本文归因表为手工跑出，v2.1 已脚本化（<code>phys/gilbert/sim/attrib_amp2.py</code>）并加入 f3dB 有效性判定。
+本文其余内容（DRC/LVS/PEX 提取、复现步骤、边界声明）仍然有效。</p>
+<p>缘起：管理员 2026-10-16 09:55Z 问「真实版图/DRC-LVS/PEX/后仿真能做吗」。v1.0（<code>phys/</code>）用单级
+HBT 差分级跑通了全链，结论是「22×32µm 的小走线只吃 0.4dB」。本 v2.0 换一个<strong>版图更吃互连</strong>的块，
+并把 v1.0 暴露出来的口径坑全部填掉。</p>
+</blockquote>
+<h2 id="0">0. 一句话结论</h2>
+<p><strong>两级 HBT 放大级 TX5G_AMP2 全链跑通：真实 GDS → DRC 零违规 → LVS Netlists match →
+第一阶 PEX → 后仿真。结论有两层：</strong></p>
+<ol>
+<li><strong>器件几何口径</strong>（v1.0 的隐含问题）：LVS 从版图实测的 HBT 发射极几何是 <code>le=0.9µm, we=0.07µm</code>，
+   而模型卡 <code>npn13G2</code> 的默认几何是 <code>le=0.96µm, we=0.12µm</code> —— 版图实际发射极面积比模型默认小
+   <strong>1.8 倍</strong>。前/后仿真必须显式声明用哪一套（<code>DEV_GEOM</code> 开关）。</li>
+<li><strong>互连寄生</strong>：本块标称 RSH/C 估值下，版图寄生把中频增益从 <strong>+4.41dB 打到 −29.1dB</strong>，
+   主要来自 <strong>vss 地轨串联电阻（3.8Ω×2）</strong> 与 <strong>发射极 M2 走线（1.75Ω×2）+ M1 短桩 + via</strong>。
+   根因是<strong>发射极退化电阻（45.8Ω）只有 ~5×1/gm，发射极节点的小信号阻抗只有几欧姆</strong>，
+   加上地轨电流造成的几十 mV 直流偏置漂移，两者叠加把增益打崩。</li>
+</ol>
+<hr />
+<h2 id="1-tx5g_amp2-hbt">1. 目标块：TX5G_AMP2（两级 HBT 放大级）</h2>
+<p>选它的理由：这是 TX 链里<strong>版图最吃互连</strong>的一段——级间节点 <code>cb2</code> 同时连着驱动管基极、输出管基极、
+耦合电阻 RC 和走线；发射极要经 <code>via_stack</code> 从 M2 落到 M1 再走到退化电阻；地轨要横贯全块。</p>
+<div class="codehilite"><pre><span></span><code>Vcc 3.3
+Q1 npn13G2 Nx=4   B=bin(片外驱动源 DC 0.98)  E=e1--RS1(45.8)--&gt;vss   C=rc--RL1(793.7)--&gt;vcc
+RC  rsil l=2u(22.9)   rc -&gt; cb2       级间耦合（同时给 Q2 基极提供直流通路）
+Q2 npn13G2 Nx=4   B=cb2  E=e2--RE2(45.8)--&gt;vss   C=out--RL2(406)--&gt;vcc
+片外：Cblk 1nF 隔直 + 50Ω（AC 主测不挂 50Ω，否则 50Ω 把输出节点压到 33Ω、版图寄生看不出来）
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>值</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I_C1 / I_C2</td>
+<td>2.6 / 7.4 mA</td>
+<td>ngspice op 实测</td>
+</tr>
+<tr>
+<td>增益 A0</td>
+<td>+4.41 dB（输出开路口径）</td>
+<td><code>phys/gilbert/pre/amp2_pre.sp</code></td>
+</tr>
+<tr>
+<td>f_3dB</td>
+<td>1.585 GHz</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>A(3GHz) / A(6.8GHz)</td>
+<td>−2.20 / −8.53 dB</td>
+<td>同上</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-v10">2. 工具链（与 v1.0 同一套）</h2>
+<p>KLayout 0.30.0（debian 免 root 解包，<code>pdk/kl_env030.sh</code>）+ IHP-Open-PDK 官方 DRC/LVS deck
++ ngspice-47（<code>pdk/ngroot</code>）。</p>
+<h2 id="3-gdsphysgilbertgdsamp2gds">3. 真实 GDS（<code>phys/gilbert/gds/amp2.gds</code>）</h2>
+<p><code>phys/gilbert/layout/gen_amp2.py</code> 生成，7 个 PDK PCell（2×npn13G2 Nx=4、2×rsil l=4u、
+1×rsil l=2u、2×rppd）+ 1 个 via_stack，M1/M2 两层手工布线，39 × 21 µm。</p>
+<p><strong>布线阶段 net_check.py 抓到的坑（都已修）</strong>：</p>
+<ol>
+<li>M2 发射极走线直接向右拐，会和 M1 的 bin/cb2 走线<strong>跨层重叠</strong>（HBT 的 C/B/E 同列，
+   M1 基极引脚在正下方）→ 改成先<strong>向上</strong>拐 1.2µm 再横走。</li>
+<li>发射极网络被 via_stack 分成 M2 段和 M1 段，PEX 要分别提 R/C → 两段各标一个网名
+   （<code>et1m1</code> / <code>et1m2</code>），再用显式 via 电阻串起来。</li>
+</ol>
+<h2 id="4-drc-maximal-deck-no_density">4. DRC（官方 maximal deck，<code>--no_density</code>）</h2>
+<p><strong>最终零违规</strong>（<code>phys/gilbert/drc/final4/</code>，63.7s；LVS 同步 PASS，<code>phys/gilbert/lvs/run4/</code>）。v2.0 迭代中抓到的<strong>真实违规</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>规则</th>
+<th>现象</th>
+<th>修法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>metal2_drw_Offgrid</code></td>
+<td>发射极拐点 <code>ey+1.2 = 6.192µm</code> 越过 5nm 栅格</td>
+<td>所有自算坐标统一 <code>g(v)=round(v/0.005)*0.005</code></td>
+</tr>
+<tr>
+<td><code>M1.b</code>（M1 同网小间距 0.18µm）</td>
+<td>rc 横线 0.3µm 宽，顶边 13.15 与 RC 顶部引脚焊盘下沿 13.27 只差 <strong>0.12µm</strong></td>
+<td>贴引脚那段加宽到 0.96µm（与 rsil/rppd 焊盘同宽）</td>
+</tr>
+<tr>
+<td><code>M1.b</code></td>
+<td>输出线竖段左边 30.85 贴着 Q2 集电极大焊盘右边 30.7，差 <strong>0.15µm</strong></td>
+<td>输出线右移到 x=32 再上拉</td>
+</tr>
+<tr>
+<td><code>EXTB.c</code>（EXTBlock–pSD 间距 0.31）</td>
+<td>退化电阻 cell 挪到 y=−3.1 时触发</td>
+<td>继续下移到 y=−4.0（<strong>final4 通过</strong>）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-lvs-deck-run_modeflat-ignore_top_ports_mismatch">5. LVS（官方 deck，<code>--run_mode=flat --ignore_top_ports_mismatch</code>）</h2>
+<p><strong>Netlists match / PASS</strong>（<code>phys/gilbert/lvs/run4/amp2_extracted.cir</code>，7 个器件全识别）。</p>
+<p>踩到的最大一个坑：<strong>发射极退化电阻 rsil l=4u 一开始完全提取不出来</strong>
+（<code>rsil device terminals don't touch device marker</code> / <code>No. of ports exist for rsil is 1</code>）。
+根因：SG13G2 LVS deck 的 rsil 识别层是
+<code>rsil_res = polyres_mk ∩ res_drw − (pSD ∪ SalBlock ∪ nSD ∪ nSD_block)</code>，
+<strong>只要 rsil 的 cell bbox 与 HBT cell 的 bbox 有交叠</strong>，就可能被这些层排除掉。
+把 RS1/RE2 整体挪到 HBT bbox（y≥1.67）以下即解决。</p>
+<h2 id="6-pexphysgilbertpexextract_pex_amp2py">6. PEX（第一阶几何法，<code>phys/gilbert/pex/extract_pex_amp2.py</code>）</h2>
+<table>
+<thead>
+<tr>
+<th>网</th>
+<th>层</th>
+<th>走线长度 µm</th>
+<th>R_total Ω</th>
+<th>C_total fF</th>
+<th>引脚数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc</td>
+<td>M1</td>
+<td>60.1</td>
+<td>7.51</td>
+<td>3.46</td>
+<td>3</td>
+</tr>
+<tr>
+<td>cb2</td>
+<td>M1</td>
+<td>46.0</td>
+<td>5.75</td>
+<td>1.31</td>
+<td>2</td>
+</tr>
+<tr>
+<td>out</td>
+<td>M1</td>
+<td>34.5</td>
+<td>4.31</td>
+<td>1.27</td>
+<td>2</td>
+</tr>
+<tr>
+<td>vcc</td>
+<td>M1</td>
+<td>84.2</td>
+<td>10.53</td>
+<td>2.51</td>
+<td>2</td>
+</tr>
+<tr>
+<td>vss</td>
+<td>M1</td>
+<td>61.2</td>
+<td>7.65</td>
+<td>1.81</td>
+<td>4</td>
+</tr>
+<tr>
+<td>et1m2 / et2m2</td>
+<td>M2</td>
+<td>28.0</td>
+<td>3.50</td>
+<td>2.19</td>
+<td>2</td>
+</tr>
+<tr>
+<td>et1m1 / et2m1</td>
+<td>M1</td>
+<td>7.4</td>
+<td>0.93</td>
+<td>0.26</td>
+<td>2</td>
+</tr>
+<tr>
+<td>via_stack ×2</td>
+<td>—</td>
+<td>—</td>
+<td>0.15</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PEX 网表生成踩到的三个坑（都影响结果，必须记）</strong>：</p>
+<ol>
+<li><strong>零值元件不能发</strong>：ngspice 会把 <code>0Ω</code> 电阻改写成 <code>1e-12Ω</code>、把 <code>0fF</code> 电容留在电路里，
+   两者都会<strong>改变直流解</strong>（实测 Vrc 差 89mV）。对拍时零寄生网表必须<strong>直接短接</strong>（不生成
+   p_/hub 拆分），否则「零寄生基线」和前仿真对不上。</li>
+<li><strong>模型卡必须前后一致</strong>：后仿真一度用了 PDK 原卡（<code>selft=1</code> 自热开），前仿真用等温卡
+   （<code>selft=0</code>），仅此一项就差 6dB。HBT VBIC 的自热在开关瞬态下会让 ngspice 的 thermal node
+   出 NaN（<code>Timestep too small</code>，已复现），所以瞬态统一用等温卡，自热另做直流点单测。</li>
+<li><strong>器件几何口径</strong>：见 §0 第 1 条。<code>DEV_GEOM=1</code> 时后仿真带 <code>le=0.9u we=0.07u</code>，
+   对本模型的 npn13G2 <strong>无影响</strong>（le/we 只进入 l/v 变体��� rcx 公式），所以两行结果相同——
+   这本身也说明「模型卡的 Nx 与版图 Nx 不是同一件事」。</li>
+</ol>
+<h2 id="7-physgilbertsimpre_post_amp2md">7. 前/后对拍（<code>phys/gilbert/sim/pre_post_amp2.md</code>）</h2>
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>A0 (dB)</th>
+<th>f3dB</th>
+<th>A(6.8GHz)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>前仿真（零寄生）</td>
+<td><strong>+4.41</strong></td>
+<td><strong>1.585 GHz</strong></td>
+<td>−8.53</td>
+</tr>
+<tr>
+<td>后仿真（标称 RSH/C/via）</td>
+<td><strong>−29.06</strong></td>
+<td>单调下降，无 3dB 点</td>
+<td>−30.28</td>
+</tr>
+<tr>
+<td>RSH×4</td>
+<td>−35.93</td>
+<td>—</td>
+<td>−31.06</td>
+</tr>
+<tr>
+<td>RSH×16</td>
+<td>−35.66</td>
+<td>—</td>
+<td>−33.48</td>
+</tr>
+<tr>
+<td>C×4</td>
+<td>−29.06</td>
+<td>—</td>
+<td>−30.46</td>
+</tr>
+<tr>
+<td>RSH×16 &amp; C×16</td>
+<td>−35.66</td>
+<td>—</td>
+<td>−37.11</td>
+</tr>
+<tr>
+<td>via=1.0Ω</td>
+<td>−31.67</td>
+<td>—</td>
+<td>−30.32</td>
+</tr>
+</tbody>
+</table>
+<p><strong>逐网归因（把某网的串联电阻归零，其余保留）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>归零的网</th>
+<th>A0 (dB)</th>
+<th>相对标称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标称（全寄生）</td>
+<td>−29.06</td>
+<td>—</td>
+</tr>
+<tr>
+<td>vss 地轨</td>
+<td>−16.85</td>
+<td><strong>+12.2dB</strong></td>
+</tr>
+<tr>
+<td>vss + 两个 M2 发射极走线</td>
+<td>−2.26</td>
+<td>+26.8dB</td>
+</tr>
+<tr>
+<td>vss + 全部发射极网络</td>
+<td>+10.97</td>
+<td>+40.0dB</td>
+</tr>
+<tr>
+<td>全部串联 R（只剩 C 和 via）</td>
+<td>+2.47</td>
+<td>+31.5dB</td>
+</tr>
+</tbody>
+</table>
+<p><strong>怎么读这张表</strong>：</p>
+<ul>
+<li>主导项是<strong>发射极路径</strong>（M2 走线 1.75Ω×2 + M1 短桩 0.46Ω×2 + via 0.15Ω ≈ 4.6Ω）
+  和 <strong>vss 地轨</strong>（3.8Ω×2，承载约 9mA → 35mV 直流抬升）。</li>
+<li>根因是<strong>这一级的发射极退化只有 45.8Ω，约 5×1/gm（1/gm ≈ 3.5~10Ω）</strong>，
+  发射极节点的小信号阻抗就是几欧姆量级，几欧姆的金属电阻不是「小寄生」，而是<strong>直接进分母</strong>；
+  地轨的直流压降又会整体抬高发射极电位、改变工作点。两者叠加 → 增益塌。</li>
+<li>工程含义：<strong>HBT 共射级要么把退化电阻加大到 ≫ 金属 R 的几十倍，要么把发射极路径
+  （含地轨回流）当成 RF 大电流走线来布</strong>（加宽、走 TopMetal1/2、缩短到 via）。这正是
+  <code>design_circuit/layout_plan.md</code> 里「衬底耦合 / 走线长度差决定 LOFT 与正交误差」的同类问题。</li>
+</ul>
+<h2 id="8">8. 口径与边界（务必随结果引用）</h2>
+<ol>
+<li><strong>这是设计闭环级实证，不替代流片签核</strong>：DRC 用了 <code>--no_density</code>（子块无 filler），
+   LVS 用了 <code>--ignore_top_ports_mismatch</code>（KLayout 0.30.0 缺 <code>flag_missing_ports</code>）。</li>
+<li><strong>金属层 RSH/C 是工程估值</strong>（PDK 未随附金属层 R/C 数据）→ 给了 ×4/×16 扫描；
+   结论对 RSH 不敏感（因为主导项是 vss/发射极路径的<strong>直流</strong>与<strong>低阻</strong>效应）。</li>
+<li><strong>via 电阻 0.15Ω 是按 2×2 单 via 阵列估的</strong>，扫描到 1.0Ω 时增益再掉 2.6dB。</li>
+<li><strong>PEX 是一阶集总</strong>：每网一个 hub + 每引脚 R/2、C/2；没有做耦合矩阵、没有 EM/IR/天线规则。</li>
+<li><strong>AC 主测口径不挂 50Ω</strong>（输出开路），因为 50Ω 会把输出节点阻抗压到 33Ω，
+   版图寄生就看不出来；功率/P1dB 那套另加 Cblk+50Ω。</li>
+</ol>
+<h2 id="9">9. 复现步骤</h2>
+<div class="codehilite"><pre><span></span><code>.<span class="w"> </span>/data/workspace/pdk/kl_env030.sh
+<span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PYTHONPATH</span><span class="s2">:/data/xuseek/.venv/lib/python3.13/site-packages"</span>
+<span class="c1"># 1) 出 GDS</span>
+<span class="nv">KLAYOUT_PATH</span><span class="o">=</span><span class="nv">$KLTECH</span><span class="w"> </span>klayout<span class="w"> </span>-zz<span class="w"> </span>-r<span class="w"> </span>phys/gilbert/layout/gen_amp2.py
+<span class="c1"># 2) 布线自检（短路/悬空）</span>
+python3<span class="w"> </span>phys/layout/net_check.py<span class="w"> </span>phys/gilbert/gds/amp2.gds<span class="w"> </span>M1
+python3<span class="w"> </span>phys/layout/net_check.py<span class="w"> </span>phys/gilbert/gds/amp2.gds<span class="w"> </span>M2
+<span class="c1"># 3) DRC</span>
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$KLTECH</span>/tech/drc<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3<span class="w"> </span>run_drc.py<span class="w"> </span>--path<span class="o">=</span>/data/workspace/phys/gilbert/gds/amp2.gds<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--run_dir<span class="o">=</span>/data/workspace/phys/gilbert/drc/final4<span class="w"> </span>--mp<span class="o">=</span><span class="m">2</span><span class="w"> </span>--no_density
+<span class="c1"># 4) LVS</span>
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$KLTECH</span>/tech/lvs<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3<span class="w"> </span>run_lvs.py<span class="w"> </span>--layout<span class="o">=</span>/data/workspace/phys/gilbert/gds/amp2.gds<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--netlist<span class="o">=</span>/data/workspace/phys/gilbert/lvs/amp2.cdl<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--run_dir<span class="o">=</span>/data/workspace/phys/gilbert/lvs/run3<span class="w"> </span>--run_mode<span class="o">=</span>flat<span class="w"> </span>--ignore_top_ports_mismatch
+<span class="c1"># 5) PEX + 后仿真 + 对拍</span>
+python3<span class="w"> </span>phys/gilbert/pex/extract_pex_amp2.py
+python3<span class="w"> </span>phys/gilbert/sim/compare_amp2.py
+</code></pre></div><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */.codehilite{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:8px 10px}</style></div></main></body></html>

@@ -1,0 +1,247 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>判读纪要：deck 4 数校准 + 幻影焊桥元素实锤（定律 v2） · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="../index.html" class="">总览</a><a href="../spec.html" class="">规格</a><a href="architecture-md.html" class="">架构</a><a href="../docs.html" class="on">文档</a><a href="../circuit.html" class="">电路</a><a href="../layout.html" class="">版图</a><a href="../phys.html" class="">版图实证</a><a href="../dyn.html" class="">动态指标</a><a href="../scan.html" class="">ACPR 扫描</a><a href="../netlist.html" class="">网表</a><a href="../sim.html" class="">仿真</a><a href="../tree.html" class="">文件树</a><a href="../data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><p class="muted"><a href="../docs.html">← 文档库</a> · SOW-6 全链版图（组长·2026-10-17） · phys/top/判读纪要_deck4数校准_桥元素实锤_2026-10-17.md · 85 行 · sha256 ded3a6591fa7… · 2026-10-17 12:42 · <a href="../raw%3Fp=phys%252Ftop%252F判读纪要_deck4数校准_桥元素实锤_2026-10-17.md">下载原文</a></p><div class="card"><h1 id="deck-4-v2">判读纪要：deck 4 数校准 + 幻影焊桥元素实锤（定律 v2）</h1>
+<p><strong>作者</strong>：b7a0 · 2026-10-17 12:4xZ · <strong>响应</strong>：b7e7《knife_骑体对照表与指派定律》6857B/6ed0b401（#144 信）
+<strong>工具</strong>：run_v2/lvs/dump_deck4.py（v17 GDS deck 派生真值 dump）+ knife_bridge_autopsy.py（ct/cb 复现件桥定位）
+<strong>结论</strong>：b7e7 待校准 4 数全数落定；定律 v1 升 <strong>v2</strong>；两簇幻影焊桥元素坐标级实锤。</p>
+<hr />
+<h2 id="4-v17-gds-dy178190">一、4 数裁决表（v17 GDS 真值，主管 dy178/190 窗口全量）</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>b7e7 夹逼</th>
+<th>deck 真值</th>
+<th>裁决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① te 顶 y_cell</td>
+<td>[0.74, 1.09)</td>
+<td><strong>+0.450</strong>（每指一条 0.070×0.900µm 竖窗，y_cell −0.45..+0.45）</td>
+<td>❌ 不中</td>
+</tr>
+<tr>
+<td>② 窄条 x 半宽</td>
+<td>含 0、&lt;3.85</td>
+<td>E 窗 <strong>0.07µm/指</strong>（指距 1.85，Nx 多指分布）；E 指金属 M1 宽 <strong>0.7</strong>；c_pin/b_pin=全宽带</td>
+<td>半中</td>
+</tr>
+<tr>
+<td>③ tb 顶 y_cell</td>
+<td>&lt;−0.01</td>
+<td><strong>+1.280</strong>（tb=dev−c_pin−e_pin≈全 body −2.43..+1.28）</td>
+<td>❌ 不中</td>
+</tr>
+<tr>
+<td>④ tc-te 重叠</td>
+<td>C/E 永焊带？</td>
+<td>tc=dev 1nm 边框环（y_cell −2.43..+1.28），te=中部窗——<strong>不相交</strong>；c_pin 带(0.98..1.28)与 E 窗间隙 0.53µm</td>
+<td>❌ 无永焊带</td>
+</tr>
+</tbody>
+</table>
+<p>端子识别区真值（npn13G2，每管左右对称）：
+- <strong>te=e_pin</strong>：0.070×0.900µm 竖窗×指数，y_cell −0.450..+0.450
+- <strong>c_pin</strong>：18.5×0.30µm 横带，y_cell +0.980..+1.280
+- <strong>b_pin</strong>：18.6×1.81µm 宽带，y_cell −2.430..−0.620
+- <strong>tc</strong>：dev 边框环；<strong>tb</strong>：≈全 body（−2.43..+1.28）</p>
+<h2 id="deck-bjt_connectionslvs-l34-42-dump">二、deck 通道真值（bjt_connections.lvs L34-42 + dump 佐证）</h2>
+<ol>
+<li><code>connect(e_pin, emwind_drw)</code> + <code>connect(emwind_drw, metal1_con)</code> —— <strong>E 通道=emwind 窗直连 M1，无需 cont</strong>（dump 证实：cont∩e_pin=0 域）</li>
+<li><code>connect(e_pin/c_pin/b_pin, cont_drw)</code> —— C/B 通道<strong>需 cont 孔落点</strong>：
+   collector 孔带 y_cell +1.05..+1.21（骑 c_pin 带）、base 孔带 y_cell −1.22..−1.06（骑 b_pin 带）</li>
+<li><code>connect(te,tb,tc ↔ e,b,c_pin)</code> 半导体侧同网；<code>connect(npn_sub, pwell)</code> 衬底侧</li>
+<li><strong>M2~M5 无半导体通道</strong> —— 纯高层骑体永不直接焊（gnd M4 立线反例真机制=层敏感非 x 敏感）</li>
+</ol>
+<h2 id="knife">三、幻影焊桥元素实锤（knife 复现件）</h2>
+<h3 id="ct_xq1only-ccas1e1">ct_XQ1only（簇甲 ccas1⊕e1）</h3>
+<p>桥=<strong>ccas1 立管汇流 M1 大域</strong> <code>(−33.300,177.215)..(−14.700,190.770)</code>（18.6×13.6µm，跨两行主管位）：
+- 骑 dy178 行 c_pin 带（y 178.98..179.28 在域内）+ 域上 collector cont 孔 20 只（y_cell 1.05..1.21）⇒ 入 collector（正常，ccas1=C 网）
+- 骑两行管 emwind 窗列（E 窗 y_cell ±0.45 在域 y 范围内，x 窗列 −32.7..−15.3 被域覆盖）⇒ <strong>E 直连通道</strong> ⇒ 整域拽进 e1 —— <strong>焊</strong>
+- 骑 dy190 行 b_pin 全带 + base 孔（188.78..188.94 在域内）⇒ 入 base
+- 机制链：cascode 中点网（XQ1.C+XQ3.E）立管汇流横穿 body ⇒ 骑过 XQ1 自己的 E 窗 ⇒ ccas1⊕e1。</p>
+<h3 id="cb_g1only-gndxbi1nref">cb_G1only（簇乙 gnd⊕XBI1/nref）</h3>
+<p>桥=<strong>gnd M1 穿廊打底方块</strong> <code>(−29.475,106.550)..(−27.525,109.440)</code>（1.95×2.89µm，y_cell −1.45..+1.44）：
+- 同一方块在 M1∩emwind / M1∩e_pin / M1∩c_pin / M1∩b_pin <strong>四表同现</strong>——从 B 带直通 C 带
+- 域内恰有 collector cont 孔 (−29.325,109.050)..(−27.675,109.210) 与 base cont 孔 (−29.260,106.780)..(−27.740,106.940) ⇒ C/B 双通道坐实
+- 骑 XQr emwind 窗 ⇒ E 通道 ⇒ gnd 整域拽进 XQr 三端短接节点（二极管接法 nref）—— 与提取件焊网名 XBI1/nref 逐字吻合
+- 上方 gnd M2 穿廊臂（y_cell −0.16..0.14）经 via1 落此方块（M2∩M1 via 面 [6][7] 坐标吻合）——b7e7 判例「穿廊臂正骑 E pin」的 M2 只是引信，<strong>雷管是这片 M1 打底</strong></p>
+<h3 id="_1">「骑带≠焊」精确定律（新增实证）</h3>
+<p>正常 E 指 M1（0.7×1.555，y_cell −0.785..0.770）<strong>底缘骑入 b_pin 带顶缘 0.165µm</strong>（−0.785&lt;−0.62），却<strong>不焊</strong> e1⊕bin —— 因 E 指域内无 base cont 落点（孔带 −1.22..−1.06 在其下方）。
+⇒ <strong>C/B 通道：骑带 ∧ cont 落点在域内 ⇒ 焊；E 通道：骑 emwind 窗即焊（无需 cont）</strong>。</p>
+<h3 id="6-2-1">判例全解（6 幸免+2 焊对+1 反例全部自洽）</h3>
+<ul>
+<li>ntail/bin/bb1/outp/outn 幸免：骑自身网对应端子带（正常连接）或骑带无 cont 落点</li>
+<li>gnd M4 立线反例（x_cell 3.85..4.15 不焊）：<strong>M4 无半导体通道</strong>——x 位置无关</li>
+<li>bb1 M5 横带（drv1 观察点）：M5 无通道 ⇒ <strong>定律 v2 预测必不焊</strong>（drv1 代跑 LVS 验证点）</li>
+<li>e1 M2 平台不焊 bin：M2 无通道 + e1 域 M1（E 指）骑 b_pin 带但无 cont 落点</li>
+</ul>
+<h2 id="v2-b7e7-v1">四、定律 v2（修正 b7e7 v1）</h2>
+<ol>
+<li>金属连通域的 <strong>M1 元素</strong>（直接或经 via 链下探至 M1）：
+   - 与 emwind 窗相交 ⇒ 整域拽进 emitter（域级，无矩形级切割）——v1 判例全部吻合
+   - 与 c_pin/b_pin 带相交<strong>且</strong>域上有 cont 落点 ⇒ 整域拽进 collector/base</li>
+<li><strong>M2~M5 骑体本身永不焊</strong>（层敏感）——v1 的「x 半宽&lt;3.85」边界作废，x 只决定 E 窗列（每指 ±0.035）与孔位</li>
+<li>npn13G2_b/tb（body 全矩形）<strong>确实参与</strong> base 通道（v1 判 4 修正）——经 cont 起作用；body 上任何带 cont 的外部 M1 ⇒ 拽进 base</li>
+<li>C/E 永焊带不存在（tc-te 不相交）；「B 区顶&lt;−0.01」真值 −0.62 更紧</li>
+</ol>
+<h2 id="m4">五、M4 设计输入精确化（替换原「充分保守」条款）</h2>
+<ul>
+<li><strong>真值面</strong>：M2~M5 走线骑 body bbox 本身无害；危险面=<strong>M1 落点与 via 链下探终点</strong>：
+  勿覆盖 emwind 窗列（各指中轴 ±0.35、y_cell ±0.45）与 c_pin/b_pin 带上的 cont 落区（y_cell 1.05..1.21 / −1.22..−1.06 带）</li>
+<li>deck 修复前仍建议按充分条件执行（全带避开）；deck 修复后可按 v2 真值收紧走线自由度</li>
+<li>v18 新画外部金属（落地柱/地轨/搭桥）在管 bbox 外零骑体 ✓ 维持 b7e7 存量审计结论</li>
+</ul>
+<h2 id="b7e7">六、b7e7 托办答复</h2>
+<ol>
+<li><strong>纪要确切文件名</strong>：《判读纪要_v18补环代跑轮_2026-10-17.md》（5773B sha 87bc74b1）——试的三名均漏「<strong>补环</strong>」二字</li>
+<li><strong>knife 件路径</strong>：上口文字交棒未投盘（404 根因）；本口已补投 8510：
+   design/sow6/knife_ct_XQ1only.gds（35466B）/ knife_cb_G1only.gds（34214B）——文件名平铺（白名单单层）</li>
+</ol>
+<h2 id="_2">资产</h2>
+<ul>
+<li>run_v2/lvs/dump_deck4.py（deck 端子族真值 dump，可复跑）</li>
+<li>run_v2/lvs/knife_bridge_autopsy.py（ct/cb 桥定位，M1×半导体×cont 三通道横扫）</li>
+<li>判读依据：bjt_derivations.lvs L32-65 / bjt_connections.lvs L31-42（IHP PDK 原文）</li>
+</ul>
+<p>—— b7a0 · 2026-10-17</p><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */.codehilite{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:8px 10px}</style></div></main></body></html>

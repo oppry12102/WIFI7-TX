@@ -1,0 +1,1099 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>版图 · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="index.html" class="">总览</a><a href="spec.html" class="">规格</a><a href="docs/architecture-md.html" class="">架构</a><a href="docs.html" class="">文档</a><a href="circuit.html" class="">电路</a><a href="layout.html" class="on">版图</a><a href="phys.html" class="">版图实证</a><a href="dyn.html" class="">动态指标</a><a href="scan.html" class="">ACPR 扫描</a><a href="netlist.html" class="">网表</a><a href="sim.html" class="">仿真</a><a href="tree.html" class="">文件树</a><a href="data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><h1>版图与物理实现（规划级）</h1>
+<p class="muted">无 EDA/GDS 交付：以下为规划级布局与拓扑图；DRC/LVS/PEX 与后仿真签核清单见
+layout_plan.md §9~10（PDK 到位后执行）。</p>
+<div class="fig"><div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="#fff8e1"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#e6a817" stroke-width="1.4"/>
+    </pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+    </marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c62828"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="1000" fill="#fafafa"/>
+  <text x="700" y="34" text-anchor="middle" font-size="22" font-weight="bold">Wi-Fi 7 TX 模组 · 顶层版图规划（floorplan · 规划级 v1.0）</text>
+  <text x="700" y="58" text-anchor="middle" font-size="13" fill="#555">40nm CMOS（假设）· die ≈ 2.1 × 1.35 mm · 直接变频 · 双功率路（2.4G 独立 / 5–6G 宽带共路）· 非 GDS：示相对摆位与隔离拓扑</text>
+
+  <!-- die outline + pad ring -->
+  <rect x="110" y="80" width="1180" height="760" fill="#ffffff" stroke="#222" stroke-width="3"/>
+  <rect x="146" y="116" width="1108" height="688" fill="none" stroke="#999" stroke-width="1"/>
+  <text x="200" y="105" font-size="12" fill="#777">pad ring（GND 填充）</text>
+
+  <!-- pads: bottom power -->
+  <g font-size="11" fill="#333">
+    <rect x="200" y="826" width="26" height="12" fill="#555"/><text x="200" y="856">GND</text>
+    <rect x="260" y="826" width="26" height="12" fill="#00838f"/><text x="252" y="856">1.1V</text>
+    <rect x="330" y="826" width="26" height="12" fill="#00838f"/><text x="322" y="856">1.8V</text>
+    <rect x="400" y="826" width="26" height="12" fill="#00838f"/><text x="392" y="856">1.8V</text>
+    <rect x="470" y="826" width="26" height="12" fill="#b71c1c"/><text x="460" y="856">3.3V</text>
+    <rect x="540" y="826" width="26" height="12" fill="#555"/><text x="540" y="856">GND</text>
+    <rect x="600" y="826" width="26" height="12" fill="#555"/><text x="600" y="856">GND</text>
+    <rect x="660" y="826" width="26" height="12" fill="#00838f"/><text x="652" y="856">1.1V</text>
+  </g>
+  <!-- pads: left digital -->
+  <g font-size="11" fill="#333">
+    <rect x="84" y="200" width="12" height="26" fill="#3f51b5"/><text x="30" y="196">SPI</text>
+    <rect x="84" y="300" width="12" height="26" fill="#3f51b5"/><text x="24" y="296">DATA</text>
+    <rect x="84" y="400" width="12" height="26" fill="#3f51b5"/><text x="22" y="396">CLK</text>
+    <rect x="84" y="500" width="12" height="26" fill="#3f51b5"/><text x="16" y="496">EN/CTL</text>
+    <rect x="84" y="600" width="12" height="26" fill="#f9a825"/><text x="30" y="640">XTAL ref</text>
+  </g>
+  <!-- pads: right RF -->
+  <g font-size="12" fill="#b71c1c" font-weight="bold">
+    <rect x="1276" y="330" width="16" height="40" fill="#b71c1c"/><text x="1296" y="345">RF1</text>
+    <rect x="1276" y="530" width="16" height="40" fill="#b71c1c"/><text x="1296" y="545">RF2</text>
+  </g>
+  <g font-size="11" fill="#555">
+    <text x="1296" y="362">5/6G out</text>
+    <text x="1296" y="562">2.4G out</text>
+  </g>
+  <!-- pads: top test -->
+  <g font-size="11" fill="#333">
+    <rect x="700" y="86" width="26" height="12" fill="#777"/><text x="692" y="78">TEST</text>
+    <rect x="800" y="86" width="26" height="12" fill="#777"/><text x="792" y="78">TEST</text>
+    <rect x="900" y="86" width="26" height="12" fill="#777"/><text x="892" y="78">AUX</text>
+  </g>
+
+  <!-- LO island -->
+  <rect x="336" y="118" width="248" height="146" fill="none" stroke="#b8860b" stroke-width="2" stroke-dasharray="7,4"/>
+  <text x="340" y="278" font-size="11" fill="#b8860b">LO 岛：深 N 阱 + 双 guard ring + 独立电源</text>
+  <rect x="350" y="132" width="220" height="118" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="460" y="178" text-anchor="middle" font-size="14" font-weight="bold">LO 合成</text>
+  <text x="460" y="198" text-anchor="middle" font-size="11">PLL ΣΔ 分数N（BW 1.6M）</text>
+  <text x="460" y="214" text-anchor="middle" font-size="11">VCO 4.8–7.2G 双带 · ÷2(2.4G)/直通</text>
+  <text x="460" y="230" text-anchor="middle" font-size="11">多相 IQ → 25% 占空整形</text>
+
+  <!-- LO corridor -->
+  <rect x="580" y="160" width="560" height="52" fill="url(#hatch)" stroke="#e6a817" stroke-width="1.2"/>
+  <text x="860" y="182" text-anchor="middle" font-size="12" fill="#7a5c00">LO 分配走廊：包地屏蔽 · 星形等长 · 逐级缓冲独立退耦</text>
+  <text x="860" y="200" text-anchor="middle" font-size="11" fill="#7a5c00">（避开 PA 电感投影区，走线层贴地）</text>
+  <line x1="580" y1="186" x2="540" y2="186" stroke="#e6a817" stroke-width="2"/>
+  <line x1="460" y1="250" x2="460" y2="290" stroke="#e6a817" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="640" y1="212" x2="640" y2="296" stroke="#e6a817" stroke-width="2" marker-end="url(#arr)" transform="translate(-110,0)"/>
+  <line x1="500" y1="250" x2="500" y2="480" stroke="#e6a817" stroke-width="2" transform="translate(-170,0)"/>
+  <line x1="330" y1="480" x2="516" y2="480" stroke="#e6a817" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- digital interface -->
+  <rect x="160" y="300" width="140" height="300" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
+  <text x="230" y="345" text-anchor="middle" font-size="14" font-weight="bold">数字接口</text>
+  <text x="230" y="363" text-anchor="middle" font-size="11">与校准/功控逻辑</text>
+  <text x="230" y="385" text-anchor="middle" font-size="11">（1.1V 域）</text>
+  <text x="230" y="412" text-anchor="middle" font-size="11">· SPI/数据接口</text>
+  <text x="230" y="432" text-anchor="middle" font-size="11">· 功控闭环（100ms）</text>
+  <text x="230" y="452" text-anchor="middle" font-size="11">· LOFT/IQ 校准系数</text>
+  <text x="230" y="472" text-anchor="middle" font-size="11">· ADC 读回</text>
+
+  <!-- baseband I/Q -->
+  <rect x="320" y="300" width="180" height="110" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="410" y="335" text-anchor="middle" font-size="13" font-weight="bold">基带 I 路（1.8V）</text>
+  <text x="410" y="357" text-anchor="middle" font-size="11">DAC 12b/1.28Gsps →</text>
+  <text x="410" y="374" text-anchor="middle" font-size="11">重构 LPF（4阶 fc 420M）→</text>
+  <text x="410" y="391" text-anchor="middle" font-size="11">VGA 0~15dB</text>
+  <rect x="320" y="430" width="180" height="110" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="410" y="465" text-anchor="middle" font-size="13" font-weight="bold">基带 Q 路（1.8V）</text>
+  <text x="410" y="487" text-anchor="middle" font-size="11">同构 · 与 I 路镜像对称</text>
+  <text x="410" y="504" text-anchor="middle" font-size="11">（共质心/等长）</text>
+  <text x="410" y="521" text-anchor="middle" font-size="11"> </text>
+
+  <!-- mixers -->
+  <rect x="520" y="300" width="100" height="110" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="570" y="340" text-anchor="middle" font-size="13" font-weight="bold">混频 I</text>
+  <text x="570" y="360" text-anchor="middle" font-size="11">gm 共源共栅 +</text>
+  <text x="570" y="376" text-anchor="middle" font-size="11">25% 占空无源开关</text>
+  <rect x="520" y="430" width="100" height="100" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="570" y="470" text-anchor="middle" font-size="13" font-weight="bold">混频 Q</text>
+  <text x="570" y="490" text-anchor="middle" font-size="11">LO 90°/270°</text>
+
+  <!-- drivers -->
+  <rect x="650" y="300" width="110" height="110" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+  <text x="705" y="340" text-anchor="middle" font-size="13" font-weight="bold">驱动级 5/6G</text>
+  <text x="705" y="360" text-anchor="middle" font-size="11">+6 dB（1.8V）</text>
+  <text x="705" y="378" text-anchor="middle" font-size="11">差分 · 中和电容</text>
+  <rect x="650" y="430" width="110" height="100" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+  <text x="705" y="470" text-anchor="middle" font-size="13" font-weight="bold">驱动级 2.4G</text>
+  <text x="705" y="490" text-anchor="middle" font-size="11">同构</text>
+
+  <!-- PAs -->
+  <rect x="780" y="290" width="160" height="130" fill="#ffcdd2" stroke="#b71c1c" stroke-width="2.4"/>
+  <text x="860" y="335" text-anchor="middle" font-size="14" font-weight="bold">功率级 PA 5/6G</text>
+  <text x="860" y="357" text-anchor="middle" font-size="11">3.3V 厚氧 · 差分共源共栅</text>
+  <text x="860" y="374" text-anchor="middle" font-size="11">PSAT +32 dBm · PAE≥30%</text>
+  <text x="860" y="391" text-anchor="middle" font-size="11">开关电容调谐 4.9–7.125G</text>
+  <rect x="780" y="440" width="160" height="120" fill="#ffcdd2" stroke="#b71c1c" stroke-width="2.4"/>
+  <text x="860" y="482" text-anchor="middle" font-size="14" font-weight="bold">功率级 PA 2.4G</text>
+  <text x="860" y="504" text-anchor="middle" font-size="11">+23 dBm 档 · PAE 35%</text>
+  <text x="860" y="521" text-anchor="middle" font-size="11">独立片上变压器</text>
+
+  <!-- transformers -->
+  <rect x="950" y="300" width="70" height="120" fill="#ffffff" stroke="#b71c1c" stroke-width="2"/>
+  <text x="985" y="352" text-anchor="middle" font-size="12" font-weight="bold">TXFM</text>
+  <text x="985" y="370" text-anchor="middle" font-size="11">合成/巴伦</text>
+  <rect x="950" y="445" width="70" height="115" fill="#ffffff" stroke="#b71c1c" stroke-width="2"/>
+  <text x="985" y="494" text-anchor="middle" font-size="12" font-weight="bold">TXFM</text>
+  <text x="985" y="512" text-anchor="middle" font-size="11">合成/巴伦</text>
+  <line x1="940" y1="355" x2="950" y2="360" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="940" y1="500" x2="950" y2="500" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="1020" y1="360" x2="1276" y2="350" stroke="#b71c1c" stroke-width="2.5" marker-end="url(#arrR)"/>
+  <line x1="1020" y1="500" x2="1276" y2="550" stroke="#b71c1c" stroke-width="2.5" marker-end="url(#arrR)"/>
+
+  <!-- RF chain arrows -->
+  <line x1="500" y1="355" x2="520" y2="355" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="500" y1="485" x2="520" y2="485" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="620" y1="355" x2="650" y2="355" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="620" y1="485" x2="650" y2="485" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="760" y1="355" x2="780" y2="355" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="760" y1="485" x2="780" y2="500" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="633" y="552" text-anchor="middle" font-size="10.5" fill="#555">混频输出 RF 合成 → 频段分路（开关）</text>
+
+  <!-- isolation boxes -->
+  <rect x="766" y="278" width="268" height="296" fill="none" stroke="#b71c1c" stroke-width="2" stroke-dasharray="8,5"/>
+  <text x="770" y="270" font-size="11" fill="#b71c1c">PA 岛：双 guard ring + 深沟槽 + 3.3V 专用电源环</text>
+  <rect x="308" y="286" width="324" height="266" fill="none" stroke="#2e7d32" stroke-width="1.6" stroke-dasharray="6,4"/>
+  <text x="314" y="570" font-size="11" fill="#2e7d32">敏感模拟：guard ring + 干净 1.8V 电源域（与 LO 岛间距 ≥100µm）</text>
+
+  <!-- coupler / detector -->
+  <rect x="780" y="600" width="240" height="70" fill="#e0f7fa" stroke="#00838f" stroke-width="2"/>
+  <text x="900" y="628" text-anchor="middle" font-size="13" font-weight="bold">定向耦合器 −25dB → 功率检测</text>
+  <text x="900" y="648" text-anchor="middle" font-size="11">→ SAR ADC（贴 PA 输出摆置，短反馈线）</text>
+  <line x1="985" y1="565" x2="900" y2="600" stroke="#00838f" stroke-width="1.6" stroke-dasharray="4,3"/>
+
+  <!-- LDO row -->
+  <rect x="160" y="620" width="560" height="80" fill="#e0f7fa" stroke="#00838f" stroke-width="2"/>
+  <text x="440" y="650" text-anchor="middle" font-size="13" font-weight="bold">LDO / 带隙基准（1.1V / 1.8V / 3.3V 三域）+ 密集 decap</text>
+  <text x="440" y="672" text-anchor="middle" font-size="11">沿下缘排布 · 各域独立 LDO · 敏感域 LDO 加 PSRR 增强/级联</text>
+
+  <!-- feedback path -->
+  <polyline points="900,670 900,745 230,745 230,600" fill="none" stroke="#c62828" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrR)"/>
+  <text x="565" y="738" text-anchor="middle" font-size="11.5" fill="#c62828">校准/功控回环：检测→ADC→数字校准→DAC/VGA/LOFT 系数回写（虚线）</text>
+
+  <!-- power grid note -->
+  <text x="160" y="790" font-size="11.5" fill="#00695c">电源网格：各域独立顶环 + 正交条带；3.3V 环随 PA 岛（大电流回流最短）；全片均匀 decap 开窗；衬底背注 GND 缝合</text>
+
+  <!-- legend -->
+  <g font-size="12">
+    <rect x="120" y="920" width="16" height="16" fill="#e8eaf6" stroke="#3f51b5"/><text x="142" y="933">数字</text>
+    <rect x="200" y="920" width="16" height="16" fill="#e8f5e9" stroke="#2e7d32"/><text x="222" y="933">模拟基带/混频</text>
+    <rect x="340" y="920" width="16" height="16" fill="#fff8e1" stroke="#f9a825"/><text x="362" y="933">LO</text>
+    <rect x="410" y="920" width="16" height="16" fill="#ffcdd2" stroke="#b71c1c"/><text x="432" y="933">PA（3.3V）</text>
+    <rect x="530" y="920" width="16" height="16" fill="#e0f7fa" stroke="#00838f"/><text x="552" y="933">电源/检测</text>
+    <line x1="640" y1="928" x2="680" y2="928" stroke="#666" stroke-width="2" stroke-dasharray="7,4"/><text x="688" y="933">隔离边界</text>
+    <line x1="790" y1="928" x2="830" y2="928" stroke="#c62828" stroke-width="2" stroke-dasharray="6,4"/><text x="838" y="933">校准回环</text>
+    <text x="1220" y="933" fill="#777">图 1 / 6</text>
+  </g>
+</svg></div>
+<div class="cap"><b>顶层 Floorplan</b> — 芯片顶层布局规划：TX 链沿天线口方向排布，LO 分配树居中，供电域隔离</div></div>
+<div class="grid g2"><div class="fig"><div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 880" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <pattern id="sub" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="10" height="10" fill="#eceff1"/>
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#90a4ae" stroke-width="1"/>
+    </pattern>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+  </defs>
+  <rect width="1300" height="880" fill="#fafafa"/>
+  <text x="650" y="34" text-anchor="middle" font-size="22" font-weight="bold">电源域划分与隔离结构（规划级 v1.0）</text>
+  <text x="650" y="58" text-anchor="middle" font-size="13" fill="#555">左：俯视三域划分（口径以 design_circuit v1.4 为准）· 右：衬底剖面示意（深 N 阱岛式隔离 + 双 guard ring）</text>
+
+  <!-- Panel A: power domains top view -->
+  <text x="330" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">A · 电源域俯视（floorplan 缩略）</text>
+  <rect x="60" y="115" width="540" height="560" fill="#ffffff" stroke="#222" stroke-width="2.5"/>
+  <!-- 1.1V domain -->
+  <rect x="80" y="135" width="200" height="180" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
+  <text x="180" y="170" text-anchor="middle" font-size="13" font-weight="bold">1.1V 域</text>
+  <text x="180" y="195" text-anchor="middle" font-size="11.5">数字接口 / 校准逻辑</text>
+  <text x="180" y="215" text-anchor="middle" font-size="11.5">PLL 数字部分（ΣΔ/鉴频）</text>
+  <text x="180" y="235" text-anchor="middle" font-size="11.5">SAR ADC</text>
+  <text x="180" y="258" text-anchor="middle" font-size="10.5" fill="#555">LDO：PSRR 标准</text>
+  <!-- 1.8V domain -->
+  <rect x="300" y="135" width="200" height="380" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="400" y="170" text-anchor="middle" font-size="13" font-weight="bold">1.8V 域</text>
+  <text x="400" y="195" text-anchor="middle" font-size="11.5">DAC ×2 / LPF ×2 / VGA ×2</text>
+  <text x="400" y="215" text-anchor="middle" font-size="11.5">gm 级 + 无源混频</text>
+  <text x="400" y="235" text-anchor="middle" font-size="11.5">驱动级 ×2 · LO 缓冲/整形</text>
+  <text x="400" y="258" text-anchor="middle" font-size="11.5">VCO 芯（岛中岛，独立 LDO）</text>
+  <text x="400" y="281" text-anchor="middle" font-size="10.5" fill="#555">干净域：LDO 级联 PSRR 增强</text>
+  <!-- 3.3V domain -->
+  <rect x="300" y="535" width="280" height="120" fill="#ffcdd2" stroke="#b71c1c" stroke-width="2.2"/>
+  <text x="440" y="568" text-anchor="middle" font-size="13" font-weight="bold">3.3V 域（PA）</text>
+  <text x="440" y="592" text-anchor="middle" font-size="11.5">功率级 ×2 + 片上变压器 CT</text>
+  <text x="440" y="612" text-anchor="middle" font-size="11.5">专用电源环 · 加宽金属 · 独立 bond</text>
+  <!-- note zones -->
+  <text x="130" y="430" font-size="11.5" fill="#37474f">检测路（1.8V）：</text>
+  <text x="130" y="450" font-size="11.5" fill="#37474f">对数检波 + 耦合器偏置</text>
+  <text x="130" y="485" font-size="11.5" fill="#37474f">带隙基准全片共享，</text>
+  <text x="130" y="505" font-size="11.5" fill="#37474f">各域独立 LDO 后收敛</text>
+  <rect x="80" y="535" width="180" height="120" fill="#e0f7fa" stroke="#00838f" stroke-width="2"/>
+  <text x="170" y="568" text-anchor="middle" font-size="12.5" font-weight="bold">LDO/decap 带</text>
+  <text x="170" y="590" text-anchor="middle" font-size="11">沿 die 下缘，各域就近</text>
+  <text x="170" y="610" text-anchor="middle" font-size="11">电源入口 → LDO → 岛</text>
+  <line x1="300" y1="325" x2="300" y2="525" stroke="#777" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="252" y="530" font-size="10.5" fill="#777">域边界=guard ring</text>
+
+  <g font-size="12">
+    <rect x="80" y="700" width="16" height="16" fill="#e8eaf6" stroke="#3f51b5"/><text x="102" y="713">1.1V 数字</text>
+    <rect x="190" y="700" width="16" height="16" fill="#e8f5e9" stroke="#2e7d32"/><text x="212" y="713">1.8V 模拟/RF 前端</text>
+    <rect x="360" y="700" width="16" height="16" fill="#ffcdd2" stroke="#b71c1c"/><text x="382" y="713">3.3V PA</text>
+  </g>
+  <text x="80" y="745" font-size="11.5" fill="#555">规则：跨域信号全部过缓冲/电平移位；域间无长并行走线；各域 LDO 输出独立退耦（>2nF/mm² 目标）</text>
+
+  <!-- Panel B: cross section -->
+  <text x="960" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">B · 衬底隔离剖面（示意）</text>
+  <rect x="680" y="115" width="560" height="560" fill="#ffffff" stroke="#222" stroke-width="2.5"/>
+  <!-- substrate -->
+  <rect x="700" y="560" width="520" height="90" fill="url(#sub)" stroke="#607d8b" stroke-width="1.5"/>
+  <text x="960" y="610" text-anchor="middle" font-size="12.5" fill="#37474f">P+ 高阻衬底（背注 / GND 缝合，最短噪声回流）</text>
+  <rect x="700" y="500" width="520" height="60" fill="#f5f5f5" stroke="#607d8b" stroke-width="1"/>
+  <text x="960" y="535" text-anchor="middle" font-size="12" fill="#37474f">P− 外延层</text>
+  <!-- LO island DNW -->
+  <rect x="730" y="400" width="220" height="100" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="840" y="425" text-anchor="middle" font-size="12" font-weight="bold">深 N 阱岛 ①（LO/VCO）</text>
+  <rect x="750" y="440" width="180" height="40" fill="#bbdefb" stroke="#1565c0" stroke-width="1"/>
+  <text x="840" y="465" text-anchor="middle" font-size="11">N 阱 / P 阱 · VCO 芯</text>
+  <!-- PA island -->
+  <rect x="1010" y="400" width="160" height="100" fill="#ffebee" stroke="#b71c1c" stroke-width="1.8"/>
+  <text x="1090" y="425" text-anchor="middle" font-size="12" font-weight="bold">PA 岛 ②</text>
+  <rect x="1025" y="440" width="130" height="40" fill="#ffcdd2" stroke="#b71c1c" stroke-width="1"/>
+  <text x="1090" y="465" text-anchor="middle" font-size="11">厚氧功率管</text>
+  <!-- guard rings -->
+  <g font-size="10.5">
+    <rect x="722" y="392" width="236" height="10" fill="#66bb6a" stroke="#2e7d32"/>
+    <rect x="722" y="492" width="236" height="10" fill="#66bb6a" stroke="#2e7d32"/>
+    <rect x="722" y="392" width="10" height="110" fill="#66bb6a" stroke="#2e7d32"/>
+    <rect x="948" y="392" width="10" height="110" fill="#66bb6a" stroke="#2e7d32"/>
+    <rect x="1002" y="392" width="176" height="10" fill="#66bb6a" stroke="#2e7d32"/>
+    <rect x="1002" y="492" width="176" height="10" fill="#66bb6a" stroke="#2e7d32"/>
+    <rect x="1002" y="392" width="10" height="110" fill="#66bb6a" stroke="#2e7d32"/>
+    <rect x="1168" y="392" width="10" height="110" fill="#66bb6a" stroke="#2e7d32"/>
+  </g>
+  <text x="840" y="385" text-anchor="middle" font-size="10.5" fill="#2e7d32">P+ ring（接 GND）+ N+ ring（接 1.8V）双环</text>
+  <text x="1090" y="385" text-anchor="middle" font-size="10.5" fill="#2e7d32">双 guard ring</text>
+  <!-- deep trench -->
+  <rect x="975" y="380" width="14" height="130" fill="#455a64"/>
+  <text x="982" y="370" text-anchor="middle" font-size="11" fill="#455a64">深沟槽 DTI</text>
+  <!-- spacing arrow -->
+  <line x1="950" y1="525" x2="1010" y2="525" stroke="#37474f" stroke-width="2" marker-start="url(#arr2)" marker-end="url(#arr2)"/>
+  <text x="980" y="548" text-anchor="middle" font-size="10.5" fill="#37474f">间距</text>
+  <!-- top annotation -->
+  <text x="960" y="150" text-anchor="middle" font-size="12.5" fill="#37474f">摆位呼应图 1：VCO 岛与 PA 岛对角摆置，硅上直线距离 ≥ 200 µm 量级</text>
+  <text x="960" y="172" text-anchor="middle" font-size="12.5" fill="#37474f">敏感模拟（DAC/LPF/VGA）置于 LO 岛与 PA 岛之间靠 1.8V 干净域</text>
+  <text x="960" y="200" text-anchor="middle" font-size="11.5" fill="#555">衬底噪声路径：PA → 衬底 → VCO，由「距离 + DTI + 双 guard ring + 独立 DNW」四重衰减</text>
+  <text x="960" y="222" text-anchor="middle" font-size="11.5" fill="#555">VCO 相噪对衬底耦合最敏感（IPN ≤−48 dBc 预算），故 LO 岛电源独立 LDO + 岛中岛</text>
+  <text x="1220" y="710" font-size="12" fill="#777">图 2 / 6</text>
+</svg></div><div class="cap"><b>电源域与隔离</b> — 模拟/数字/射频三域供电与隔离带，衬底与 well 划分</div></div><div class="fig"><div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 820" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+    <marker id="arr3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e6a817"/>
+    </marker>
+  </defs>
+  <rect width="1300" height="820" fill="#fafafa"/>
+  <text x="650" y="34" text-anchor="middle" font-size="22" font-weight="bold">LO 合成与分配树（规划级 v1.0）</text>
+  <text x="650" y="58" text-anchor="middle" font-size="13" fill="#555">ΣΔ 分数N PLL → 双带 VCO → ÷2（2.4G）/ 直通（5/6G）→ 多相正交 → 25% 占空整形 → 星形等长缓冲树 → 混频器</text>
+
+  <!-- XTAL -->
+  <rect x="80" y="360" width="120" height="60" fill="#e0f7fa" stroke="#00838f" stroke-width="2"/>
+  <text x="140" y="385" text-anchor="middle" font-size="13" font-weight="bold">晶振 ref</text>
+  <text x="140" y="404" text-anchor="middle" font-size="11">（XTAL pad）</text>
+  <line x1="200" y1="390" x2="250" y2="390" stroke="#37474f" stroke-width="2" marker-end="url(#arr3)"/>
+
+  <!-- PLL -->
+  <rect x="250" y="350" width="170" height="80" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="335" y="378" text-anchor="middle" font-size="13.5" font-weight="bold">PLL · ΣΔ 分数N</text>
+  <text x="335" y="398" text-anchor="middle" font-size="11">三阶 2-1 MASH（假设）</text>
+  <text x="335" y="415" text-anchor="middle" font-size="11">环路 BW 1.6 MHz（R-01 终裁）</text>
+
+  <line x1="420" y1="390" x2="470" y2="390" stroke="#37474f" stroke-width="2" marker-end="url(#arr3)"/>
+
+  <!-- VCO -->
+  <rect x="470" y="350" width="180" height="80" fill="#fff8e1" stroke="#f9a825" stroke-width="2.4"/>
+  <text x="560" y="378" text-anchor="middle" font-size="13.5" font-weight="bold">VCO 4.8–7.2 GHz</text>
+  <text x="560" y="398" text-anchor="middle" font-size="11">双子带 LC-VCO</text>
+  <text x="560" y="415" text-anchor="middle" font-size="11">@1M ≤ −129 dBc/Hz（spec §8）</text>
+
+  <!-- branch 5/6G -->
+  <line x1="650" y1="370" x2="740" y2="290" stroke="#e6a817" stroke-width="2.2" marker-end="url(#arr3a)"/>
+  <rect x="740" y="255" width="150" height="70" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="815" y="283" text-anchor="middle" font-size="12.5" font-weight="bold">直通（5/6G）</text>
+  <text x="815" y="303" text-anchor="middle" font-size="11">4.9–7.125 GHz 档</text>
+
+  <!-- branch 2.4G -->
+  <line x1="650" y1="410" x2="740" y2="470" stroke="#e6a817" stroke-width="2.2" marker-end="url(#arr3a)"/>
+  <rect x="740" y="440" width="150" height="70" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="815" y="468" text-anchor="middle" font-size="12.5" font-weight="bold">÷2（2.4G）</text>
+  <text x="815" y="488" text-anchor="middle" font-size="11">2.4–2.4835 GHz 档</text>
+
+  <!-- poly phase -->
+  <line x1="890" y1="290" x2="950" y2="330" stroke="#e6a817" stroke-width="2.2" marker-end="url(#arr3a)"/>
+  <line x1="890" y1="475" x2="950" y2="435" stroke="#e6a817" stroke-width="2.2" marker-end="url(#arr3a)"/>
+  <rect x="950" y="330" width="160" height="105" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="1030" y="360" text-anchor="middle" font-size="12.5" font-weight="bold">多相正交产生</text>
+  <text x="1030" y="380" text-anchor="middle" font-size="11">RC-CR 两级多相滤波</text>
+  <text x="1030" y="398" text-anchor="middle" font-size="11">正交误差 0.3°/0.05dB（校准后）</text>
+  <text x="1030" y="416" text-anchor="middle" font-size="11">（spec §7 预算）</text>
+
+  <!-- 25% shaping -->
+  <line x1="1110" y1="382" x2="1160" y2="382" stroke="#e6a817" stroke-width="2.2" marker-end="url(#arr3a)"/>
+  <rect x="1160" y="340" width="120" height="85" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="1220" y="370" text-anchor="middle" font-size="12.5" font-weight="bold">25% 占空整形</text>
+  <text x="1220" y="390" text-anchor="middle" font-size="11">脉冲交叠生成</text>
+  <text x="1220" y="407" text-anchor="middle" font-size="11">（贴近混频器摆）</text>
+
+  <!-- buffer tree to mixers -->
+  <line x1="1220" y1="425" x2="1220" y2="560" stroke="#e6a817" stroke-width="2.2" marker-end="url(#arr3a)"/>
+  <rect x="1050" y="560" width="230" height="56" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="1165" y="583" text-anchor="middle" font-size="12.5" font-weight="bold">缓冲树 1→2→4（星形等长）</text>
+  <text x="1165" y="602" text-anchor="middle" font-size="11">每叶独立电源退耦 · 包地走线</text>
+
+  <g font-size="12" font-weight="bold">
+    <line x1="1050" y1="600" x2="960" y2="660" stroke="#e6a817" stroke-width="2" marker-end="url(#arr3a)"/>
+    <line x1="1100" y1="616" x2="1030" y2="690" stroke="#e6a817" stroke-width="2" marker-end="url(#arr3a)"/>
+    <line x1="1180" y1="616" x2="1230" y2="690" stroke="#e6a817" stroke-width="2" marker-end="url(#arr3a)"/>
+    <line x1="1250" y1="600" x2="1290" y2="655" stroke="#e6a817" stroke-width="2" marker-end="url(#arr3a)"/>
+  </g>
+  <g font-size="11.5" fill="#7a5c00">
+    <text x="905" y="680">MIX_I_5G</text>
+    <text x="995" y="710">MIX_Q_5G</text>
+    <text x="1200" y="710">MIX_I_2G</text>
+    <text x="1270" y="675">MIX_Q_2G</text>
+  </g>
+
+  <!-- annotations -->
+  <rect x="80" y="520" width="330" height="220" fill="#ffffff" stroke="#999" stroke-width="1.5"/>
+  <text x="95" y="548" font-size="13" font-weight="bold" fill="#37474f">版图规则（对应图 1/图 2）</text>
+  <text x="95" y="576" font-size="12">· LO 走线包地（同轴式：地-信号-地），贴地平面</text>
+  <text x="95" y="600" font-size="12">· IQ 四相走线对称等长，避免相移失配</text>
+  <text x="95" y="624" font-size="12">· 走线层避开 PA 电感/变压器投影区</text>
+  <text x="95" y="648" font-size="12">· 每级缓冲独立 LDO 抽头 + 就地 decap</text>
+  <text x="95" y="672" font-size="12">· 25% 整形器贴近混频器栅（缩短高速节点）</text>
+  <text x="95" y="700" font-size="12" fill="#c62828">· IPN ≤−48 dBc 预算 → 隔离按图 2 剖面执行</text>
+
+  <text x="80" y="790" font-size="12.5" fill="#555">占空 50%→25% 转换在多相之后完成；2.4G 档由 ÷2 天生正交时，多相级可旁路（架构 §4）——版图预留旁路走线。</text>
+  <text x="1220" y="800" font-size="12" fill="#777">图 3 / 6</text>
+</svg></div><div class="cap"><b>LO 分配树</b> — 本振分配：LO_BUF → 混频器/驱动级，阻抗匹配与隔离电阻</div></div><div class="fig"><div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+    <marker id="arr4r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c62828"/>
+    </marker>
+    <marker id="arr4o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e6a817"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="900" fill="#fafafa"/>
+  <text x="700" y="34" text-anchor="middle" font-size="22" font-weight="bold">TX 模拟链路全图（一路示出 · 规划级 v1.0）</text>
+  <text x="700" y="58" text-anchor="middle" font-size="13" fill="#555">直接变频：DAC → 重构 LPF → VGA → gm 级 + 25% 占空无源正交混频 → 频段分路 → 驱动级 → 功率级 → 片上变压器 → RF 焊盘</text>
+  <text x="700" y="78" text-anchor="middle" font-size="12" fill="#777">增益/功耗等最终数值口径以 design_circuit v1.4 / params.csv 为准（本图为拓扑与校准回环示意，不引入新判定数值）</text>
+
+  <!-- main chain -->
+  <g font-size="12">
+    <rect x="60" y="180" width="140" height="110" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+    <text x="130" y="215" text-anchor="middle" font-size="13" font-weight="bold">DAC（I/Q）</text>
+    <text x="130" y="237" text-anchor="middle" font-size="11">12b 电流舵</text>
+    <text x="130" y="254" text-anchor="middle" font-size="11">6b二进制+6b温度计</text>
+    <text x="130" y="271" text-anchor="middle" font-size="11">1.28 Gsps</text>
+
+    <rect x="240" y="180" width="150" height="110" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+    <text x="315" y="215" text-anchor="middle" font-size="13" font-weight="bold">重构 LPF</text>
+    <text x="315" y="237" text-anchor="middle" font-size="11">4 阶 Butterworth</text>
+    <text x="315" y="254" text-anchor="middle" font-size="11">fc ≈ 420 MHz</text>
+    <text x="315" y="271" text-anchor="middle" font-size="11">active-RC（可调）</text>
+
+    <rect x="430" y="180" width="140" height="110" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+    <text x="500" y="215" text-anchor="middle" font-size="13" font-weight="bold">VGA</text>
+    <text x="500" y="237" text-anchor="middle" font-size="11">0~15 dB / 0.5dB 步</text>
+    <text x="500" y="254" text-anchor="middle" font-size="11">±0.1dB 平坦度</text>
+
+    <rect x="610" y="180" width="190" height="110" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.4"/>
+    <text x="705" y="212" text-anchor="middle" font-size="13" font-weight="bold">gm 级 + 无源混频</text>
+    <text x="705" y="234" text-anchor="middle" font-size="11">gm 共源共栅 → 25% 占空</text>
+    <text x="705" y="251" text-anchor="middle" font-size="11">无源 nMOS 开关（正交）</text>
+    <text x="705" y="268" text-anchor="middle" font-size="11">净转换增益 ≈ 0 dB（详图 6）</text>
+
+    <rect x="840" y="150" width="120" height="80" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+    <text x="900" y="185" text-anchor="middle" font-size="12.5" font-weight="bold">驱动级 5/6G</text>
+    <text x="900" y="205" text-anchor="middle" font-size="11">+6 dB · 1.8V</text>
+    <rect x="840" y="250" width="120" height="80" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+    <text x="900" y="285" text-anchor="middle" font-size="12.5" font-weight="bold">驱动级 2.4G</text>
+    <text x="900" y="305" text-anchor="middle" font-size="11">同构</text>
+
+    <rect x="1000" y="150" width="140" height="80" fill="#ffcdd2" stroke="#b71c1c" stroke-width="2.4"/>
+    <text x="1070" y="185" text-anchor="middle" font-size="12.5" font-weight="bold">功率级 5/6G</text>
+    <text x="1070" y="205" text-anchor="middle" font-size="11">3.3V 厚氧（详图 5）</text>
+    <rect x="1000" y="250" width="140" height="80" fill="#ffcdd2" stroke="#b71c1c" stroke-width="2.4"/>
+    <text x="1070" y="285" text-anchor="middle" font-size="12.5" font-weight="bold">功率级 2.4G</text>
+    <text x="1070" y="305" text-anchor="middle" font-size="11">同构双路</text>
+
+    <rect x="1180" y="180" width="90" height="120" fill="#ffffff" stroke="#b71c1c" stroke-width="2"/>
+    <text x="1225" y="230" text-anchor="middle" font-size="12.5" font-weight="bold">TXFM ×2</text>
+    <text x="1225" y="250" text-anchor="middle" font-size="11">合成/巴伦</text>
+    <text x="1225" y="268" text-anchor="middle" font-size="11">+ 调谐阵列</text>
+  </g>
+
+  <g stroke="#37474f" stroke-width="2.2">
+    <line x1="200" y1="235" x2="240" y2="235" marker-end="url(#arr4)"/>
+    <line x1="390" y1="235" x2="430" y2="235" marker-end="url(#arr4)"/>
+    <line x1="570" y1="235" x2="610" y2="235" marker-end="url(#arr4)"/>
+    <line x1="800" y1="225" x2="840" y2="190" marker-end="url(#arr4)"/>
+    <line x1="800" y1="245" x2="840" y2="290" marker-end="url(#arr4)"/>
+    <line x1="960" y1="190" x2="1000" y2="190" marker-end="url(#arr4)"/>
+    <line x1="960" y1="290" x2="1000" y2="290" marker-end="url(#arr4)"/>
+    <line x1="1140" y1="190" x2="1180" y2="215" marker-end="url(#arr4)"/>
+    <line x1="1140" y1="290" x2="1180" y2="265" marker-end="url(#arr4)"/>
+  </g>
+  <text x="820" y="160" text-anchor="middle" font-size="10.5" fill="#555">混频输出 RF 合成→频段分路（开关）</text>
+  <text x="1335" y="205" font-size="13" font-weight="bold" fill="#b71c1c">RF1/RF2</text>
+  <text x="1335" y="224" font-size="11" fill="#555">低容 ESD 焊盘</text>
+  <line x1="1270" y1="235" x2="1325" y2="235" stroke="#b71c1c" stroke-width="2.5" marker-end="url(#arr4r)"/>
+
+  <!-- LO rail -->
+  <rect x="610" y="430" width="500" height="70" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="860" y="458" text-anchor="middle" font-size="13" font-weight="bold">LO 4.8–7.2 GHz（÷2 → 2.4G）· 25% 占空整形（详图 3）</text>
+  <text x="860" y="480" text-anchor="middle" font-size="11">0°/90°/180°/270° 四相 → 混频器开关栅</text>
+  <line x1="760" y1="430" x2="735" y2="290" stroke="#e6a817" stroke-width="2.4" marker-end="url(#arr4o)"/>
+  <text x="775" y="365" font-size="11" fill="#7a5c00">LO 注入</text>
+
+  <!-- bias/control rail -->
+  <rect x="60" y="430" width="440" height="70" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
+  <text x="280" y="458" text-anchor="middle" font-size="13" font-weight="bold">偏置 / 带隙基准 / SPI</text>
+  <text x="280" y="480" text-anchor="middle" font-size="11">各模块偏置 DAC + 带隙 → 各域 LDO（图 2 三域）</text>
+  <line x1="280" y1="430" x2="280" y2="290" stroke="#3f51b5" stroke-width="1.6" stroke-dasharray="5,4"/>
+  <line x1="500" y1="445" x2="500" y2="290" stroke="#3f51b5" stroke-width="1.6" stroke-dasharray="5,4"/>
+
+  <!-- feedback loop -->
+  <rect x="1000" y="430" width="260" height="90" fill="#e0f7fa" stroke="#00838f" stroke-width="2"/>
+  <text x="1130" y="460" text-anchor="middle" font-size="12.5" font-weight="bold">定向耦合器 −25 dB（输出网络内）</text>
+  <text x="1130" y="482" text-anchor="middle" font-size="11">→ 对数 RF 检波 → SAR ADC</text>
+  <text x="1130" y="500" text-anchor="middle" font-size="11">闭环功控 ±1.5 dB（spec S12）</text>
+  <polyline points="1225,290 1225,430" fill="none" stroke="#00838f" stroke-width="1.8" stroke-dasharray="4,3"/>
+  <polyline points="1000,475 530,475 530,410 230,410 230,290" fill="none" stroke="#c62828" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr4r)"/>
+  <text x="740" y="545" text-anchor="middle" font-size="12" fill="#c62828">校准/功控回环：ADC 读回 → 数字功控/温漂跟踪（100 ms）→ 功控 DAC / LOFT-DC / IQ 系数回写</text>
+  <line x1="530" y1="410" x2="530" y2="410" stroke="#c62828" stroke-width="2"/>
+
+  <!-- calibration items -->
+  <rect x="60" y="590" width="620" height="150" fill="#ffffff" stroke="#999" stroke-width="1.5"/>
+  <text x="75" y="618" font-size="13" font-weight="bold" fill="#37474f">校准项（spec §7 / architecture §5）</text>
+  <text x="75" y="646" font-size="12">· LO 馈通：数字 DC 补偿（产测粗调 + 运行微调）</text>
+  <text x="75" y="672" font-size="12">· IQ 不平衡：产测一次校准 + 温漂查表（幅度/相位预矫正系数回 DAC 前）</text>
+  <text x="75" y="698" font-size="12">· PA 温漂：功率检测闭环跟踪（周期 100 ms）· DPD：数字域（GMP，另列）</text>
+  <text x="75" y="724" font-size="11" fill="#777">观测路：产品无片内 TX→RX 回环，行为级验证用模型回环（sim_report 口径）</text>
+
+  <!-- band note -->
+  <rect x="720" y="590" width="620" height="150" fill="#ffffff" stroke="#999" stroke-width="1.5"/>
+  <text x="735" y="618" font-size="13" font-weight="bold" fill="#37474f">双路频段策略（architecture §1）</text>
+  <text x="735" y="646" font-size="12">· 2.4 GHz 独立一路（频率比 >2×，分路效率优）</text>
+  <text x="735" y="672" font-size="12">· 5/6 GHz（4.9–7.125）共用宽带一路：片上变压器 + 开关电容调谐覆盖</text>
+  <text x="735" y="698" font-size="12">· 本图一路全链示出；第二路同构（基带/混频共用，驱动/PA/变压器独立）</text>
+  <text x="735" y="724" font-size="11" fill="#777">混频器共用一套（I/Q），分路开关位于混频输出与驱动级之间</text>
+  <text x="1310" y="870" font-size="12" fill="#777">图 4 / 6</text>
+</svg></div><div class="cap"><b>TX 模拟链路全图</b> — 基带 I/Q → VGA → Gilbert 混频器 → DRV → PA → 天线口</div></div><div class="fig"><div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 880" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arr6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+    <marker id="arr6o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e6a817"/>
+    </marker>
+  </defs>
+  <rect width="1300" height="880" fill="#fafafa"/>
+  <text x="650" y="34" text-anchor="middle" font-size="22" font-weight="bold">上变频混频器拓扑示意 · gm 共源共栅 + 25% 占空无源正交开关（I 路示出）</text>
+  <text x="650" y="58" text-anchor="middle" font-size="13" fill="#555">净转换增益 ≈ 0 dB（gm +2 dB / 开关 −2 dB）· 25% 占空较 50% 噪声/线性更优（架构裁决）· 1.8V 域</text>
+
+  <!-- BB inputs -->
+  <circle cx="90" cy="250" r="5" fill="#37474f"/><text x="40" y="245" font-size="13">VIp（VGA）</text>
+  <circle cx="90" cy="390" r="5" fill="#37474f"/><text x="40" y="410" font-size="13">VIn</text>
+  <line x1="95" y1="250" x2="180" y2="250" stroke="#37474f" stroke-width="2"/>
+  <line x1="95" y1="390" x2="180" y2="390" stroke="#37474f" stroke-width="2"/>
+
+  <!-- gm stage -->
+  <g stroke="#37474f" stroke-width="2.2" fill="#e8f5e9">
+    <rect x="180" y="225" width="80" height="50"/>
+    <rect x="180" y="365" width="80" height="50"/>
+  </g>
+  <text x="220" y="255" text-anchor="middle" font-size="12" font-weight="bold">M1</text>
+  <text x="220" y="395" text-anchor="middle" font-size="12" font-weight="bold">M1′</text>
+  <text x="220" y="215" text-anchor="middle" font-size="11" fill="#555">gm 输入级（共源）</text>
+  <!-- cascode -->
+  <g stroke="#37474f" stroke-width="2.2" fill="#e8f5e9">
+    <rect x="180" y="140" width="80" height="46"/>
+    <rect x="180" y="444" width="80" height="46"/>
+  </g>
+  <text x="220" y="168" text-anchor="middle" font-size="12" font-weight="bold">M2</text>
+  <text x="220" y="472" text-anchor="middle" font-size="12" font-weight="bold">M2′</text>
+  <text x="220" y="132" text-anchor="middle" font-size="11" fill="#555">cascode（降 Miller/提升隔离）</text>
+  <line x1="220" y1="225" x2="220" y2="186" stroke="#37474f" stroke-width="2"/>
+  <line x1="220" y1="415" x2="220" y2="444" stroke="#37474f" stroke-width="2"/>
+  <!-- tail current -->
+  <line x1="220" y1="490" x2="220" y2="530" stroke="#37474f" stroke-width="2"/>
+  <g stroke="#37474f" stroke-width="2"><line x1="205" y1="530" x2="235" y2="530"/><line x1="212" y1="538" x2="228" y2="538"/><line x1="218" y1="546" x2="222" y2="546"/></g>
+  <text x="235" y="548" font-size="11" fill="#555">尾电流源</text>
+
+  <!-- switch quad -->
+  <g stroke="#f9a825" stroke-width="2.4" fill="#fff8e1">
+    <rect x="380" y="120" width="90" height="60"/>
+    <rect x="380" y="205" width="90" height="60"/>
+    <rect x="380" y="330" width="90" height="60"/>
+    <rect x="380" y="415" width="90" height="60"/>
+  </g>
+  <g font-size="12" font-weight="bold" fill="#7a5c00">
+    <text x="425" y="155" text-anchor="middle">M3（LO 0°）</text>
+    <text x="425" y="240" text-anchor="middle">M4（LO 180°）</text>
+    <text x="425" y="365" text-anchor="middle">M5（LO 0°）</text>
+    <text x="425" y="450" text-anchor="middle">M6（LO 180°）</text>
+  </g>
+  <line x1="260" y1="163" x2="380" y2="163" stroke="#37474f" stroke-width="2"/>
+  <line x1="260" y1="330" x2="380" y2="237" stroke="#37474f" stroke-width="2"/>
+  <line x1="260" y1="310" x2="380" y2="362" stroke="#37474f" stroke-width="2"/>
+  <line x1="260" y1="467" x2="380" y2="447" stroke="#37474f" stroke-width="2"/>
+  <text x="330" y="300" font-size="10.5" fill="#555">（节点交叉即极性反相）</text>
+
+  <!-- RF summing node -->
+  <circle cx="570" cy="290" r="6" fill="#b71c1c"/>
+  <text x="570" y="272" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">RF 节点</text>
+  <polyline points="470,150 540,150 540,290 570,290" fill="none" stroke="#37474f" stroke-width="2.2"/>
+  <polyline points="470,235 520,235 520,290 570,290" fill="none" stroke="#37474f" stroke-width="2.2"/>
+  <polyline points="470,360 520,360 520,290 570,290" fill="none" stroke="#37474f" stroke-width="2.2"/>
+  <polyline points="470,445 540,445 540,290 570,290" fill="none" stroke="#37474f" stroke-width="2.2"/>
+
+  <!-- tuned load -->
+  <g stroke="#37474f" stroke-width="2" fill="none">
+    <line x1="570" y1="284" x2="570" y2="220"/>
+    <line x1="555" y1="220" x2="585" y2="220"/><line x1="560" y1="212" x2="580" y2="212"/><line x1="565" y1="204" x2="575" y2="204"/>
+    <line x1="570" y1="204" x2="570" y2="150"/>
+  </g>
+  <text x="595" y="212" font-size="11" fill="#555">LC 调谐负载（片上电感，Q 优化）</text>
+  <line x1="570" y1="150" x2="570" y2="130" stroke="#00838f" stroke-width="2"/>
+  <text x="595" y="140" font-size="11.5" fill="#00838f">1.8V（模拟域 LDO）</text>
+
+  <!-- output -->
+  <line x1="570" y1="290" x2="660" y2="290" stroke="#37474f" stroke-width="2.5" marker-end="url(#arr6)"/>
+  <text x="670" y="295" font-size="13" font-weight="bold">→ 驱动级（图 4）</text>
+
+  <!-- Q channel ghost -->
+  <rect x="720" y="120" width="170" height="355" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="805" y="150" text-anchor="middle" font-size="12.5" fill="#666">Q 路同构（虚框）</text>
+  <text x="805" y="175" text-anchor="middle" font-size="11.5" fill="#666">开关栅 LO 90°/270°</text>
+  <text x="805" y="197" text-anchor="middle" font-size="11.5" fill="#666">RF 输出与 I 路正交求和</text>
+  <text x="805" y="240" text-anchor="middle" font-size="11.5" fill="#666">版图：与 I 路镜像对称/共质心，</text>
+  <text x="805" y="262" text-anchor="middle" font-size="11.5" fill="#666">四相走线等长（图 3 规则）</text>
+
+  <!-- 25% timing -->
+  <rect x="80" y="570" width="1140" height="200" fill="#ffffff" stroke="#999" stroke-width="1.5"/>
+  <text x="95" y="598" font-size="13" font-weight="bold" fill="#37474f">25% 占空四相门控时序（非交叠，每相 1/4 周期导通）</text>
+  <!-- timeline -->
+  <line x1="150" y1="740" x2="1190" y2="740" stroke="#555" stroke-width="1.5"/>
+  <text x="1200" y="745" font-size="11" fill="#555">t</text>
+  <g font-size="11" fill="#777">
+    <text x="150" y="758">0°</text><text x="400" y="758">90°</text><text x="650" y="758">180°</text><text x="900" y="758">270°</text><text x="1150" y="758">360°</text>
+    <line x1="150" y1="620" x2="150" y2="740" stroke="#ddd" stroke-width="1"/>
+    <line x1="400" y1="620" x2="400" y2="740" stroke="#ddd" stroke-width="1"/>
+    <line x1="650" y1="620" x2="650" y2="740" stroke="#ddd" stroke-width="1"/>
+    <line x1="900" y1="620" x2="900" y2="740" stroke="#ddd" stroke-width="1"/>
+    <line x1="1150" y1="620" x2="1150" y2="740" stroke="#ddd" stroke-width="1"/>
+  </g>
+  <g fill="#f9a825" stroke="#7a5c00" stroke-width="1">
+    <rect x="150" y="620" width="60" height="24"/><rect x="400" y="646" width="60" height="24"/>
+    <rect x="650" y="620" width="60" height="24"/><rect x="900" y="646" width="60" height="24"/>
+  </g>
+  <g font-size="11.5" fill="#7a5c00">
+    <text x="152" y="616">LO 0°（M3/M5 栅高）</text>
+    <text x="402" y="688">LO 90°</text>
+    <text x="652" y="616">LO 180°</text>
+    <text x="902" y="688">LO 270°</text>
+  </g>
+  <text x="95" y="745" font-size="0" fill="none">.</text>
+  <text x="770" y="620" font-size="11.5" fill="#555">效果：本征噪声折叠减半、开关共导更短→线性/LOFT 更优；</text>
+  <text x="770" y="640" font-size="11.5" fill="#555">占空误差→正交误差→EVM 灵敏度（架构风险 #4，整形器贴近混频器）</text>
+
+  <text x="1180" y="850" font-size="12" fill="#777">图 6 / 6</text>
+</svg></div><div class="cap"><b>混频器拓扑</b> — Gilbert 双平衡无源混频器：尾流管/电感退化/双臂 Rd 去耦</div></div><div class="fig"><div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 880" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+  </defs>
+  <rect width="1300" height="880" fill="#fafafa"/>
+  <text x="650" y="34" text-anchor="middle" font-size="22" font-weight="bold">功率级（PA）输出级拓扑示意 · 3.3V 厚氧差分共源共栅 + 片上变压器合成</text>
+  <text x="650" y="58" text-anchor="middle" font-size="13" fill="#555">6G：PSAT +32 dBm / PAE ≥30% @ +18 dBm 均值 · 2.4G：+23 dBm 档 / PAE 35% · 开关电容调谐覆盖 4.9–7.125 GHz</text>
+
+  <!-- 3.3V rail -->
+  <line x1="120" y1="130" x2="1020" y2="130" stroke="#b71c1c" stroke-width="4"/>
+  <text x="1050" y="136" font-size="14" font-weight="bold" fill="#b71c1c">3.3V（专用电源环）</text>
+
+  <!-- input -->
+  <circle cx="120" cy="420" r="5" fill="#37474f"/><text x="70" y="415" font-size="13">IN+（驱动级）</text>
+  <circle cx="120" cy="560" r="5" fill="#37474f"/><text x="70" y="580" font-size="13">IN−</text>
+  <g stroke="#37474f" stroke-width="2">
+    <line x1="125" y1="420" x2="205" y2="420"/>
+    <line x1="125" y1="560" x2="205" y2="560"/>
+  </g>
+  <!-- input caps -->
+  <g stroke="#37474f" stroke-width="2" fill="none">
+    <line x1="205" y1="395" x2="205" y2="445"/><line x1="225" y1="395" x2="225" y2="445"/>
+    <line x1="215" y1="445" x2="215" y2="470"/><line x1="215" y1="470" x2="255" y2="470"/>
+    <line x1="205" y1="535" x2="205" y2="585"/><line x1="225" y1="535" x2="225" y2="585"/>
+    <line x1="215" y1="585" x2="215" y2="610"/><line x1="215" y1="610" x2="255" y2="610"/>
+  </g>
+  <text x="182" y="380" font-size="11" fill="#555">隔直电容</text>
+  <!-- gate bias -->
+  <g stroke="#777" stroke-width="1.4" fill="none">
+    <line x1="255" y1="470" x2="255" y2="360"/><line x1="255" y1="360" x2="300" y2="360"/>
+    <line x1="255" y1="610" x2="255" y2="660"/><line x1="255" y1="660" x2="300" y2="660"/>
+  </g>
+  <text x="262" y="352" font-size="11" fill="#777">Vbias（R 大）</text>
+
+  <!-- M1 CS -->
+  <g stroke="#37474f" stroke-width="2.2" fill="#ffcdd2">
+    <rect x="300" y="395" width="70" height="50"/>
+    <rect x="300" y="535" width="70" height="50"/>
+  </g>
+  <text x="335" y="425" text-anchor="middle" font-size="12" font-weight="bold">M1</text>
+  <text x="335" y="565" text-anchor="middle" font-size="12" font-weight="bold">M1′</text>
+  <line x1="255" y1="420" x2="300" y2="420" stroke="#37474f" stroke-width="2"/>
+  <line x1="255" y1="560" x2="300" y2="560" stroke="#37474f" stroke-width="2"/>
+  <!-- cascode M2 -->
+  <g stroke="#37474f" stroke-width="2.2" fill="#ffcdd2">
+    <rect x="300" y="290" width="70" height="50"/>
+    <rect x="300" y="640" width="70" height="50"/>
+  </g>
+  <text x="335" y="320" text-anchor="middle" font-size="12" font-weight="bold">M2</text>
+  <text x="335" y="670" text-anchor="middle" font-size="12" font-weight="bold">M2′</text>
+  <line x1="335" y1="395" x2="335" y2="340" stroke="#37474f" stroke-width="2"/>
+  <line x1="335" y1="535" x2="335" y2="690" stroke="#37474f" stroke-width="2"/>
+  <text x="380" y="318" font-size="11" fill="#555">共栅（cascode，降 M1 应力/ Miller）</text>
+  <!-- source degeneration inductor -->
+  <path d="M335 585 L335 640" stroke="#37474f" stroke-width="2"/>
+  <text x="345" y="620" font-size="10.5" fill="#777">源极虚拟地（差分）</text>
+
+  <!-- drains to transformer primary -->
+  <polyline points="335,290 335,230 560,230" fill="none" stroke="#b71c1c" stroke-width="2.4"/>
+  <polyline points="335,690 335,750 560,750" fill="none" stroke="#b71c1c" stroke-width="2.4"/>
+  <text x="360" y="222" font-size="11" fill="#b71c1c">节点 A（漏）</text>
+  <text x="360" y="742" font-size="11" fill="#b71c1c">节点 B（漏′）</text>
+
+  <!-- neutralization caps -->
+  <g stroke="#7b1fa2" stroke-width="1.8" fill="none">
+    <line x1="300" y1="410" x2="270" y2="410"/><line x1="270" y1="410" x2="270" y2="230"/><line x1="270" y1="230" x2="540" y2="230"/>
+    <line x1="540" y1="230" x2="540" y2="260"/>
+    <line x1="530" y1="255" x2="550" y2="255"/><line x1="530" y1="265" x2="550" y2="265"/>
+    <line x1="540" y1="265" x2="540" y2="560"/>
+    <line x1="300" y1="425" x2="270" y2="425"/>
+  </g>
+  <text x="480" y="215" font-size="11" fill="#7b1fa2">Cgd 中和电容（A→栅′，B→栅；改善稳定性/增益）</text>
+
+  <!-- tuning cap array -->
+  <g stroke="#00695c" stroke-width="1.8" fill="none">
+    <line x1="560" y1="230" x2="560" y2="300"/><line x1="575" y1="300" x2="545" y2="300"/>
+    <line x1="575" y1="308" x2="545" y2="308"/>
+    <line x1="560" y1="308" x2="560" y2="380"/>
+  </g>
+  <text x="585" y="308" font-size="11" fill="#00695c">开关电容调谐阵列</text>
+
+  <!-- transformer primary -->
+  <path d="M 620 240 C 680 230, 680 270, 620 260 C 690 255, 690 300, 620 290 C 690 285, 690 330, 620 320 C 690 315, 690 360, 620 350 C 680 345, 680 385, 620 375 L 620 380" fill="none" stroke="#b71c1c" stroke-width="2.6"/>
+  <text x="700" y="255" font-size="12" font-weight="bold" fill="#b71c1c">初级（差分螺旋）</text>
+  <line x1="560" y1="380" x2="618" y2="375" stroke="#00695c" stroke-width="1.8"/>
+  <line x1="335" y1="230" x2="560" y2="230" stroke="#b71c1c" stroke-width="0"/>
+  <polyline points="560,230 620,240" fill="none" stroke="#b71c1c" stroke-width="2.4"/>
+  <polyline points="560,750 620,380" fill="none" stroke="#b71c1c" stroke-width="2.4"/>
+  <!-- center tap -->
+  <line x1="620" y1="310" x2="590" y2="310" stroke="#b71c1c" stroke-width="2"/>
+  <line x1="590" y1="310" x2="590" y2="130" stroke="#b71c1c" stroke-width="2"/>
+  <text x="545" y="150" font-size="11" fill="#b71c1c">CT 接 3.3V（虚地）</text>
+  <!-- secondary -->
+  <path d="M 720 390 C 780 395, 780 430, 720 435 C 790 440, 790 475, 720 470 L 790 470 L 790 500" fill="none" stroke="#37474f" stroke-width="2.6"/>
+  <text x="800" y="410" font-size="12" font-weight="bold" fill="#37474f">次级（单端）</text>
+  <line x1="790" y1="500" x2="790" y2="560" stroke="#37474f" stroke-width="2.5"/>
+  <line x1="790" y1="560" x2="900" y2="560" stroke="#b71c1c" stroke-width="3" marker-end="url(#arr5)"/>
+  <circle cx="905" cy="560" r="6" fill="#b71c1c"/>
+  <text x="915" y="552" font-size="14" font-weight="bold" fill="#b71c1c">RF 焊盘</text>
+  <text x="915" y="572" font-size="11" fill="#555">低容 ESD（无二极管直拖 / 电感式 ESD）</text>
+  <!-- gnd of secondary -->
+  <g stroke="#37474f" stroke-width="2">
+    <line x1="720" y1="390" x2="720" y2="380"/><line x1="705" y1="380" x2="735" y2="380"/>
+    <line x1="710" y1="374" x2="730" y2="374"/><line x1="715" y1="368" x2="725" y2="368"/>
+  </g>
+
+  <!-- notes -->
+  <rect x="120" y="770" width="1060" height="80" fill="#ffffff" stroke="#999" stroke-width="1.5"/>
+  <text x="135" y="796" font-size="12">要点：厚氧器件承压 3.3V；cascode 折中增益/应力；中和电容抵 Cgd Miller；差分→变压器→单端（供电虚地，免 RF 扼流）；</text>
+  <text x="135" y="820" font-size="12">调谐阵列（开关电容）覆盖 4.9–7.125 GHz（5/6G 路），2.4G 路同构窄带；版图对应图 1 PA 岛（双 guard ring + 3.3V 专用环）。</text>
+  <text x="1180" y="860" font-size="12" fill="#777">图 5 / 6</text>
+</svg></div><div class="cap"><b>PA 输出级</b> — 驱动级 + 功率放大输出级，匹配网络与偏置链</div></div></div>
+<h2>版图规划全文</h2><div class="card"><h1 id="wi-fi-7-tx-layout_planmd">Wi-Fi 7 TX 模组 · 版图与物理实现规划（layout_plan.md）</h1>
+<ul>
+<li>版本：<strong>v1.2</strong>（组长 b7a0，2026-10-17T05:5xZ：§11 收编准则 v1.3 注记版；历史 v1.1=2026-10-16 §11 增补、v1.0=2026-10-15 初版）</li>
+<li>缘起：管理员 2026-10-15T16:19Z 问询**「有布局图吗？模拟实现，是不是应该出图」**——核查属实：
+  全套交付物（spec / architecture / design_circuit / sim_report / final_report）此前为纯文字（md/py/csv），
+  <strong>零图</strong>。模拟/RF ASIC 交付按惯例应有版图规划图与电路拓扑图，本文件与 figures/ 六张 SVG 补齐。</li>
+<li>口径：<strong>规划级</strong>（floorplan / 隔离拓扑 / 布局原则 / 签核清单），<strong>非 GDS</strong>——本组无 PDK，
+  真实版图（GDS）、DRC/LVS 实跑、寄生提取（PEX）与后仿真不在可交付范围，列为开放项（§10）。</li>
+<li>数值口径：工艺 40nm CMOS（假设，同 architecture §1）；电学参数<strong>以 design_circuit v1.4 /
+  params.csv 与 sim_report v1.5/v1.6 为准</strong>，本文件不引入新判定数值。</li>
+<li>配图：<code>figures/floorplan_top.svg</code>（图1）/ <code>figures/power_isolation.svg</code>（图2）/
+  <code>figures/lo_distribution.svg</code>（图3）/ <code>figures/schematic_tx_chain.svg</code>（图4）/
+  <code>figures/schematic_pa.svg</code>（图5）/ <code>figures/schematic_mixer.svg</code>（图6）</li>
+</ul>
+<h2 id="1-tx">1. 直接变频 TX 的版图敏感点（为什么版图是本模组的成败项之一）</h2>
+<ol>
+<li><strong>衬底耦合 PA→VCO</strong>：功率级 ~333 mW 开关噪声经衬底串入 VCO，直接抬 IPN（预算 ≤−48 dBc，
+   spec §8）→ 相噪劣化 → EVM 恶化。对策见 §3 隔离 + 图 2。</li>
+<li><strong>LO 泄漏/串扰</strong>：LO 分配走线与 RF/基带长并行 → LOFT 与正交误差（0.3°/0.05 dB 预算）。</li>
+<li><strong>I/Q 失配</strong>：全链差分对称性决定幅度/相位不平衡，校准只能修慢漂，版图决定底账。</li>
+<li><strong>电源串扰</strong>：PA（3.3V）与敏感模拟（1.8V）电源域必须隔离，LDO 独立（图 2）。</li>
+<li><strong>大电流回流</strong>：功率级差分电流环路面积 → 寄生电感 → 谐波/EMI；变压器与去耦回路要最短。</li>
+</ol>
+<h2 id="2-floorplan-1">2. 顶层 floorplan（图 1）</h2>
+<p><img alt="图1 顶层版图规划" src="http://62.234.172.57:8600/figures/floorplan_top.svg" /></p>
+<p><strong>die ≈ 2.1 × 1.35 mm（估，±30%，待 PDK 核）</strong>，pad ring + 岛式布局：</p>
+<ul>
+<li><strong>数字接口与校准逻辑</strong>（1.1V）：居左，紧贴数字接口焊盘（SPI/DATA/CLK/EN）。</li>
+<li><strong>模拟基带 I/Q</strong>（1.8V，DAC→LPF→VGA）：紧邻数字区，镜像对称摆置；
+  处于 LO 岛与 PA 岛之间的"干净走廊"。</li>
+<li><strong>gm + 25% 占空混频器</strong>：基带与驱动级之间，LO 缓冲末级贴其栅端。</li>
+<li><strong>LO 岛</strong>（PLL+VCO，上中）：<strong>深 N 阱岛中岛</strong> + 双 guard ring + 独立 LDO；
+  与 PA 岛<strong>对角摆置</strong>，硅上直线距离 ≥200 µm 量级（图 2 剖面呼应）。</li>
+<li><strong>驱动级 ×2 / 功率级 ×2 / 片上变压器 ×2</strong>（右缘）：<strong>PA 岛</strong>双 guard ring + 深沟槽 +
+  3.3V 专用电源环；变压器紧贴 RF 焊盘（低容 ESD），反馈耦合器贴 PA 输出。</li>
+<li><strong>LDO/带隙 + 密集 decap</strong>：沿下缘排布，各域独立 LDO 就近供电。</li>
+<li>电源网格：各域独立顶环 + 正交条带；3.3V 环随 PA 岛走大电流最短回路。</li>
+</ul>
+<h2 id="3-2">3. 电源域与隔离（图 2）</h2>
+<p><img alt="图2 电源域与隔离" src="http://62.234.172.57:8600/figures/power_isolation.svg" /></p>
+<ul>
+<li><strong>三域划分</strong>（口径以 design_circuit v1.4 为准）：
+  1.1V（数字接口/校准逻辑/PLL 数字部分/SAR ADC）、
+  1.8V（DAC/LPF/VGA/gm+混频/驱动级/LO 缓冲）、
+  3.3V（功率级 ×2 + 变压器 CT）。</li>
+<li><strong>岛式隔离</strong>：LO 岛与 PA 岛各自独立深 N 阱 + P+/N+ 双 guard ring；岛间深沟槽（DTI）。</li>
+<li><strong>衬底</strong>：高阻 P 衬底 + 背注/GND 缝合，噪声回流路径最短化；敏感模拟置于两噪声岛之间。</li>
+<li>带隙全片共享，各域独立 LDO 收敛；敏感域 LDO 级联 PSRR 增强。</li>
+<li>跨域信号全部过缓冲/电平移位；域间避免长并行走线。</li>
+</ul>
+<h2 id="4-lo-3">4. LO 分配（图 3）</h2>
+<p><img alt="图3 LO 合成与分配树" src="http://62.234.172.57:8600/figures/lo_distribution.svg" /></p>
+<ul>
+<li>星形等长缓冲树（1→2→4），四相（0/90/180/270）走线对称等长。</li>
+<li>走线<strong>包地</strong>（地-信号-地）贴地平面；<strong>避开 PA 电感/变压器投影区</strong>；走线层选择在 floorplan 冻结时定。</li>
+<li>每级缓冲独立 LDO 抽头 + 就地 decap；25% 占空整形器贴近混频器栅（缩短高速节点）。</li>
+<li>2.4G 档 ÷2 天生正交可旁路多相级——版图预留旁路走线（architecture §4）。</li>
+</ul>
+<h2 id="5">5. 匹配与对称原则</h2>
+<ul>
+<li><strong>I/Q 全链镜像对称</strong>（DAC 阵列 decode、LPF 元件、VGA、混频器开关四管、走线），关键差分对共质心。</li>
+<li><strong>电感/变压器禁区</strong>：螺旋电感与变压器投影区下方及邻近禁布其他金属走线；
+  敏感信号不得穿越；RF 电感加图形屏蔽（patterned ground shield，视 PDK）。</li>
+<li>DAC 电流舵阵列：温度计段单位电流源共质心 + 虚拟列，抑制梯度误差。</li>
+<li>天生对称结构（差分 PA、开关四管）优先，靠结构而非靠校准。</li>
+</ul>
+<h2 id="6-decap">6. 电源网格 / 电迁移 / decap</h2>
+<ul>
+<li>3.3V PA 岛：电源环与条带按峰值电流（~200 mA 量级/路差分）与电迁移规则（PDK）加宽金属、
+  多层并联；差分大电流环路面积最小化（变压器 CT 供电就近去耦）。</li>
+<li>全片 decap 密度目标 ≥2 nF/mm²（MOS cap + MOM，PDK 允许内），敏感域就地加稠。</li>
+<li>IR drop 预算：各域 LDO 输出到最远点 ≤2%（PDK 到位后复核）。</li>
+</ul>
+<h2 id="7-esd">7. ESD 与焊盘</h2>
+<ul>
+<li><strong>RF 输出焊盘</strong>（RF1 5/6G / RF2 2.4G）：低容 ESD 方案（电容预算影响 S12 回损/匹配，
+  不得用常规二极管直拖；具体结构按 PDK 器件库选型），插损与回损列入后仿核对项。</li>
+<li>数字/控制/电源焊盘：常规全保护（HBM 2 kV 目标，PDK IO 库）。</li>
+<li>焊盘环：GND 填充 + 电源焊盘冗余（3.3V 至少双 bond）。</li>
+</ul>
+<h2 id="8-30-pdk">8. 面积预算（估算，±30%，无 PDK 仅规划口径）</h2>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>估算面积</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基带模拟（DAC/LPF/VGA × I/Q）</td>
+<td>~0.16 mm²</td>
+<td>对称镜像摆置</td>
+</tr>
+<tr>
+<td>gm + 混频 + LO 合成/分配</td>
+<td>~0.18 mm²</td>
+<td>含电感（多相/调谐）</td>
+</tr>
+<tr>
+<td>驱动级 ×2</td>
+<td>~0.10 mm²</td>
+<td></td>
+</tr>
+<tr>
+<td>功率级 ×2 + 片上变压器 ×2</td>
+<td>~0.42 mm²</td>
+<td>含调谐阵列与输出匹配</td>
+</tr>
+<tr>
+<td>LDO/带隙/检测路</td>
+<td>~0.10 mm²</td>
+<td></td>
+</tr>
+<tr>
+<td>数字接口/校准逻辑（1.1V）</td>
+<td>~0.12 mm²</td>
+<td></td>
+</tr>
+<tr>
+<td>pad ring + ESD + 走线走廊</td>
+<td>~0.35 mm²</td>
+<td>含 LO 走廊与隔离间距</td>
+</tr>
+<tr>
+<td><strong>合计</strong></td>
+<td><strong>≈ 2.8 mm²（die 2.1×1.35）</strong></td>
+<td>校准目标 &lt;3.5 mm²（同档 40nm TX 常见量级）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9-pdk">9. 物理验证与后仿签核清单（PDK 到位后执行）</h2>
+<ol>
+<li>DRC / LVS / 天线规则（ANT）/ ERC 常规签核。</li>
+<li><strong>EM-IR</strong>：3.3V 电源网络（大电流）+ 全片 IR drop 扫描。</li>
+<li><strong>寄生提取（PEX）</strong>：数字/模拟走线 RC；<strong>RF 无源件（电感/变压器/调谐开关）用电磁场
+   仿真器单独提取</strong>（版图级建模），回填网表。</li>
+<li><strong>后仿真重查</strong>（对照 sim_report v1.5 判定口径，零变更前提）：
+   EVM / ACLR / SEM / 单音压缩 —— 前仿→后仿退化预留 <strong>EVM ≤3 dB</strong>、输出功率 ≤0.5 dB；
+   超限则回改版图（重点是输出匹配与 LO 走线）。</li>
+<li>PVT 角点 + 蒙特卡洛（失配）后仿，覆盖 spec §11 RSS 判据。</li>
+</ol>
+<h2 id="10">10. 开放项</h2>
+<ul>
+<li><strong>#L1 PDK 依赖</strong>（阻塞）：GDS 版图、DRC/LVS 实跑、PEX 后仿、电迁移规则——全部等 PDK；
+  本文件交付规划级设计意图与签核清单，PDK 到位即可执行。</li>
+<li><strong>#L2 复核</strong>：本文件由组长代行；b7e7（电路岗）复核挂起，其下次呼吸顺阅，异议以信更正；
+  如管理员要求专项复核可专门唤醒。</li>
+<li><strong>#L3 EM 仿真工具</strong>：变压器/电感电磁场提取需 EM 工具（开源备选调研见
+  research/EDA_RFIC_WiFi7TX_调研报告）。</li>
+<li>关联既有挂起：#4 SEM 6G 掩模原文（候管理员文献权限）、#9 参考杂散（RTL 阶段）。</li>
+</ul>
+<h2 id="11-2026-10-16-hbt">11. 组长增补（2026-10-16）· HBT 发射极路径与地轨回流准则</h2>
+<blockquote>
+<p>本节由组长 b7a0 增补，<strong>不改动 §1~§10 既有内容</strong>。PDK 到位后已在 SG13G2 上实跑验证，
+结论从「规划级设计意图」升级为<strong>有实测证据的强制条款</strong>。</p>
+</blockquote>
+<p>版图实证（SOW-3，两块：TX5G_HBTDIFF v1.0 / TX5G_AMP2 v2.0，均 DRC 零违规 + LVS PASS +
+第一阶 PEX + 后仿真）证明：npn13G2 HBT 共射级的<strong>发射极回流路径电阻</strong>是本项目最敏感的版图参数之一。</p>
+<ul>
+<li>TX5G_AMP2：前仿真 +30.43 dB → 后仿真 −3.04 dB，<strong>落差 33.5 dB</strong>（全 R 归零后逐位回到 +30.43 dB，
+  证明落差全部来自真实版图电阻）。</li>
+<li>机理：发射极节点小信号阻抗 Ze=Re∥1/gm 只有几欧姆，金属 R 直接进分母（<strong>非</strong>直流偏置漂移）。</li>
+<li>单网归零：M2 发射极走线 +14.1dB、vss 地轨 +12.2dB，其余 ±3dB 内；<strong>各网贡献不可相加</strong>。</li>
+</ul>
+<p><strong>并入签核的三条（全文见 <code>design_circuit/HBT级版图准则_发射极路径与地轨回流_v1.md</code>）</strong>：</p>
+<blockquote>
+<p><strong>v1.1 更新（2026-10-16T11:56Z，组长）</strong>：本节所引 v1 条款已被
+<code>design_circuit/HBT级版图准则_发射极路径与地轨回流_v1.1.md</code> <strong>取代/扩充</strong>：
+① R-EMIT-01 的预算表改用 <strong>v014 定稿板 .op 实测 gm</strong>（drv2 Re 实为 1.5Ω/边，v1 的 8.7Ω 系反解错误值，已作废）；
+② 新增 <strong>R-EMIT-02</strong>（PA 级发射极回流必须双层并联、单层 ≥10µm，EM 约束）与 <strong>R-VIA-01</strong>（via 阵列由实测单 via 电阻定规模，
+drv2 需 24~157 个并联，v1 的「≥4×4」不够）与 <strong>R-PEX-01</strong>（周长法 PEX 不得用于宽金属，会高估 10~30 倍）；
+③ 预算线本身有实测曲线背书：<strong>Rp=0.078Ω/边 的实测代价仅 −0.093 dB</strong>（emit_scan_drv2.py，v014 网表串 Rp 扫描）。
+数据与脚本见 <code>phys/gilbert/sim/{opcheck_drv2,emit_scan_drv2,emit_route_plan}.*</code>，WebUI <code>/phys</code> 页同步展示。</p>
+<p><strong>v1.2 定稿（2026-10-16T14:5xZ，b7e7 执笔投交、组长归档）</strong>：本节所引条款最终版为
+<code>design_circuit/HBT级版图准则_v1.2_b7e7.md</code>（定稿，取代 v1/v1.1），要点：
+① <strong>R-EMIT-02 加注保守口径</strong>：14.64 mA 需 7.32 µm/层 = <strong>单层独立承载全电流</strong>（不依赖双层数流；
+  理想均流口径 3.66 µm/层仅作参考，版图不承诺均流、须覆盖单层失效模式），×1.1 裕量 → <strong>8 µm</strong>；
+② <strong>R-VIA-01 收口裁决 = 方案 2【已采纳】</strong>：放宽 0.2 Ω 档 + 减层 stack = <strong>187 件/边</strong>；
+  三条执行条款随裁决入稿（PEX ≤0.2 Ω 方可签核 / 超标先加密 0.105 Ω 档 107 件 / 仍超回 487 件；
+  三档换算表保留，方案 3 为回退终点）；
+③ via/EM 真值表、PEX 周长法禁令（R-PEX-01）沿 v1.1 不变。全文六处修订清单见变更史。
+§11 本表三条（R-EMIT-01/R-GND-01/R-CHK-01）为摘要口径，签核以 v1.2 定稿全文为准。</p>
+<p><strong>v1.3 注记版（2026-10-17T05:5xZ，组长叠加，b7e7 v1.2 原文未动）</strong>：
+<code>design_circuit/HBT级版图准则_v1.3_b7a0注记.md</code>（8510 同名 HBT_layout_guideline_v1.3_b7a0_annotated.md）——
+① R-VIA-01 拓扑口径：via_stack=<strong>全栈单颗 pycell、中间层焊盘全留</strong>（Q1 实测定案），逐层铺栈禁用（⑤c）、
+  柱下零异网 keepout 必需（⑤d），方案 2/187 件/PEX ≤0.2Ω 门不变；
+② R-EMIT-02 金属 Rsheet 真值收编（M1 0.135/M2-5 0.103/TM1 0.021/TM2 0.0145 Ω/□；15Ω/□ A1 作废）；
+③ 新增 R-RES-01（poly 电阻三档：rhigh 1160/1360/1560、rppd 234/260/286、rsil 6.02/7.0/7.98；
+  2k=rhigh 1360 typ）与 R-ANNO-01（注释层纪律：/25=次级 label 禁注记、63/0=器件模式匹配禁注记、
+  占位说明不回 GDS、254/0 私有层默认不用）。签核以 v1.3 注记版全文为准。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>条款</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R-EMIT-01</td>
+<td>发射极路径（金属+via+地轨）总 R ≤ 0.1×Ze；mixer gm 对 ≤0.27Ω、drv1 ≤0.54Ω、<strong>drv2/PA ≤0.14Ω</strong>（≈1.2 方块 M1/M2 → 必须上 TopMetal + ≥4×4 via 阵列）</td>
+</tr>
+<tr>
+<td>R-GND-01</td>
+<td>每级地轨回流压降 I×R ≤ 5mV；发射极回流点就近打地，禁止细长地轨串全块</td>
+</tr>
+<tr>
+<td>R-CHK-01</td>
+<td>多级有源块 PEX <strong>逐网归零敏感度</strong>实测入签核；禁止「几欧姆可忽略」的推断</td>
+</tr>
+</tbody>
+</table>
+<p><strong>两条被推翻的常识</strong>：① 加大退化电阻 Re 反而更差（固定 Vbe 下 Ic 被饿）；② via 电阻不是大头（0.15Ω→0 只值 1.94dB）。</p>
+<h2 id="_1">变更史</h2>
+<ul>
+<li>v1.2（2026-10-17T05:5xZ，组长）：§11 升 <strong>v1.3 注记版</strong>收编——R-VIA-01 拓扑口径（全栈单颗+柱下
+  keepout 必需）、R-EMIT-02 金属 Rsheet 真值（15Ω/□ 作废）、R-RES-01/R-ANNO-01 新增；
+  准则文件 <code>HBT级版图准则_v1.3_b7a0注记.md</code>（sha 3c1842c8…，8510 design/sow6/ 在册）。</li>
+<li>v1.1（2026-10-16T15:0xZ，组长）：§11 增补 <strong>v1.2 定稿注记</strong>——准则最终版收编
+  <code>design_circuit/HBT级版图准则_v1.2_b7e7.md</code>（R-EMIT-02 保守口径 7.32 µm/层单层独立承载 → 8 µm；
+  R-VIA-01 拍板方案 2 = 0.2 Ω 档 + 减层 stack 187 件/边，三条款随裁决入稿）；签核以 v1.2 定稿全文为准。</li>
+<li>v1.0（2026-10-15T16:40Z）：初版。</li>
+<li>v1.0+组长增补（2026-10-16T11:37Z）：新增 §11 HBT 发射极路径/地轨回流准则（SOW-3 实测反哺）。应管理员 16:19Z「有布局图吗？模拟实现是不是应该出图」
+  问询补作：§1~§9 + 六张 SVG 图（floorplan / 电源隔离 / LO 分配 / TX 链路 / PA / 混频器）。</li>
+</ul><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */.codehilite{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:8px 10px}</style></div></main></body></html>

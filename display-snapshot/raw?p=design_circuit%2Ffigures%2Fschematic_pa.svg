@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 880" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+  </defs>
+  <rect width="1300" height="880" fill="#fafafa"/>
+  <text x="650" y="34" text-anchor="middle" font-size="22" font-weight="bold">功率级（PA）输出级拓扑示意 · 3.3V 厚氧差分共源共栅 + 片上变压器合成</text>
+  <text x="650" y="58" text-anchor="middle" font-size="13" fill="#555">6G：PSAT +32 dBm / PAE ≥30% @ +18 dBm 均值 · 2.4G：+23 dBm 档 / PAE 35% · 开关电容调谐覆盖 4.9–7.125 GHz</text>
+
+  <!-- 3.3V rail -->
+  <line x1="120" y1="130" x2="1020" y2="130" stroke="#b71c1c" stroke-width="4"/>
+  <text x="1050" y="136" font-size="14" font-weight="bold" fill="#b71c1c">3.3V（专用电源环）</text>
+
+  <!-- input -->
+  <circle cx="120" cy="420" r="5" fill="#37474f"/><text x="70" y="415" font-size="13">IN+（驱动级）</text>
+  <circle cx="120" cy="560" r="5" fill="#37474f"/><text x="70" y="580" font-size="13">IN−</text>
+  <g stroke="#37474f" stroke-width="2">
+    <line x1="125" y1="420" x2="205" y2="420"/>
+    <line x1="125" y1="560" x2="205" y2="560"/>
+  </g>
+  <!-- input caps -->
+  <g stroke="#37474f" stroke-width="2" fill="none">
+    <line x1="205" y1="395" x2="205" y2="445"/><line x1="225" y1="395" x2="225" y2="445"/>
+    <line x1="215" y1="445" x2="215" y2="470"/><line x1="215" y1="470" x2="255" y2="470"/>
+    <line x1="205" y1="535" x2="205" y2="585"/><line x1="225" y1="535" x2="225" y2="585"/>
+    <line x1="215" y1="585" x2="215" y2="610"/><line x1="215" y1="610" x2="255" y2="610"/>
+  </g>
+  <text x="182" y="380" font-size="11" fill="#555">隔直电容</text>
+  <!-- gate bias -->
+  <g stroke="#777" stroke-width="1.4" fill="none">
+    <line x1="255" y1="470" x2="255" y2="360"/><line x1="255" y1="360" x2="300" y2="360"/>
+    <line x1="255" y1="610" x2="255" y2="660"/><line x1="255" y1="660" x2="300" y2="660"/>
+  </g>
+  <text x="262" y="352" font-size="11" fill="#777">Vbias（R 大）</text>
+
+  <!-- M1 CS -->
+  <g stroke="#37474f" stroke-width="2.2" fill="#ffcdd2">
+    <rect x="300" y="395" width="70" height="50"/>
+    <rect x="300" y="535" width="70" height="50"/>
+  </g>
+  <text x="335" y="425" text-anchor="middle" font-size="12" font-weight="bold">M1</text>
+  <text x="335" y="565" text-anchor="middle" font-size="12" font-weight="bold">M1′</text>
+  <line x1="255" y1="420" x2="300" y2="420" stroke="#37474f" stroke-width="2"/>
+  <line x1="255" y1="560" x2="300" y2="560" stroke="#37474f" stroke-width="2"/>
+  <!-- cascode M2 -->
+  <g stroke="#37474f" stroke-width="2.2" fill="#ffcdd2">
+    <rect x="300" y="290" width="70" height="50"/>
+    <rect x="300" y="640" width="70" height="50"/>
+  </g>
+  <text x="335" y="320" text-anchor="middle" font-size="12" font-weight="bold">M2</text>
+  <text x="335" y="670" text-anchor="middle" font-size="12" font-weight="bold">M2′</text>
+  <line x1="335" y1="395" x2="335" y2="340" stroke="#37474f" stroke-width="2"/>
+  <line x1="335" y1="535" x2="335" y2="690" stroke="#37474f" stroke-width="2"/>
+  <text x="380" y="318" font-size="11" fill="#555">共栅（cascode，降 M1 应力/ Miller）</text>
+  <!-- source degeneration inductor -->
+  <path d="M335 585 L335 640" stroke="#37474f" stroke-width="2"/>
+  <text x="345" y="620" font-size="10.5" fill="#777">源极虚拟地（差分）</text>
+
+  <!-- drains to transformer primary -->
+  <polyline points="335,290 335,230 560,230" fill="none" stroke="#b71c1c" stroke-width="2.4"/>
+  <polyline points="335,690 335,750 560,750" fill="none" stroke="#b71c1c" stroke-width="2.4"/>
+  <text x="360" y="222" font-size="11" fill="#b71c1c">节点 A（漏）</text>
+  <text x="360" y="742" font-size="11" fill="#b71c1c">节点 B（漏′）</text>
+
+  <!-- neutralization caps -->
+  <g stroke="#7b1fa2" stroke-width="1.8" fill="none">
+    <line x1="300" y1="410" x2="270" y2="410"/><line x1="270" y1="410" x2="270" y2="230"/><line x1="270" y1="230" x2="540" y2="230"/>
+    <line x1="540" y1="230" x2="540" y2="260"/>
+    <line x1="530" y1="255" x2="550" y2="255"/><line x1="530" y1="265" x2="550" y2="265"/>
+    <line x1="540" y1="265" x2="540" y2="560"/>
+    <line x1="300" y1="425" x2="270" y2="425"/>
+  </g>
+  <text x="480" y="215" font-size="11" fill="#7b1fa2">Cgd 中和电容（A→栅′，B→栅；改善稳定性/增益）</text>
+
+  <!-- tuning cap array -->
+  <g stroke="#00695c" stroke-width="1.8" fill="none">
+    <line x1="560" y1="230" x2="560" y2="300"/><line x1="575" y1="300" x2="545" y2="300"/>
+    <line x1="575" y1="308" x2="545" y2="308"/>
+    <line x1="560" y1="308" x2="560" y2="380"/>
+  </g>
+  <text x="585" y="308" font-size="11" fill="#00695c">开关电容调谐阵列</text>
+
+  <!-- transformer primary -->
+  <path d="M 620 240 C 680 230, 680 270, 620 260 C 690 255, 690 300, 620 290 C 690 285, 690 330, 620 320 C 690 315, 690 360, 620 350 C 680 345, 680 385, 620 375 L 620 380" fill="none" stroke="#b71c1c" stroke-width="2.6"/>
+  <text x="700" y="255" font-size="12" font-weight="bold" fill="#b71c1c">初级（差分螺旋）</text>
+  <line x1="560" y1="380" x2="618" y2="375" stroke="#00695c" stroke-width="1.8"/>
+  <line x1="335" y1="230" x2="560" y2="230" stroke="#b71c1c" stroke-width="0"/>
+  <polyline points="560,230 620,240" fill="none" stroke="#b71c1c" stroke-width="2.4"/>
+  <polyline points="560,750 620,380" fill="none" stroke="#b71c1c" stroke-width="2.4"/>
+  <!-- center tap -->
+  <line x1="620" y1="310" x2="590" y2="310" stroke="#b71c1c" stroke-width="2"/>
+  <line x1="590" y1="310" x2="590" y2="130" stroke="#b71c1c" stroke-width="2"/>
+  <text x="545" y="150" font-size="11" fill="#b71c1c">CT 接 3.3V（虚地）</text>
+  <!-- secondary -->
+  <path d="M 720 390 C 780 395, 780 430, 720 435 C 790 440, 790 475, 720 470 L 790 470 L 790 500" fill="none" stroke="#37474f" stroke-width="2.6"/>
+  <text x="800" y="410" font-size="12" font-weight="bold" fill="#37474f">次级（单端）</text>
+  <line x1="790" y1="500" x2="790" y2="560" stroke="#37474f" stroke-width="2.5"/>
+  <line x1="790" y1="560" x2="900" y2="560" stroke="#b71c1c" stroke-width="3" marker-end="url(#arr5)"/>
+  <circle cx="905" cy="560" r="6" fill="#b71c1c"/>
+  <text x="915" y="552" font-size="14" font-weight="bold" fill="#b71c1c">RF 焊盘</text>
+  <text x="915" y="572" font-size="11" fill="#555">低容 ESD（无二极管直拖 / 电感式 ESD）</text>
+  <!-- gnd of secondary -->
+  <g stroke="#37474f" stroke-width="2">
+    <line x1="720" y1="390" x2="720" y2="380"/><line x1="705" y1="380" x2="735" y2="380"/>
+    <line x1="710" y1="374" x2="730" y2="374"/><line x1="715" y1="368" x2="725" y2="368"/>
+  </g>
+
+  <!-- notes -->
+  <rect x="120" y="770" width="1060" height="80" fill="#ffffff" stroke="#999" stroke-width="1.5"/>
+  <text x="135" y="796" font-size="12">要点：厚氧器件承压 3.3V；cascode 折中增益/应力；中和电容抵 Cgd Miller；差分→变压器→单端（供电虚地，免 RF 扼流）；</text>
+  <text x="135" y="820" font-size="12">调谐阵列（开关电容）覆盖 4.9–7.125 GHz（5/6G 路），2.4G 路同构窄带；版图对应图 1 PA 岛（双 guard ring + 3.3V 专用环）。</text>
+  <text x="1180" y="860" font-size="12" fill="#777">图 5 / 6</text>
+</svg>

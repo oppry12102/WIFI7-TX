@@ -1,0 +1,663 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>版图实证 · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="index.html" class="">总览</a><a href="spec.html" class="">规格</a><a href="docs/architecture-md.html" class="">架构</a><a href="docs.html" class="">文档</a><a href="circuit.html" class="">电路</a><a href="layout.html" class="">版图</a><a href="phys.html" class="on">版图实证</a><a href="dyn.html" class="">动态指标</a><a href="scan.html" class="">ACPR 扫描</a><a href="netlist.html" class="">网表</a><a href="sim.html" class="">仿真</a><a href="tree.html" class="">文件树</a><a href="data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><h1>版图实证（SOW-3 · 真实 GDS → DRC/LVS → PEX → 后仿真）</h1>
+<div class="card"><b>SOW-6 全链版图（2026-10-23 现役面锚：mix v35 / drv1 v23 / drv2 v22）</b>：
+MIX v35（ntaila 同域已消除 + M4.b 根修 δ=0.100 落地）+ DRV1 v23 + DRV2 v22 全链 GDS。
+DRC 现算 <b>219
+/ 18
+/ 147</b> 项残留
+（mix 侧 M1.b 8 条经独立复现 8/8 落 PCell 实例内、0/8 落顶层自画 M1 域内 ⇒ 归 PCell 内部账；<b>M4.b 已清零</b>），
+LVS 官方真跑：mix v35×v1g <b>PASS</b>（net_pair 29 Match 29）／drv1 v23 <b>PASS</b>（13/13）／drv2 v22 <b>PASS</b>。
+里程碑全景与判读纪要见<a href="index.html">总览 · SOW-6 区块</a>与
+<a href="/docs/phys-report-SOW-6-全链版图报告-md>结项报告 v0.3</a>。</div>
+<p class="muted">本页所有数字都由 <code>sitebuild.py</code> 现场解析：DRC 违规数 = KLayout lyrdb 里的
+<code>&lt;item&gt;</code> 计数；LVS 状态 = 官方 deck 日志；PEX 逐网 R/C = 后仿真网表注释行；
+前/后指标 = ngspice wrdata 首行现算。<b>没有任何手填结论。</b></p>
+<svg class="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">SOW-3 两块实证：前仿真 vs 后仿真电压增益（dB，激励 50mV，口径现算）</text><line x1="74" y1="228.4" x2="878" y2="228.4" stroke="#223047"/><text x="66" y="232.4" class="ca" text-anchor="end">0</text><line x1="74" y1="153.4" x2="878" y2="153.4" stroke="#223047"/><text x="66" y="157.4" class="ca" text-anchor="end">20.00</text><line x1="74" y1="78.3" x2="878" y2="78.3" stroke="#223047"/><text x="66" y="82.3" class="ca" text-anchor="end">40.00</text><rect x="130.3" y="114.2" width="130.2" height="114.2" fill="#10b981" rx="1.5" opacity="0.88"><title>amp2 · 前仿真电压增益 = +30.43</title></rect><rect x="532.3" y="71.5" width="130.2" height="156.9" fill="#10b981" rx="1.5" opacity="0.88"><title>hbtdiff · 前仿真电压增益 = +41.83</title></rect><rect x="275.0" y="228.4" width="130.2" height="11.4" fill="#f97316" rx="1.5" opacity="0.88"><title>amp2 · 后仿真（真实版图 PEX） = -3.04</title></rect><rect x="677.0" y="73.0" width="130.2" height="155.4" fill="#f97316" rx="1.5" opacity="0.88"><title>hbtdiff · 后仿真（真实版图 PEX） = +41.43</title></rect><line x1="74" y1="228.4" x2="878" y2="228.4" stroke="#5b6b82"/><text x="275.0" y="277.0" class="ca" text-anchor="middle">amp2</text><text x="677.0" y="277.0" class="ca" text-anchor="middle">hbtdiff</text><text x="14" y="159" class="ca" text-anchor="middle" transform="rotate(-90 14 159)">电压增益 (dB)</text><rect x="74" y="289" width="11" height="11" rx="2" fill="#10b981"/><text x="90" y="298" class="ca">前仿真电压增益</text><rect x="144.4" y="289" width="11" height="11" rx="2" fill="#f97316"/><text x="160.4" y="298" class="ca">后仿真（真实版图 PEX）</text></svg>
+<div class="card">
+<h2>TX5G_AMP2 · 两级 HBT 放大级 <span class="badge b-ok">
+DRC 零违规</span>
+ <span class="badge b-ok">LVS PASS</span>
+ <span class="muted small">SOW-3 v2.0 / v2.1</span></h2>
+<p class="muted">驱动 Nx=4 + 输出 Nx=4；rsil 发射极退化 + rppd 集电极负载 + rsil 级间耦合；M1/M2 两层布线 + via_stack 落层。39×21µm。</p>
+<p>GDS <code>phys/gilbert/gds/amp2.gds</code>（17 KB）
+ · 提取器件 <b>7</b> 个（QR）
+ · LVS 实测 HBT 几何 we=70n le=900n Nx=4</p>
+<table><tr><th class="">DRC 轮次</th><th class="">违规数</th><th class="">deck 运行</th></tr><tr><td>final</td><td><span class="badge b-no">19 项违规</span></td><td>2.99s</td></tr><tr><td>final2</td><td><span class="badge b-ok">零违规 (0)</span></td><td>3.17s</td></tr><tr><td>final3</td><td><span class="badge b-no">1 项违规</span></td><td>3.0s</td></tr><tr><td>final4</td><td><span class="badge b-ok">零违规 (0)</span></td><td>3.02s</td></tr></table>
+<table><tr><th class="">网</th><th class="">层</th><th class="">R_total (Ω)</th><th class="">C_total (fF)</th><th class="">引脚数</th></tr><tr><td><b>vcc</b></td><td>M1</td><td>10.53</td><td>2.51</td><td>2</td></tr><tr><td><b>vss</b></td><td>M1</td><td>7.64</td><td>1.81</td><td>4</td></tr><tr><td><b>rc</b></td><td>M1</td><td>7.51</td><td>3.46</td><td>3</td></tr><tr><td><b>cb2</b></td><td>M1</td><td>5.75</td><td>1.31</td><td>2</td></tr><tr><td><b>out</b></td><td>M1</td><td>4.31</td><td>1.27</td><td>2</td></tr><tr><td><b>et1m2</b></td><td>M2</td><td>3.50</td><td>2.19</td><td>2</td></tr><tr><td><b>et2m2</b></td><td>M2</td><td>3.50</td><td>2.19</td><td>2</td></tr><tr><td><b>et1m1</b></td><td>M1</td><td>1.15</td><td>0.31</td><td>2</td></tr><tr><td><b>et2m1</b></td><td>M1</td><td>1.15</td><td>0.31</td><td>2</td></tr></table>
+<p class="muted small">报告：
+<a href="raw%3Fp=phys%252Fgilbert%252Freport%252FSOW-3_v2_TX5G_AMP2_版图实证.md">SOW-3_v2_TX5G_AMP2_版图实证.md</a> · <a href="raw%3Fp=phys%252Fgilbert%252Freport%252FSOW-3_v2.1_TX5G_AMP2_机理判定.md">SOW-3_v2.1_TX5G_AMP2_机理判定.md</a></p>
+</div><div class="card">
+<h2>TX5G_HBTDIFF · 单级 HBT 差分级 <span class="badge b-ok">
+DRC 零违规</span>
+ <span class="badge b-ok">LVS PASS</span>
+ <span class="muted small">SOW-3 v1.0</span></h2>
+<p class="muted">npn13G2 Nx=4 单级差分放大，22×32µm；全链跑通的第一个块（寄生影响小，0.4dB）。</p>
+<p>GDS <code>phys/gds/hbtdiff.gds</code>（17 KB）
+ · 提取器件 <b>9</b> 个（QR）
+ · LVS 实测 HBT 几何 we=70n le=900n Nx=2</p>
+<table><tr><th class="">DRC 轮次</th><th class="">违规数</th><th class="">deck 运行</th></tr><tr><td>final</td><td><span class="badge b-ok">零违规 (0)</span></td><td>7.86s</td></tr></table>
+<table><tr><th class="">网</th><th class="">层</th><th class="">R_total (Ω)</th><th class="">C_total (fF)</th><th class="">引脚数</th></tr><tr><td><b>vcc</b></td><td>—</td><td>12.33</td><td>2.94</td><td>3</td></tr><tr><td><b>vss</b></td><td>—</td><td>9.02</td><td>2.64</td><td>2</td></tr><tr><td><b>nref</b></td><td>—</td><td>7.23</td><td>1.72</td><td>4</td></tr><tr><td><b>tail</b></td><td>—</td><td>4.79</td><td>1.11</td><td>3</td></tr><tr><td><b>et1</b></td><td>—</td><td>2.27</td><td>1.13</td><td>2</td></tr><tr><td><b>et2</b></td><td>—</td><td>2.27</td><td>1.13</td><td>2</td></tr><tr><td><b>outn</b></td><td>—</td><td>2.12</td><td>0.59</td><td>2</td></tr><tr><td><b>outp</b></td><td>—</td><td>2.12</td><td>0.59</td><td>2</td></tr></table>
+<p class="muted small">报告：
+<a href="raw%3Fp=phys%252Freport%252FSOW-3_版图实证报告.md">SOW-3_版图实证报告.md</a></p>
+</div>
+<h2>TX5G_AMP2 · 寄生机理（v2.1 脚本化判定）</h2>
+<p class="muted">三个判据实验，全部秒级可复现：<code>attrib_amp2.py</code>（逐网/渐进归零）、
+<code>mech_amp2.py</code>（单因子缩放）、<code>opcheck_amp2.py</code>（直流工作点）。</p>
+<svg class="chart" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">TX5G_AMP2 单网归零敏感度（其余全保留）· 标称 -3.04 dB</text><line x1="74" y1="229.3" x2="878" y2="229.3" stroke="#223047"/><text x="66" y="233.3" class="ca" text-anchor="end">0</text><line x1="74" y1="177.9" x2="878" y2="177.9" stroke="#223047"/><text x="66" y="181.9" class="ca" text-anchor="end">10.00</text><line x1="74" y1="126.5" x2="878" y2="126.5" stroke="#223047"/><text x="66" y="130.5" class="ca" text-anchor="end">20.00</text><line x1="74" y1="75.0" x2="878" y2="75.0" stroke="#223047"/><text x="66" y="79.0" class="ca" text-anchor="end">30.00</text><rect x="86.5" y="172.6" width="28.9" height="56.7" fill="#3b82f6" rx="1.5" opacity="0.88"><title>et1m2 · 单网归零后的电压增益 = +11.03</title></rect><rect x="175.8" y="182.1" width="28.9" height="47.1" fill="#3b82f6" rx="1.5" opacity="0.88"><title>vss · 单网归零后的电压增益 = +9.17</title></rect><rect x="265.2" y="222.6" width="28.9" height="6.7" fill="#3b82f6" rx="1.5" opacity="0.88"><title>et1m1 · 单网归零后的电压增益 = +1.29</title></rect><rect x="354.5" y="229.3" width="28.9" height="11.9" fill="#3b82f6" rx="1.5" opacity="0.88"><title>out · 单网归零后的电压增益 = -2.31</title></rect><rect x="443.8" y="229.3" width="28.9" height="16.0" fill="#3b82f6" rx="1.5" opacity="0.88"><title>cb2 · 单网归零后的电压增益 = -3.10</title></rect><rect x="533.2" y="229.3" width="28.9" height="19.9" fill="#3b82f6" rx="1.5" opacity="0.88"><title>et2m1 · 单网归零后的电压增益 = -3.87</title></rect><rect x="622.5" y="229.3" width="28.9" height="21.1" fill="#3b82f6" rx="1.5" opacity="0.88"><title>vcc · 单网归零后的电压增益 = -4.10</title></rect><rect x="711.8" y="229.3" width="28.9" height="22.9" fill="#3b82f6" rx="1.5" opacity="0.88"><title>rc · 单网归零后的电压增益 = -4.46</title></rect><rect x="801.2" y="229.3" width="28.9" height="28.5" fill="#3b82f6" rx="1.5" opacity="0.88"><title>et2m2 · 单网归零后的电压增益 = -5.55</title></rect><rect x="118.7" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>et1m2 · 标称（全寄生） = -3.04</title></rect><rect x="208.0" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>vss · 标称（全寄生） = -3.04</title></rect><rect x="297.3" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>et1m1 · 标称（全寄生） = -3.04</title></rect><rect x="386.7" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>out · 标称（全寄生） = -3.04</title></rect><rect x="476.0" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>cb2 · 标称（全寄生） = -3.04</title></rect><rect x="565.3" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>et2m1 · 标称（全寄生） = -3.04</title></rect><rect x="654.7" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>vcc · 标称（全寄生） = -3.04</title></rect><rect x="744.0" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>rc · 标称（全寄生） = -3.04</title></rect><rect x="833.3" y="229.3" width="28.9" height="15.6" fill="#ef4444" rx="1.5" opacity="0.88"><title>et2m2 · 标称（全寄生） = -3.04</title></rect><line x1="74" y1="72.8" x2="878" y2="72.8" stroke="#ef4444" stroke-width="1.4" stroke-dasharray="7,4"/><text x="874" y="67.8" class="chl" text-anchor="end">前仿真基线</text><line x1="74" y1="229.3" x2="878" y2="229.3" stroke="#5b6b82"/><text x="118.7" y="297.0" class="ca" text-anchor="middle">et1m2</text><text x="208.0" y="297.0" class="ca" text-anchor="middle">vss</text><text x="297.3" y="297.0" class="ca" text-anchor="middle">et1m1</text><text x="386.7" y="297.0" class="ca" text-anchor="middle">out</text><text x="476.0" y="297.0" class="ca" text-anchor="middle">cb2</text><text x="565.3" y="297.0" class="ca" text-anchor="middle">et2m1</text><text x="654.7" y="297.0" class="ca" text-anchor="middle">vcc</text><text x="744.0" y="297.0" class="ca" text-anchor="middle">rc</text><text x="833.3" y="297.0" class="ca" text-anchor="middle">et2m2</text><text x="14" y="169" class="ca" text-anchor="middle" transform="rotate(-90 14 169)">电压增益 (dB)</text><rect x="74" y="309" width="11" height="11" rx="2" fill="#3b82f6"/><text x="90" y="318" class="ca">单网归零后的电压增益</text><rect x="166.0" y="309" width="11" height="11" rx="2" fill="#ef4444"/><text x="182.0" y="318" class="ca">标称（全寄生）</text></svg><svg class="chart" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">机理判定 E1：只缩放发射极路径电阻（×k 从 1 到 0）→ 增益单调回升，电流几乎不动（Ic1 2.45→2.533 mA）= 小信号阻抗失配，非直流漂移</text><line x1="74" y1="246.9" x2="878" y2="246.9" stroke="#223047" stroke-width="1"/><text x="66" y="250.9" class="ca" text-anchor="end">0</text><line x1="74" y1="189.2" x2="878" y2="189.2" stroke="#223047" stroke-width="1"/><text x="66" y="193.2" class="ca" text-anchor="end">10.00</text><line x1="74" y1="131.5" x2="878" y2="131.5" stroke="#223047" stroke-width="1"/><text x="66" y="135.5" class="ca" text-anchor="end">20.00</text><line x1="74" y1="73.8" x2="878" y2="73.8" stroke="#223047" stroke-width="1"/><text x="66" y="77.8" class="ca" text-anchor="end">30.00</text><line x1="74.0" y1="58" x2="74.0" y2="276" stroke="#223047" stroke-width="1"/><text x="74.0" y="294.0" class="ca" text-anchor="middle">0</text><line x1="234.8" y1="58" x2="234.8" y2="276" stroke="#223047" stroke-width="1"/><text x="234.8" y="294.0" class="ca" text-anchor="middle">0.2</text><line x1="395.6" y1="58" x2="395.6" y2="276" stroke="#223047" stroke-width="1"/><text x="395.6" y="294.0" class="ca" text-anchor="middle">0.4</text><line x1="556.4" y1="58" x2="556.4" y2="276" stroke="#223047" stroke-width="1"/><text x="556.4" y="294.0" class="ca" text-anchor="middle">0.6</text><line x1="717.2" y1="58" x2="717.2" y2="276" stroke="#223047" stroke-width="1"/><text x="717.2" y="294.0" class="ca" text-anchor="middle">0.8</text><line x1="878.0" y1="58" x2="878.0" y2="276" stroke="#223047" stroke-width="1"/><text x="878.0" y="294.0" class="ca" text-anchor="middle">1</text><line x1="74" y1="276" x2="878" y2="276" stroke="#5b6b82"/><line x1="74" y1="58" x2="74" y2="276" stroke="#5b6b82"/><circle cx="878.0" cy="264.4" r="3" fill="#3b82f6"/><circle cx="476.0" cy="223.2" r="3" fill="#3b82f6"/><circle cx="275.0" cy="200.8" r="3" fill="#3b82f6"/><circle cx="154.4" cy="186.3" r="3" fill="#3b82f6"/><circle cx="114.2" cy="181.3" r="3" fill="#3b82f6"/><circle cx="74.0" cy="166.4" r="3" fill="#3b82f6"/><polyline points="878.0,264.4 476.0,223.2 275.0,200.8 154.4,186.3 114.2,181.3 74.0,166.4" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linejoin="round"/><circle cx="878.0" cy="71.3" r="3" fill="#f97316"/><circle cx="476.0" cy="71.3" r="3" fill="#f97316"/><circle cx="275.0" cy="71.3" r="3" fill="#f97316"/><circle cx="154.4" cy="71.3" r="3" fill="#f97316"/><circle cx="114.2" cy="71.3" r="3" fill="#f97316"/><circle cx="74.0" cy="71.3" r="3" fill="#f97316"/><polyline points="878.0,71.3 476.0,71.3 275.0,71.3 154.4,71.3 114.2,71.3 74.0,71.3" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="5,4"/><text x="476" y="312" class="ca" text-anchor="middle">发射极路径电阻缩放 ×k</text><text x="14" y="167" class="ca" text-anchor="middle" transform="rotate(-90 14 167)">电压增益 (dB)</text><rect x="74" y="285" width="11" height="11" rx="2" fill="#3b82f6"/><text x="90" y="294" class="ca">发射极路径 R ×k → 电压增益</text><rect x="216.4" y="285" width="11" height="11" rx="2" fill="#f97316"/><text x="232.4" y="294" class="ca">前仿真基线</text></svg><svg class="chart" viewBox="0 0 900 300" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">机理判定 E2：加大退化电阻 Re（×2/×4/×8）→ 增益单调变差、Ic1 被饿 = 错处方</text><line x1="74" y1="231.9" x2="844" y2="231.9" stroke="#223047"/><text x="66" y="235.9" class="ca" text-anchor="end">-12.00</text><line x1="74" y1="187.5" x2="844" y2="187.5" stroke="#223047"/><text x="66" y="191.5" class="ca" text-anchor="end">-11.00</text><line x1="74" y1="143.0" x2="844" y2="143.0" stroke="#223047"/><text x="66" y="147.0" class="ca" text-anchor="end">-10.00</text><line x1="74" y1="98.5" x2="844" y2="98.5" stroke="#223047"/><text x="66" y="102.5" class="ca" text-anchor="end">-9.000</text><text x="852" y="240.7" class="ca">0</text><text x="852" y="199.9" class="ca">0.5</text><text x="852" y="159.1" class="ca">1.000</text><text x="852" y="118.3" class="ca">1.500</text><text x="852" y="77.5" class="ca">2.000</text><line x1="844" y1="58" x2="844" y2="240" stroke="#5b6b82"/><text x="890" y="149" class="ca" text-anchor="middle" transform="rotate(90 890 149)">Ic1 (mA)</text><rect x="109.9" y="-301.8" width="83.2" height="371.9" fill="#a855f7" rx="1.5" opacity="0.88"><title>deg_x2 · 电压增益 = -8.36</title></rect><rect x="366.6" y="-301.8" width="83.2" height="405.9" fill="#a855f7" rx="1.5" opacity="0.88"><title>deg_x4 · 电压增益 = -9.13</title></rect><rect x="623.3" y="-301.8" width="83.2" height="523.6" fill="#a855f7" rx="1.5" opacity="0.88"><title>deg_x8 · 电压增益 = -11.77</title></rect><rect x="202.3" y="71.2" width="83.2" height="165.5" fill="#14b8a6" rx="1.5" opacity="0.88"><title>deg_x2 · Ic1 (mA) = 2.03</title></rect><rect x="459.0" y="114.2" width="83.2" height="122.5" fill="#14b8a6" rx="1.5" opacity="0.88"><title>deg_x4 · Ic1 (mA) = 1.50</title></rect><rect x="715.7" y="163.5" width="83.2" height="73.2" fill="#14b8a6" rx="1.5" opacity="0.88"><title>deg_x8 · Ic1 (mA) = 0.90</title></rect><line x1="74" y1="-301.8" x2="844" y2="-301.8" stroke="#5b6b82"/><text x="202.3" y="257.0" class="ca" text-anchor="middle">deg_x2</text><text x="459.0" y="257.0" class="ca" text-anchor="middle">deg_x4</text><text x="715.7" y="257.0" class="ca" text-anchor="middle">deg_x8</text><text x="14" y="149" class="ca" text-anchor="middle" transform="rotate(-90 14 149)">增益 (dB)</text><rect x="74" y="269" width="11" height="11" rx="2" fill="#a855f7"/><text x="90" y="278" class="ca">电压增益</text><rect x="122.8" y="269" width="11" height="11" rx="2" fill="#14b8a6"/><text x="138.8" y="278" class="ca">Ic1 (mA)（右轴）</text></svg><svg class="chart" viewBox="0 0 900 300" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">直流工作点随归零工况的变化：电流漂移 ≤7.3%（最大工况 zero_emit_all）、Vce 全程 >1.2V（无 quasi-sat）→ 排除直流机理</text><line x1="74" y1="215.8" x2="844" y2="215.8" stroke="#223047"/><text x="66" y="219.8" class="ca" text-anchor="end">3.000</text><line x1="74" y1="177.9" x2="844" y2="177.9" stroke="#223047"/><text x="66" y="181.9" class="ca" text-anchor="end">4.000</text><line x1="74" y1="139.9" x2="844" y2="139.9" stroke="#223047"/><text x="66" y="143.9" class="ca" text-anchor="end">5.000</text><line x1="74" y1="101.9" x2="844" y2="101.9" stroke="#223047"/><text x="66" y="105.9" class="ca" text-anchor="end">6.000</text><line x1="74" y1="64.0" x2="844" y2="64.0" stroke="#223047"/><text x="66" y="68.0" class="ca" text-anchor="end">7.000</text><text x="852" y="240.7" class="ca">0</text><text x="852" y="179.7" class="ca">0.5</text><text x="852" y="118.7" class="ca">1.000</text><line x1="844" y1="58" x2="844" y2="240" stroke="#5b6b82"/><text x="890" y="149" class="ca" text-anchor="middle" transform="rotate(90 890 149)">Vce1 (V)</text><rect x="95.6" y="236.7" width="33.3" height="93.0" fill="#10b981" rx="1.5" opacity="0.88"><title>nominal · Ic1 (mA) = 2.45</title></rect><rect x="249.6" y="234.5" width="33.3" height="95.2" fill="#10b981" rx="1.5" opacity="0.88"><title>zero_vss · Ic1 (mA) = 2.51</title></rect><rect x="403.6" y="235.3" width="33.3" height="94.4" fill="#10b981" rx="1.5" opacity="0.88"><title>zero_et1m2 · Ic1 (mA) = 2.49</title></rect><rect x="557.6" y="236.0" width="33.3" height="93.7" fill="#10b981" rx="1.5" opacity="0.88"><title>zero_et2m2 · Ic1 (mA) = 2.47</title></rect><rect x="711.6" y="230.0" width="33.3" height="99.7" fill="#10b981" rx="1.5" opacity="0.88"><title>zero_emit_all · Ic1 (mA) = 2.63</title></rect><rect x="132.5" y="73.2" width="33.3" height="256.5" fill="#f97316" rx="1.5" opacity="0.88"><title>nominal · Ic2 (mA) = 6.76</title></rect><rect x="286.5" y="72.2" width="33.3" height="257.5" fill="#f97316" rx="1.5" opacity="0.88"><title>zero_vss · Ic2 (mA) = 6.78</title></rect><rect x="440.5" y="74.5" width="33.3" height="255.1" fill="#f97316" rx="1.5" opacity="0.88"><title>zero_et1m2 · Ic2 (mA) = 6.72</title></rect><rect x="594.5" y="71.2" width="33.3" height="258.4" fill="#f97316" rx="1.5" opacity="0.88"><title>zero_et2m2 · Ic2 (mA) = 6.81</title></rect><rect x="748.5" y="82.0" width="33.3" height="247.7" fill="#f97316" rx="1.5" opacity="0.88"><title>zero_emit_all · Ic2 (mA) = 6.53</title></rect><rect x="169.5" y="71.2" width="33.3" height="165.5" fill="#3b82f6" rx="1.5" opacity="0.88"><title>nominal · Vce1 (V)（右轴） = 1.36</title></rect><rect x="323.5" y="76.9" width="33.3" height="159.8" fill="#3b82f6" rx="1.5" opacity="0.88"><title>zero_vss · Vce1 (V)（右轴） = 1.31</title></rect><rect x="477.5" y="74.9" width="33.3" height="161.8" fill="#3b82f6" rx="1.5" opacity="0.88"><title>zero_et1m2 · Vce1 (V)（右轴） = 1.33</title></rect><rect x="631.5" y="73.1" width="33.3" height="163.6" fill="#3b82f6" rx="1.5" opacity="0.88"><title>zero_et2m2 · Vce1 (V)（右轴） = 1.34</title></rect><rect x="785.5" y="88.4" width="33.3" height="148.3" fill="#3b82f6" rx="1.5" opacity="0.88"><title>zero_emit_all · Vce1 (V)（右轴） = 1.22</title></rect><line x1="74" y1="329.7" x2="844" y2="329.7" stroke="#5b6b82"/><text x="151.0" y="257.0" class="ca" text-anchor="middle">nominal</text><text x="305.0" y="257.0" class="ca" text-anchor="middle">zero_vss</text><text x="459.0" y="257.0" class="ca" text-anchor="middle">zero_et1m2</text><text x="613.0" y="257.0" class="ca" text-anchor="middle">zero_et2m2</text><text x="767.0" y="257.0" class="ca" text-anchor="middle">zero_emit_all</text><text x="14" y="149" class="ca" text-anchor="middle" transform="rotate(-90 14 149)">Ic (mA)</text><rect x="74" y="269" width="11" height="11" rx="2" fill="#10b981"/><text x="90" y="278" class="ca">Ic1 (mA)</text><rect x="151.6" y="269" width="11" height="11" rx="2" fill="#f97316"/><text x="167.6" y="278" class="ca">Ic2 (mA)</text><rect x="229.2" y="269" width="11" height="11" rx="2" fill="#3b82f6"/><text x="245.2" y="278" class="ca">Vce1 (V)（右轴）（右轴）</text></svg>
+<h2>各级发射极回流预算 · v2.2 实测定稿（v014 定稿板 .op 现场取数）</h2>
+<p class="muted">数据源 <code>phys/gilbert/sim/opcheck_drv2.py</code>：在 b7e7 的 <b>v014 定稿板原网表</b>上跑
+<code>.op</code>，网表逐字不改，只换 <code>.temp</code> 角。<b>gm = ngspice 模型实测小信号跨导</b>，
+不是 Ic/VT 理想公式（SG13G2 HBT 理想因子 n = 1.3~1.8，用 Ic/VT 会把预算放宽 15~20%）。</p>
+<table><tr><th class="">级</th><th class="">Ic/边 (mA)</th><th class="">Re (Ω)</th><th class="">gm 实测 (mS)</th><th class="">Ze (Ω)</th><th class="">预算 0.1×Ze @27℃ (Ω)</th><th class="">@−40℃ (Ω)</th><th class="">n=Ic/(gm·VT)</th></tr><tr><td><b>DRV2/PA (cascode nx=10)</b></td><td>14.64</td><td>1.5</td><td>385.5</td><td>0.950</td><td><b>≤0.095</b></td><td>≤0.087</td><td>1469.27</td></tr><tr><td><b>LO_BUF 限幅对 (nx=4)</b></td><td>7.99</td><td>4</td><td>176.5</td><td>2.344</td><td><b>≤0.234</b></td><td>≤0.212</td><td>1750.57</td></tr><tr><td><b>DRV1 (nx=6)</b></td><td>3.72</td><td>4</td><td>110.4</td><td>2.774</td><td><b>≤0.277</b></td><td>≤0.259</td><td>1302.63</td></tr><tr><td><b>MIXER gm 对 (nx=3)</b></td><td>9.52</td><td>15</td><td>209.6</td><td>3.620</td><td><b>≤0.362</b></td><td>≤0.300</td><td>1758.14</td></tr><tr><td><b>LO_BUF EF 输入级 (nx=2)</b></td><td>1.72</td><td>20</td><td>48.2</td><td>10.180</td><td><b>≤1.018</b></td><td>≤0.898</td><td>1379.68</td></tr></table>
+<p class="muted small">同时更正两处口径：① DRV2 的 Re 设计值 <b>1.5Ω/边</b>（v014 网表
+<code>Re1/Re2</code> 行），v1 准则里的 8.7Ω 是由 gm_eff 反解的错误值，已作废；
+② Ze 折算必须用实测 gm。b7e7 11:5xZ 给的 <code>gm=Ic/VT</code> 折算表更严（保守），
+签核按<b>两者取小</b>。</p><svg class="chart" viewBox="0 0 900 300" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">R-EMIT-01 签核预算：DRV2/PA 与 LO_BUF 限幅对是最紧两级（取严后 ≤0.078 / ≤0.160 Ω/边）</text><line x1="74" y1="207.8" x2="878" y2="207.8" stroke="#223047"/><text x="66" y="211.8" class="ca" text-anchor="end">0.25</text><line x1="74" y1="163.3" x2="878" y2="163.3" stroke="#223047"/><text x="66" y="167.3" class="ca" text-anchor="end">0.5</text><line x1="74" y1="118.9" x2="878" y2="118.9" stroke="#223047"/><text x="66" y="122.9" class="ca" text-anchor="end">0.75</text><line x1="74" y1="74.4" x2="878" y2="74.4" stroke="#223047"/><text x="66" y="78.4" class="ca" text-anchor="end">1.000</text><rect x="96.5" y="235.3" width="52.1" height="16.9" fill="#3b82f6" rx="1.5" opacity="0.88"><title>DRV2/PA · 预算 @27℃ (Ω) = 0.095</title></rect><rect x="257.3" y="210.5" width="52.1" height="41.7" fill="#3b82f6" rx="1.5" opacity="0.88"><title>LO_BUF 限幅对 · 预算 @27℃ (Ω) = 0.234</title></rect><rect x="418.1" y="202.9" width="52.1" height="49.3" fill="#3b82f6" rx="1.5" opacity="0.88"><title>DRV1 · 预算 @27℃ (Ω) = 0.277</title></rect><rect x="578.9" y="187.9" width="52.1" height="64.4" fill="#3b82f6" rx="1.5" opacity="0.88"><title>MIXER gm 对 · 预算 @27℃ (Ω) = 0.362</title></rect><rect x="739.7" y="71.2" width="52.1" height="181.0" fill="#3b82f6" rx="1.5" opacity="0.88"><title>LO_BUF EF 输入级 · 预算 @27℃ (Ω) = 1.018</title></rect><rect x="154.4" y="236.7" width="52.1" height="15.5" fill="#0ea5e9" rx="1.5" opacity="0.88"><title>DRV2/PA · 预算 @−40℃ (Ω) = 0.087</title></rect><rect x="315.2" y="214.6" width="52.1" height="37.6" fill="#0ea5e9" rx="1.5" opacity="0.88"><title>LO_BUF 限幅对 · 预算 @−40℃ (Ω) = 0.212</title></rect><rect x="476.0" y="206.2" width="52.1" height="46.0" fill="#0ea5e9" rx="1.5" opacity="0.88"><title>DRV1 · 预算 @−40℃ (Ω) = 0.259</title></rect><rect x="636.8" y="198.9" width="52.1" height="53.3" fill="#0ea5e9" rx="1.5" opacity="0.88"><title>MIXER gm 对 · 预算 @−40℃ (Ω) = 0.300</title></rect><rect x="797.6" y="92.6" width="52.1" height="159.6" fill="#0ea5e9" rx="1.5" opacity="0.88"><title>LO_BUF EF 输入级 · 预算 @−40℃ (Ω) = 0.898</title></rect><line x1="74" y1="252.2" x2="878" y2="252.2" stroke="#5b6b82"/><text x="154.4" y="257.0" class="ca" text-anchor="middle">DRV2/PA</text><text x="315.2" y="257.0" class="ca" text-anchor="middle">LO_BUF 限幅对</text><text x="476.0" y="257.0" class="ca" text-anchor="middle">DRV1</text><text x="636.8" y="257.0" class="ca" text-anchor="middle">MIXER gm 对</text><text x="797.6" y="257.0" class="ca" text-anchor="middle">LO_BUF EF 输入级</text><text x="14" y="149" class="ca" text-anchor="middle" transform="rotate(-90 14 149)">发射极回流预算 (Ω/边)</text><rect x="74" y="269" width="11" height="11" rx="2" fill="#3b82f6"/><text x="90" y="278" class="ca">预算 @27℃ (Ω)</text><rect x="173.2" y="269" width="11" height="11" rx="2" fill="#0ea5e9"/><text x="189.2" y="278" class="ca">预算 @−40℃ (Ω)</text></svg><h2>DRV2 发射极回流电阻 Rp 的实证扫描（v014 网表 · AC @5.51GHz + op）</h2>
+<p class="muted">只在 drv2 两条发射极支路上各串一个 Rp（Rp=0 用 <code>1e-6Ω</code>，不写 0Ω），
+其余网表逐字不动。<b>口径更正</b>：Gilbert 在 LO=DC 的 AC 平衡态把差分 IF 映射成共模、差分输出恒 0，
+全链 AC 读数无意义（实测 −256dB），故撤掉 mixer、IF 源直驱 DRV1，测
+<b>DRV1→DRV2 两级级联增益 Gdd</b>。曲线回答的是：<b>R-EMIT-01 那条 0.078Ω 的线，够不够？</b></p><svg class="chart" viewBox="0 0 900 330" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">发射极回流电阻代价：Gdd 随 Rp 单调下降，而 drv2 直流几乎不动 → 又一次证实小信号机理</text><line x1="74" y1="215.4" x2="878" y2="215.4" stroke="#223047" stroke-width="1"/><text x="66" y="219.4" class="ca" text-anchor="end">-4.000</text><line x1="74" y1="143.7" x2="878" y2="143.7" stroke="#223047" stroke-width="1"/><text x="66" y="147.7" class="ca" text-anchor="end">-2.000</text><line x1="74" y1="71.9" x2="878" y2="71.9" stroke="#223047" stroke-width="1"/><text x="66" y="75.9" class="ca" text-anchor="end">0</text><line x1="74.0" y1="58" x2="74.0" y2="286" stroke="#223047" stroke-width="1"/><text x="74.0" y="304.0" class="ca" text-anchor="middle">1e-6</text><line x1="112.4" y1="58" x2="112.4" y2="286" stroke="#223047" stroke-width="1"/><text x="112.4" y="304.0" class="ca" text-anchor="middle">2e-6</text><line x1="163.2" y1="58" x2="163.2" y2="286" stroke="#223047" stroke-width="1"/><text x="163.2" y="304.0" class="ca" text-anchor="middle">5e-6</text><line x1="201.6" y1="58" x2="201.6" y2="286" stroke="#223047" stroke-width="1"/><text x="201.6" y="304.0" class="ca" text-anchor="middle">1e-5</text><line x1="240.0" y1="58" x2="240.0" y2="286" stroke="#223047" stroke-width="1"/><text x="240.0" y="304.0" class="ca" text-anchor="middle">2e-5</text><line x1="290.8" y1="58" x2="290.8" y2="286" stroke="#223047" stroke-width="1"/><text x="290.8" y="304.0" class="ca" text-anchor="middle">5e-5</text><line x1="329.2" y1="58" x2="329.2" y2="286" stroke="#223047" stroke-width="1"/><text x="329.2" y="304.0" class="ca" text-anchor="middle">1e-4</text><line x1="367.6" y1="58" x2="367.6" y2="286" stroke="#223047" stroke-width="1"/><text x="367.6" y="304.0" class="ca" text-anchor="middle">2e-4</text><line x1="418.4" y1="58" x2="418.4" y2="286" stroke="#223047" stroke-width="1"/><text x="418.4" y="304.0" class="ca" text-anchor="middle">5e-4</text><line x1="456.8" y1="58" x2="456.8" y2="286" stroke="#223047" stroke-width="1"/><text x="456.8" y="304.0" class="ca" text-anchor="middle">1e-3</text><line x1="495.2" y1="58" x2="495.2" y2="286" stroke="#223047" stroke-width="1"/><text x="495.2" y="304.0" class="ca" text-anchor="middle">2e-3</text><line x1="546.0" y1="58" x2="546.0" y2="286" stroke="#223047" stroke-width="1"/><text x="546.0" y="304.0" class="ca" text-anchor="middle">5e-3</text><line x1="584.4" y1="58" x2="584.4" y2="286" stroke="#223047" stroke-width="1"/><text x="584.4" y="304.0" class="ca" text-anchor="middle">1e-2</text><line x1="622.8" y1="58" x2="622.8" y2="286" stroke="#223047" stroke-width="1"/><text x="622.8" y="304.0" class="ca" text-anchor="middle">2e-2</text><line x1="673.6" y1="58" x2="673.6" y2="286" stroke="#223047" stroke-width="1"/><text x="673.6" y="304.0" class="ca" text-anchor="middle">5e-2</text><line x1="712.0" y1="58" x2="712.0" y2="286" stroke="#223047" stroke-width="1"/><text x="712.0" y="304.0" class="ca" text-anchor="middle">1e-1</text><line x1="750.4" y1="58" x2="750.4" y2="286" stroke="#223047" stroke-width="1"/><text x="750.4" y="304.0" class="ca" text-anchor="middle">2e-1</text><line x1="801.2" y1="58" x2="801.2" y2="286" stroke="#223047" stroke-width="1"/><text x="801.2" y="304.0" class="ca" text-anchor="middle">5e-1</text><line x1="839.6" y1="58" x2="839.6" y2="286" stroke="#223047" stroke-width="1"/><text x="839.6" y="304.0" class="ca" text-anchor="middle">1e0</text><line x1="878.0" y1="58" x2="878.0" y2="286" stroke="#223047" stroke-width="1"/><text x="878.0" y="304.0" class="ca" text-anchor="middle">2e0</text><line x1="74" y1="286" x2="878" y2="286" stroke="#5b6b82"/><line x1="74" y1="58" x2="74" y2="286" stroke="#5b6b82"/><circle cx="74.0" cy="197.9" r="3" fill="#3b82f6"/><circle cx="622.8" cy="198.8" r="3" fill="#3b82f6"/><circle cx="673.6" cy="200.0" r="3" fill="#3b82f6"/><circle cx="698.2" cy="201.2" r="3" fill="#3b82f6"/><circle cx="722.1" cy="203.0" r="3" fill="#3b82f6"/><circle cx="750.4" cy="206.4" r="3" fill="#3b82f6"/><circle cx="781.4" cy="212.6" r="3" fill="#3b82f6"/><circle cx="811.3" cy="222.7" r="3" fill="#3b82f6"/><circle cx="839.6" cy="238.2" r="3" fill="#3b82f6"/><circle cx="878.0" cy="273.9" r="3" fill="#3b82f6"/><polyline points="74.0,197.9 622.8,198.8 673.6,200.0 698.2,201.2 722.1,203.0 750.4,206.4 781.4,212.6 811.3,222.7 839.6,238.2 878.0,273.9" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linejoin="round"/><circle cx="74.0" cy="71.9" r="3" fill="#f97316"/><circle cx="622.8" cy="72.8" r="3" fill="#f97316"/><circle cx="673.6" cy="74.1" r="3" fill="#f97316"/><circle cx="698.2" cy="75.3" r="3" fill="#f97316"/><circle cx="722.1" cy="77.0" r="3" fill="#f97316"/><circle cx="750.4" cy="80.4" r="3" fill="#f97316"/><circle cx="781.4" cy="86.6" r="3" fill="#f97316"/><circle cx="811.3" cy="96.7" r="3" fill="#f97316"/><circle cx="839.6" cy="112.2" r="3" fill="#f97316"/><circle cx="878.0" cy="147.9" r="3" fill="#f97316"/><polyline points="74.0,71.9 622.8,72.8 673.6,74.1 698.2,75.3 722.1,77.0 750.4,80.4 781.4,86.6 811.3,96.7 839.6,112.2 878.0,147.9" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linejoin="round"/><circle cx="74.0" cy="89.9" r="3" fill="#10b981"/><circle cx="878.0" cy="89.9" r="3" fill="#10b981"/><polyline points="74.0,89.9 878.0,89.9" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="4,4"/><text x="476" y="322" class="ca" text-anchor="middle">Rp（每边发射极回流总阻，Ω，对数轴）</text><text x="14" y="172" class="ca" text-anchor="middle" transform="rotate(-90 14 172)">Gdd / ΔGdd (dB)</text><rect x="74" y="295" width="11" height="11" rx="2" fill="#3b82f6"/><text x="90" y="304" class="ca">Gdd 两级级联增益 (dB)</text><rect x="202.0" y="295" width="11" height="11" rx="2" fill="#f97316"/><text x="218.0" y="304" class="ca">ΔGdd vs 零阻 (dB)</text><rect x="330.0" y="295" width="11" height="11" rx="2" fill="#10b981"/><text x="346.0" y="304" class="ca">−0.5dB 判据线</text></svg><svg class="chart" viewBox="0 0 900 300" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">直流侧几乎不动：Rp 加 4000 倍，Ic 只掉 0.6%、gm 掉 0.5% → 增益损失是纯小信号分压</text><line x1="74" y1="252.4" x2="878" y2="252.4" stroke="#223047" stroke-width="1"/><text x="66" y="256.4" class="ca" text-anchor="end">0</text><line x1="74" y1="205.1" x2="878" y2="205.1" stroke="#223047" stroke-width="1"/><text x="66" y="209.1" class="ca" text-anchor="end">100.0</text><line x1="74" y1="157.8" x2="878" y2="157.8" stroke="#223047" stroke-width="1"/><text x="66" y="161.8" class="ca" text-anchor="end">200.0</text><line x1="74" y1="110.5" x2="878" y2="110.5" stroke="#223047" stroke-width="1"/><text x="66" y="114.5" class="ca" text-anchor="end">300.0</text><line x1="74" y1="63.2" x2="878" y2="63.2" stroke="#223047" stroke-width="1"/><text x="66" y="67.2" class="ca" text-anchor="end">400.0</text><line x1="74.0" y1="58" x2="74.0" y2="256" stroke="#223047" stroke-width="1"/><text x="74.0" y="274.0" class="ca" text-anchor="middle">1e-6</text><line x1="112.4" y1="58" x2="112.4" y2="256" stroke="#223047" stroke-width="1"/><text x="112.4" y="274.0" class="ca" text-anchor="middle">2e-6</text><line x1="163.2" y1="58" x2="163.2" y2="256" stroke="#223047" stroke-width="1"/><text x="163.2" y="274.0" class="ca" text-anchor="middle">5e-6</text><line x1="201.6" y1="58" x2="201.6" y2="256" stroke="#223047" stroke-width="1"/><text x="201.6" y="274.0" class="ca" text-anchor="middle">1e-5</text><line x1="240.0" y1="58" x2="240.0" y2="256" stroke="#223047" stroke-width="1"/><text x="240.0" y="274.0" class="ca" text-anchor="middle">2e-5</text><line x1="290.8" y1="58" x2="290.8" y2="256" stroke="#223047" stroke-width="1"/><text x="290.8" y="274.0" class="ca" text-anchor="middle">5e-5</text><line x1="329.2" y1="58" x2="329.2" y2="256" stroke="#223047" stroke-width="1"/><text x="329.2" y="274.0" class="ca" text-anchor="middle">1e-4</text><line x1="367.6" y1="58" x2="367.6" y2="256" stroke="#223047" stroke-width="1"/><text x="367.6" y="274.0" class="ca" text-anchor="middle">2e-4</text><line x1="418.4" y1="58" x2="418.4" y2="256" stroke="#223047" stroke-width="1"/><text x="418.4" y="274.0" class="ca" text-anchor="middle">5e-4</text><line x1="456.8" y1="58" x2="456.8" y2="256" stroke="#223047" stroke-width="1"/><text x="456.8" y="274.0" class="ca" text-anchor="middle">1e-3</text><line x1="495.2" y1="58" x2="495.2" y2="256" stroke="#223047" stroke-width="1"/><text x="495.2" y="274.0" class="ca" text-anchor="middle">2e-3</text><line x1="546.0" y1="58" x2="546.0" y2="256" stroke="#223047" stroke-width="1"/><text x="546.0" y="274.0" class="ca" text-anchor="middle">5e-3</text><line x1="584.4" y1="58" x2="584.4" y2="256" stroke="#223047" stroke-width="1"/><text x="584.4" y="274.0" class="ca" text-anchor="middle">1e-2</text><line x1="622.8" y1="58" x2="622.8" y2="256" stroke="#223047" stroke-width="1"/><text x="622.8" y="274.0" class="ca" text-anchor="middle">2e-2</text><line x1="673.6" y1="58" x2="673.6" y2="256" stroke="#223047" stroke-width="1"/><text x="673.6" y="274.0" class="ca" text-anchor="middle">5e-2</text><line x1="712.0" y1="58" x2="712.0" y2="256" stroke="#223047" stroke-width="1"/><text x="712.0" y="274.0" class="ca" text-anchor="middle">1e-1</text><line x1="750.4" y1="58" x2="750.4" y2="256" stroke="#223047" stroke-width="1"/><text x="750.4" y="274.0" class="ca" text-anchor="middle">2e-1</text><line x1="801.2" y1="58" x2="801.2" y2="256" stroke="#223047" stroke-width="1"/><text x="801.2" y="274.0" class="ca" text-anchor="middle">5e-1</text><line x1="839.6" y1="58" x2="839.6" y2="256" stroke="#223047" stroke-width="1"/><text x="839.6" y="274.0" class="ca" text-anchor="middle">1e0</text><line x1="878.0" y1="58" x2="878.0" y2="256" stroke="#223047" stroke-width="1"/><text x="878.0" y="274.0" class="ca" text-anchor="middle">2e0</text><line x1="74" y1="256" x2="878" y2="256" stroke="#5b6b82"/><line x1="74" y1="58" x2="74" y2="256" stroke="#5b6b82"/><circle cx="74.0" cy="245.4" r="3" fill="#3b82f6"/><circle cx="622.8" cy="245.4" r="3" fill="#3b82f6"/><circle cx="673.6" cy="245.4" r="3" fill="#3b82f6"/><circle cx="698.2" cy="245.4" r="3" fill="#3b82f6"/><circle cx="722.1" cy="245.4" r="3" fill="#3b82f6"/><circle cx="750.4" cy="245.4" r="3" fill="#3b82f6"/><circle cx="781.4" cy="245.4" r="3" fill="#3b82f6"/><circle cx="811.3" cy="245.4" r="3" fill="#3b82f6"/><circle cx="839.6" cy="245.5" r="3" fill="#3b82f6"/><circle cx="878.0" cy="245.5" r="3" fill="#3b82f6"/><polyline points="74.0,245.4 622.8,245.4 673.6,245.4 698.2,245.4 722.1,245.4 750.4,245.4 781.4,245.4 811.3,245.4 839.6,245.5 878.0,245.5" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linejoin="round"/><circle cx="74.0" cy="70.1" r="3" fill="#f97316"/><circle cx="622.8" cy="70.1" r="3" fill="#f97316"/><circle cx="673.6" cy="70.1" r="3" fill="#f97316"/><circle cx="698.2" cy="70.1" r="3" fill="#f97316"/><circle cx="722.1" cy="70.1" r="3" fill="#f97316"/><circle cx="750.4" cy="70.1" r="3" fill="#f97316"/><circle cx="781.4" cy="70.2" r="3" fill="#f97316"/><circle cx="811.3" cy="70.3" r="3" fill="#f97316"/><circle cx="839.6" cy="70.5" r="3" fill="#f97316"/><circle cx="878.0" cy="71.0" r="3" fill="#f97316"/><polyline points="74.0,70.1 622.8,70.1 673.6,70.1 698.2,70.1 722.1,70.1 750.4,70.1 781.4,70.2 811.3,70.3 839.6,70.5 878.0,71.0" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linejoin="round"/><text x="476" y="292" class="ca" text-anchor="middle">Rp（Ω，对数轴）</text><text x="14" y="157" class="ca" text-anchor="middle" transform="rotate(-90 14 157)">mA / mS</text><rect x="74" y="265" width="11" height="11" rx="2" fill="#3b82f6"/><text x="90" y="274" class="ca">DRV2 XQ1 Ic (mA)</text><rect x="209.2" y="265" width="11" height="11" rx="2" fill="#f97316"/><text x="225.2" y="274" class="ca">gm (mS)</text></svg><table><tr><th class="">Rp/边 (Ω)</th><th class="">Gdd (dB)</th><th class="">ΔGdd (dB)</th><th class="">drv2 Ic (mA)</th><th class="">gm (mS)</th><th class="">Vce (V)</th><th class="">发射极电压 (V)</th><th class="">Re 压降 (mV)</th></tr><tr><td>1e-06</td><td>-3.511</td><td><b>+0.000</b></td><td>14.643</td><td>385.5</td><td>0.822</td><td>0.33738</td><td>22.005</td></tr><tr><td>0.02</td><td>-3.535</td><td><b>-0.024</b></td><td>14.642</td><td>385.5</td><td>0.822</td><td>0.33739</td><td>22.297</td></tr><tr><td>0.05</td><td>-3.571</td><td><b>-0.060</b></td><td>14.64</td><td>385.5</td><td>0.822</td><td>0.33739</td><td>22.735</td></tr><tr><td>0.078</td><td>-3.604</td><td><b>-0.093</b></td><td>14.639</td><td>385.5</td><td>0.822</td><td>0.3374</td><td>23.144</td></tr><tr><td>0.12</td><td>-3.654</td><td><b>-0.142</b></td><td>14.637</td><td>385.4</td><td>0.822</td><td>0.33741</td><td>23.757</td></tr><tr><td>0.2</td><td>-3.747</td><td><b>-0.236</b></td><td>14.634</td><td>385.4</td><td>0.822</td><td>0.33743</td><td>24.924</td></tr><tr><td>0.35</td><td>-3.920</td><td><b>-0.409</b></td><td>14.628</td><td>385.2</td><td>0.822</td><td>0.33747</td><td>27.112</td></tr><tr><td>0.6</td><td>-4.201</td><td><b>-0.690</b></td><td>14.617</td><td>385.0</td><td>0.822</td><td>0.33753</td><td>30.753</td></tr><tr><td>1</td><td>-4.633</td><td><b>-1.122</b></td><td>14.6</td><td>384.6</td><td>0.8219</td><td>0.33763</td><td>36.567</td></tr><tr><td>2</td><td>-5.629</td><td><b>-2.118</b></td><td>14.553</td><td>383.7</td><td>0.8219</td><td>0.3379</td><td>51.031</td></tr></table><p class="muted small"><b>签核判据</b>：ΔCG ≥ −0.5dB（半 dB 视为链级无损） →
+实测可用上限 <b>Rp ≤ 0.35 Ω/边</b>；ΔCG 跌破 −1dB 的起点
+[1.0, 2.0] Ω/边。</p><h2>DRV2/PA 发射极回流的几何处方表</h2>
+<p class="muted small">由 <code>phys/gilbert/sim/emit_route_plan.py</code> 从实测工作点算出，
+预算 0.078Ω/边 分配为金属 43mΩ / via 23mΩ / 地轨 12mΩ。RSH 为工程估值（PDK 未随附金属层 R/C 表），
+thick-metal 实测值待 b7e7 版图侧 PEX 回填。</p>
+<h1>DRV2 / PA 级发射极回流路径 · 几何处方表（SOW-3 v2.2）</h1>
+<blockquote>
+<p>口径：每边发射极电流 <strong>14.64 mA</strong>（v014 定稿板 .op 实测）；Ze = 1.5Ω ∥ 1/gm(385.5mS) = <strong>0.950Ω</strong>；预算 0.1×Ze = 0.095Ω（27℃），与 b7e7 的严口径 0.078Ω <strong>取小</strong> → <strong>0.078Ω/边</strong>。</p>
+</blockquote>
+<p>分配（工程分配，可按实测 via 电阻重切）：金属 42.9 mΩ / via 23.4 mΩ / 地轨 11.7 mΩ</p>
+<h2>一、金属段：给定宽度下的最大允许长度</h2>
+<table>
+<thead>
+<tr>
+<th>金属层</th>
+<th>RSH 假设 (Ω/□)</th>
+<th>宽度 4µm</th>
+<th>6µm</th>
+<th>10µm</th>
+<th>15µm</th>
+<th>20µm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1/M2 (Cu, 细)</td>
+<td>0.125</td>
+<td>1.4 µm</td>
+<td>2.1 µm</td>
+<td>3.4 µm</td>
+<td>5.1 µm</td>
+<td>6.9 µm</td>
+</tr>
+<tr>
+<td>M3</td>
+<td>0.0625</td>
+<td>2.7 µm</td>
+<td>4.1 µm</td>
+<td>6.9 µm</td>
+<td>10.3 µm</td>
+<td>13.7 µm</td>
+</tr>
+<tr>
+<td>TopMetal1</td>
+<td>0.0625</td>
+<td>2.7 µm</td>
+<td>4.1 µm</td>
+<td>6.9 µm</td>
+<td>10.3 µm</td>
+<td>13.7 µm</td>
+</tr>
+<tr>
+<td>TopMetal2</td>
+<td>0.03125</td>
+<td>5.5 µm</td>
+<td>8.2 µm</td>
+<td>13.7 µm</td>
+<td>20.6 µm</td>
+<td>27.5 µm</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>用法：任一层只要「长度 ≤ 上表」即达标。例如 TopMetal1（0.0625Ω/□）取 6µm 宽，可走 7.5µm；M1/M2（0.125）6µm 宽可走 4.6µm。</p>
+</blockquote>
+<h2>二、via 段：需要多少并联</h2>
+<table>
+<thead>
+<tr>
+<th>单 via 电阻假设</th>
+<th>需并联数</th>
+<th>建议阵列</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.15 Ω</td>
+<td>1</td>
+<td>1×1 = 1</td>
+<td>我方 v2.0 PEX 的 2×2 阵列合计值（实测区间内）</td>
+</tr>
+<tr>
+<td>0.3 Ω</td>
+<td>1</td>
+<td>1×1 = 1</td>
+<td>需版图侧 PEX 实测</td>
+</tr>
+<tr>
+<td>0.6 Ω</td>
+<td>1</td>
+<td>1×1 = 1</td>
+<td>需版图侧 PEX 实测</td>
+</tr>
+<tr>
+<td>1.0 Ω</td>
+<td>1</td>
+<td>1×1 = 1</td>
+<td>需版图侧 PEX 实测</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>via 是本级回流的最大不确定项</strong>：单 via 从 0.15Ω 到 1Ω 的假设会带来 7 倍的阵列规模差。要求 b7e7 在 drv2 版图 PEX 里单独抽出 via_stack 实测值回填本表。</p>
+</blockquote>
+<h2>三、地轨段（R-GND-01 ≤5mV）</h2>
+<ul>
+<li>每边电流 14.64mA → 地轨电阻上限 <strong>341.47 mΩ</strong>（即 2.73 □ @0.125Ω/□，一条 10µm×10µm 的 M2 就够）。</li>
+<li>分配给地轨的是 11.7 mΩ → 压降 0.17 mV，仅占 5mV 线的 3%。<strong>地轨不是 drv2 的瓶颈，via 才是。</strong></li>
+</ul>
+<h2>四、迁移（EM）交叉校核</h2>
+<ul>
+<li>工程保守电流密度上限取 <strong>1 A/µm</strong>（M1/M2 Cu @125°C 粗取，PDK 手册值待确认）。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>宽度</th>
+<th>允许电流 @1A/µm</th>
+<th>drv2 单边 14.64mA</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4µm</td>
+<td>4000000.0mA</td>
+<td>14.64mA</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>6µm</td>
+<td>6000000.0mA</td>
+<td>14.64mA</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>10µm</td>
+<td>10000000.0mA</td>
+<td>14.64mA</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>15µm</td>
+<td>15000000.0mA</td>
+<td>14.64mA</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>20µm</td>
+<td>20000000.0mA</td>
+<td>14.64mA</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>30µm</td>
+<td>30000000.0mA</td>
+<td>14.64mA</td>
+<td>OK</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>结论：单层薄金属在 20µm 宽以下都会撞 EM 线 → <strong>双层并联（TM1+M2 或 TM1+TM2）在电气与 EM 上双重必要</strong>，不是「为了省电阻」的锦上添花。</p>
+</blockquote>
+<h2>五、⚠ 方法学警告：周长法 PEX 会高估宽金属电阻</h2>
+<p>我方 v2.0 第一阶 PEX 用 <code>R = RSH × 周长</code>（<code>extract_pex_amp2.py</code>）。对 amp2 的窄线（W≈0.5µm）它与真值 R=RSH×L/W 几乎相同（高估 3.6%），所以 v2.0/v2.1 的结论有效；但一旦按本处方评估宽金属：</p>
+<table>
+<thead>
+<tr>
+<th>线宽 W</th>
+<th>长度 L</th>
+<th>真值 RSH·L/W</th>
+<th>周长法</th>
+<th>高估倍数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.5µm</td>
+<td>14.0µm</td>
+<td>3.500Ω</td>
+<td>3.625Ω</td>
+<td>1.0×</td>
+</tr>
+<tr>
+<td>4µm</td>
+<td>4.6µm</td>
+<td>0.144Ω</td>
+<td>2.150Ω</td>
+<td>15.0×</td>
+</tr>
+<tr>
+<td>6µm</td>
+<td>7.5µm</td>
+<td>0.156Ω</td>
+<td>3.375Ω</td>
+<td>21.6×</td>
+</tr>
+<tr>
+<td>10µm</td>
+<td>5.0µm</td>
+<td>0.062Ω</td>
+<td>3.750Ω</td>
+<td>60.0×</td>
+</tr>
+<tr>
+<td>20µm</td>
+<td>3.0µm</td>
+<td>0.019Ω</td>
+<td>5.750Ω</td>
+<td>306.7×</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>处方必须按真值公式算</strong>，不能直接读周长法脚本的输出；否则 6µm 宽的厚金属会被误判成高 20 倍而做不出来。</p>
+</blockquote>
+<h2>反哺主链的强制准则（v1.1 / v1）</h2>
+<p class="muted small">design_circuit/HBT级版图准则_发射极路径与地轨回流_v1.1.md（组长 b7a0 发布，10207 B）
+· 已并入 <code>design_circuit/layout_plan.md</code> §11</p>
+<h1>HBT 级版图准则 · 发射极路径与地轨回流（v1.1）</h1>
+<blockquote>
+<p><strong>发布人</strong>：WiFi7-TX-组长 b7a0　<strong>日期</strong>：2026-10-16　<strong>状态</strong>：v1.1（<strong>取代 v1 的 R-EMIT-01 表</strong>，其余条款继续有效）
+<strong>证据</strong>：① SOW-3 v2.0/v2.1 版图实证（真实 GDS → DRC/LVS → PEX → 后仿真）；
+② v2.2 <strong>在 b7e7 v014 定稿板原网表上实测的各级工作点</strong>（<code>phys/gilbert/sim/opcheck_drv2.py</code>）；
+③ v2.2 <strong>DRV2 发射极回流电阻的全链 tran 扫描</strong>（<code>phys/gilbert/sim/emit_scan_drv2.py</code>）。
+<strong>适用范围</strong>：本项目所有 npn13G2 HBT 共射/共基级（混频 gm 对、LO BUF、DRV1/DRV2、PA）。</p>
+</blockquote>
+<h2>〇、v1.1 的三处修订（先把话说清楚）</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>v1 的说法</th>
+<th>v1.1 实测后</th>
+<th>性质</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>DRV2 的 Re = 8.7Ω（由 gm_eff=96mS 反解）</td>
+<td><strong>Re = 1.5Ω/边</strong>（v014 网表 <code>Re1/Re2</code> 行即设计值；限幅对 4Ω、DRV1 4Ω、gm 对 15Ω、EF 20Ω，全部 grep 自网表）</td>
+<td><strong>错值，已作废</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Ze 折算用 gm = Ic/VT</td>
+<td>Ze 折算用 <strong>ngspice 实测小信号 gm</strong>。SG13G2 HBT 理想因子 n = Ic/(gm·VT) ≈ <strong>1.3~1.8</strong>，<code>Ic/VT</code> 高估 gm → <strong>放宽预算 ~15~20%</strong></td>
+<td>口径更正</td>
+</tr>
+<tr>
+<td>3</td>
+<td>「DRV2/PA 发射极回流必须上厚金属，M1/M2 做不出来」</td>
+<td>Re 改正后预算实为 <strong>0.078~0.095Ω</strong>；M2（0.125Ω/□）取 6µm 宽可走 <strong>4.6µm</strong>，电气上做得出来 —— <strong>真正过不去的是 EM 与 via，不是电阻</strong></td>
+<td>结论改写（见 R-EMIT-02 / R-VIA-01）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>机制层面的结论（33.5dB 落差来自发射极小信号阻抗失配，而非直流漂移）<strong>不变</strong>，仍由 v2.0/v2.1 的
+归零实验与单因子实验支撑。本 v1.1 只把「各级预算是多少、怎么落地」换成实测口径。</p>
+</blockquote>
+<h2>一、为什么要有这条准则（不变）</h2>
+<p>TX5G_AMP2（两级 HBT 放大级，39×21µm，DRC 零违规、LVS PASS）实测：前仿真 <strong>+30.43 dB</strong> / 后仿真 <strong>−3.04 dB</strong>，落差 <strong>33.5 dB</strong>；
+把 PEX 网表所有串联电阻归零后增益<strong>逐位回到 +30.43 dB</strong>。机理 = <strong>发射极节点的小信号阻抗 Ze 只有零点几欧姆，
+版图回流路径的几欧姆金属电阻直接进分母</strong>；直流只漂 3.4%、Vce 全程 &gt;1.2V，不是直流偏置问题。</p>
+<blockquote>
+<p><strong>在 HBT 共射级里，「几欧姆」不是小数目。</strong></p>
+</blockquote>
+<h2>二、六条强制准则</h2>
+<h3>R-EMIT-01（v1.1）　发射极路径电阻预算</h3>
+<blockquote>
+<p><strong>发射极回流路径的串联电阻总和（金属 + via + 地轨）≤ 0.1 × Ze，其中 Ze = Re ∥ 1/gm，
+gm 取模型实测小信号值；签核按最冷角（−40℃）并与理想公式口径取小。</strong></p>
+</blockquote>
+<p><strong>这条线不是拍的 —— 有实测曲线背书</strong>（<code>emit_scan_drv2.py</code>：v014 网表，撤掉 mixer、IF 源直驱 DRV1，
+AC @5.51GHz 测 DRV1→DRV2 级联增益 Gdd，每边发射极支路串入 Rp）：</p>
+<table>
+<thead>
+<tr>
+<th>Rp/边</th>
+<th>0</th>
+<th>0.05</th>
+<th><strong>0.078（签核线）</strong></th>
+<th>0.2</th>
+<th>0.35</th>
+<th>0.6</th>
+<th>1.0</th>
+<th>2.0 Ω</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ΔGdd</strong></td>
+<td>0</td>
+<td>−0.060</td>
+<td><strong>−0.093 dB</strong></td>
+<td>−0.236</td>
+<td>−0.409</td>
+<td>−0.690</td>
+<td>−1.122</td>
+<td>−2.118 dB</td>
+</tr>
+<tr>
+<td>drv2 Ic</td>
+<td>14.643</td>
+<td>14.640</td>
+<td>14.639</td>
+<td>14.634</td>
+<td>14.628</td>
+<td>14.617</td>
+<td>14.600</td>
+<td>14.553 mA</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>0.078Ω 的实测代价只有 −0.093 dB</strong>（链级无损）；按 −0.5dB 判据可用到 <strong>0.35Ω</strong>，余量 4.5 倍。</li>
+<li><strong>直流侧几乎不动</strong>：Rp 从 0 加到 2Ω（4000 倍），Ic 只掉 0.6%、gm 掉 0.5%、Vce 不变 → 又一次坐实「小信号分压，非直流漂移」。</li>
+<li><strong>反例换算</strong>：amp2 实测那种 1.75Ω/边的发射极 M2 长线，放到 drv2 尺度约值 <strong>−1.7dB</strong>。这就是「几欧姆不是小数目」。</li>
+</ul>
+<p>实测表（<code>opcheck_drv2.md</code>，v014 定稿板 .op 实测）：</p>
+<table>
+<thead>
+<tr>
+<th>级</th>
+<th>Ic/边</th>
+<th>Re</th>
+<th>gm 实测</th>
+<th>Ze(27℃)</th>
+<th><strong>预算 27℃</strong></th>
+<th><strong>预算 −40℃</strong></th>
+<th>签核取严</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DRV2 / PA</strong>（cascode nx=10）</td>
+<td>14.64 mA</td>
+<td>1.5 Ω</td>
+<td>385.5 mS</td>
+<td>0.950 Ω</td>
+<td>≤0.095 Ω</td>
+<td>≤0.087 Ω</td>
+<td><strong>≤0.078 Ω</strong></td>
+</tr>
+<tr>
+<td><strong>LO_BUF 限幅对</strong>（nx=4）</td>
+<td>7.99 mA</td>
+<td>4 Ω</td>
+<td>176.5 mS</td>
+<td>2.344 Ω</td>
+<td>≤0.234 Ω</td>
+<td>≤0.212 Ω</td>
+<td><strong>≤0.160 Ω</strong></td>
+</tr>
+<tr>
+<td><strong>DRV1</strong>（nx=6）</td>
+<td>3.72 mA</td>
+<td>4 Ω</td>
+<td>110.4 mS</td>
+<td>2.774 Ω</td>
+<td>≤0.277 Ω</td>
+<td>≤0.259 Ω</td>
+<td><strong>≤0.250 Ω</strong></td>
+</tr>
+<tr>
+<td>MIXER gm 对（nx=3）</td>
+<td>9.52 mA</td>
+<td>15 Ω</td>
+<td>209.6 mS</td>
+<td>3.620 Ω</td>
+<td>≤0.362 Ω</td>
+<td>≤0.300 Ω</td>
+<td>≤0.300 Ω</td>
+</tr>
+<tr>
+<td>LO_BUF EF 输入级（nx=2）</td>
+<td>1.72 mA</td>
+<td>20 Ω</td>
+<td>48.2 mS</td>
+<td>10.180 Ω</td>
+<td>≤1.018 Ω</td>
+<td>≤0.898 Ω</td>
+<td>≤0.898 Ω</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>「签核取严」= 本表实测 gm 口径与 b7e7 的 <code>gm=Ic/VT</code> 口径<strong>取小者</strong>（后者偏保守）。</li>
+<li>限幅对若按导通相单边电流（≈2× 对称点）折算，预算再紧一档 —— PA 级按导通相校核。</li>
+<li><strong>最紧两级点名</strong>：<strong>DRV2/PA（0.078Ω）与 LO_BUF 限幅对（0.160Ω）</strong>；DRV1（0.25Ω）次之；
+  MIXER 与 EF 宽松一个数量级，版图评审可放宽。</li>
+<li>预算公式对 Re 不敏感（Re≥5/gm 时 Ze≈0.83~0.9×1/gm），<strong>对 gm 极其敏感</strong>：gm 实测比 Ic/VT 小 15~45%，
+  这就是为什么必须实测 gm。</li>
+</ul>
+<h3>R-EMIT-02（新增）　薄金属单层不得独立承载 PA 级回流</h3>
+<blockquote>
+<p><strong>DRV2/PA 级发射极回流金属必须双层并联（M2+TM1 或 TM1+TM2），且单层宽度 ≥ 10µm。</strong></p>
+</blockquote>
+<p>理由是<strong>迁移</strong>，不是电阻：14.64 mA/边 在工程保守电流密度上限 1 A/µm 下需要 ≥15µm 单层宽度；
+10µm 宽的 M1/M2 只有 10mA 容量。宽度再大则与 R-EMIT-01 的长度预算冲突
+（RSH×L/W 减不了多少，金属面积代价陡增）→ <strong>双层并联是唯一同时满足电气与 EM 的解</strong>。
+（PDK 手册的 Black 方程参数待 b7e7 版图侧确认后回填；当前取 1 A/µm 为保守工程值。）</p>
+<h3>R-VIA-01（新增）　via 阵列规模由实测单 via 电阻定，且单 via 电阻是签核项</h3>
+<blockquote>
+<p><strong>PA 级与限幅对的 via_stack 电阻必须由版图 PEX 单独抽出并签核；via 阵列规模 = ceil(预算via / R_via实测)。</strong></p>
+</blockquote>
+<p>按 v1.1 的分配（金属 55% / via 30% / 地轨 15%），DRV2 每边的 via 预算是 <strong>23 mΩ</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>单 via 电阻（假设）</th>
+<th>需并联</th>
+<th>建议阵列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.15 Ω</td>
+<td>157</td>
+<td>13×13</td>
+</tr>
+<tr>
+<td>0.3 Ω</td>
+<td>79</td>
+<td>9×9</td>
+</tr>
+<tr>
+<td>0.6 Ω</td>
+<td>39</td>
+<td>7×7</td>
+</tr>
+<tr>
+<td>1.0 Ω</td>
+<td>24</td>
+<td>5×5</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>单 via 从 0.15Ω 到 1Ω 的假设带来 <strong>7 倍</strong>的阵列规模差 —— 这是 DRV2 回流里最大的不确定项，
+也是当前最该补的一块数据（v1 准则只说「≥4×4 阵列」，在新预算下<strong>远远不够</strong>）。</p>
+</blockquote>
+<h3>R-GND-01（不变）　地轨回流压降预算</h3>
+<blockquote>
+<p><strong>每一级的地轨回流压降 I×R ≤ 5mV</strong>（发射极电位抬升改 Vbe→Ic；各发射极电位不齐引入共模误差）。</p>
+</blockquote>
+<p>TX5G_AMP2 反例：vss 网 4 个引脚各 R/2=3.82Ω → 两级发射极合计抬高 <strong>35mV</strong>；只把这一条地轨归零，增益回收 <strong>12.2 dB</strong>。
+- 就近打地，不要用一条细长地轨串起全块；
+- 回流电流按 <strong>max(I_peak)×2</strong> 估（正弦峰值可达均值 2 倍以上，PA 级尤其）；
+- 地轨过孔阵列 ≥ 发射极过孔阵列。
+- <strong>对 DRV2 的换算</strong>：14.64 mA 下地轨电阻上限 = <strong>341 mΩ</strong>（≈0.34 □ @0.125Ω/□），
+  分配给地轨的 12 mΩ 只产生 0.18 mV —— <strong>地轨不是 DRV2 的瓶颈，via 才是。</strong></p>
+<h3>R-CHK-01（不变）　PEX 敏感度必须逐网实测</h3>
+<blockquote>
+<p><strong>任何多级有源块，PEX 提取后必须做逐网归零敏感度扫描，并入设计签核。禁止用「几欧姆可以忽略」推断。</strong></p>
+</blockquote>
+<p>v2.1 实测的非单调性：在「地轨+发射极已归零」的基础上<strong>继续</strong>归零集电极 <code>rc</code>/供电 <code>vcc</code> 的串联电阻，
+增益<strong>反而再掉 5dB</strong>。即：增益由<strong>发射极退化 + 级间耦合 + 共用供电</strong>的反馈环路支配，
+<strong>各网贡献不可相加，渐进归零的顺序会改变结论</strong>。这条对任何多级有源电路都成立，不限于 HBT。</p>
+<h3>R-PEX-01（新增）　周长法 PEX 不得用于评估宽金属</h3>
+<blockquote>
+<p><strong>评估厚金属/宽金属方案时，电阻一律按 R = RSH × L/W 计算；第一阶「周长法」提取脚本只适用于窄线。</strong></p>
+</blockquote>
+<p>我方 v2.0 PEX（<code>phys/gilbert/pex/extract_pex_amp2.py</code>）用 <code>R = RSH × 周长</code>：</p>
+<table>
+<thead>
+<tr>
+<th>线宽</th>
+<th>长度</th>
+<th>真值 RSH·L/W</th>
+<th>周长法</th>
+<th>高估</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.5 µm</td>
+<td>14 µm</td>
+<td>3.50 Ω</td>
+<td>3.63 Ω</td>
+<td>1.04×（v2.0/v2.1 结论有效）</td>
+</tr>
+<tr>
+<td>6 µm</td>
+<td>7.5 µm</td>
+<td>0.156 Ω</td>
+<td>1.69 Ω</td>
+<td><strong>10.8×</strong></td>
+</tr>
+<tr>
+<td>10 µm</td>
+<td>5 µm</td>
+<td>0.063 Ω</td>
+<td>1.88 Ω</td>
+<td><strong>30×</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>不修正就会得出「厚金属方案电阻高得离谱、做不出来」的反向误判。宽金属要做矩形级串并联提取。</p>
+</blockquote>
+<h2>三、两条被实测推翻的「常识」</h2>
+<table>
+<thead>
+<tr>
+<th>常见做法</th>
+<th>实测结果</th>
+<th>正确做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加大发射极退化电阻 Re 来「压住」寄生</td>
+<td>45.8Ω→×2/×4/×8：增益 −3.04→−8.36/−9.13/−11.77 dB，Ic1 从 2.45 掉到 0.90 mA</td>
+<td><strong>降低回流路径 R</strong>；确需大 Re 必须同时改基极偏置为电流源/带隙</td>
+</tr>
+<tr>
+<td>via 电阻是版图寄生的大头</td>
+<td>0.15Ω→0 只值 1.94 dB（在 amp2 尺度上）</td>
+<td>amp2 尺度 via 不是重点；但<strong>在 DRV2/PA 尺度上 via 恰是预算的大项</strong>（R-VIA-01）—— 尺度决定结论，别外推</td>
+</tr>
+</tbody>
+</table>
+<h2>四、落地几何处方（DRV2/PA，预算 0.078Ω/边）</h2>
+<ul>
+<li><strong>金属 43 mΩ</strong>：TopMetal1（0.0625Ω/□ 估值）6µm 宽可走 <strong>7.5µm</strong>；M1/M2（0.125Ω/□）6µm 宽可走 <strong>4.6µm</strong>。双层并联后再翻倍。</li>
+<li><strong>via 23 mΩ</strong>：按 R-VIA-01 表定阵列（<strong>待实测回填</strong>）。</li>
+<li><strong>地轨 12 mΩ</strong>：任意粗短地轨即可（限值 341 mΩ）。</li>
+<li>走线不要「先横后拐」再拉回来：实测一条 14µm 的 M2 回折线就吃掉 1.75Ω。</li>
+</ul>
+<blockquote>
+<p>全部数字来自 v014 定稿板实测，可秒级复现：
+<code>python phys/gilbert/sim/opcheck_drv2.py</code>（工作点与预算表）、
+<code>python phys/gilbert/sim/emit_scan_drv2.py all</code>（回流电阻扫描）、
+<code>python phys/gilbert/sim/emit_route_plan.py</code>（几何处方表）。</p>
+</blockquote>
+<h2>五、与既有文件的关系</h2>
+<ul>
+<li>本文是<strong>新增条款</strong>，不修改 <code>design_circuit/layout_plan.md</code> 的既有内容；其 §11 已由组长增补本文引用。</li>
+<li>建议 b7e7 在 <code>layout_plan.md</code> 下一版把 R-EMIT-01/02、R-VIA-01、R-GND-01、R-PEX-01 并入各级版图检查表。</li>
+<li>引用口径：<code>A0</code> 是<strong>绝对电平 dBV</strong>（激励 50mV），<strong>电压增益 = A0 + 26.02 dB</strong>；
+  归零一律用 <code>1e-6Ω</code>（不写 0Ω）。</li>
+</ul>
+<p class="muted small">负面结论同样留档：Gilbert 混频级 4 种拓扑均未跑出合格乘积，
+测量口径与方法已固化 —— <a href="raw%3Fp=phys%252Fgilbert%252Freport%252F附_Gilbert混频级试跑记录.md">Gilbert 混频级试跑记录</a>。</p></main></body></html>

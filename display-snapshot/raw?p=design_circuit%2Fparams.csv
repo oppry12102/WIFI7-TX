@@ -1,0 +1,147 @@
+# WiFi7-TX 电路级参数表（唯一数据源，budget_check.py 读取）
+# 约定：EVM_dB = 10*log10(Perr/Psig)（组长预算表口径；RSS=−40.8dB 复算一致，见 design_circuit.md §1.3）
+# 单位：dB/dBm/mW/W/Hz/-；value 列一律为数值，note 供人读
+config,band,stage,param,value,unit,note
+spec,sys,SYS,evm_target_db,-41,dB,全链含PA设计目标
+spec,sys,SYS,evm_norm_db,-38,dB,802.11be 4096-QAM规范要求
+spec,sys,SYS,im3_k,0.75,-,双音IM3系数 k*P*(P/OIP3)^3
+spec,sys,SYS,evm_margin_min_db,2,dB,每块EVM须优于分配值此裕量
+spec,sys,SYS,evm_alloc_rss_db,-40.8,dB,任务书给定分配表RSS复算值
+spec,g56,PA,p_out_db,18,dBm,6G-320MHz@4096QAM
+spec,g24,PA,p_out_db,23,dBm,2.4G
+spec,g56,SYS,pdc_max_mw,1000,mW,6G-320满功率TX功耗上限
+spec,g24,SYS,pdc_max_mw,800,mW,2.4G TX功耗上限
+spec,sys,LO_IPN,ipn_max_dbc,-48,dBc,LO IPN 1k-100M
+arch,g56,DAC,pdc_mw,25,mW,架构链路功耗预算
+arch,g56,LPF,pdc_mw,13,mW,架构链路功耗预算
+arch,g56,VGA,pdc_mw,15,mW,架构链路功耗预算
+arch,g56,MIX,pdc_mw,33,mW,架构链路功耗预算
+arch,g56,DRV,pdc_mw,99,mW,架构链路功耗预算
+arch,g56,PA,pdc_mw,333,mW,架构链路功耗预算
+arch,g56,PLL,pdc_mw,55,mW,架构链路功耗预算
+arch,g24,DAC,pdc_mw,25,mW,架构链路功耗预算
+arch,g24,LPF,pdc_mw,13,mW,架构链路功耗预算
+arch,g24,VGA,pdc_mw,15,mW,架构链路功耗预算
+arch,g24,MIX,pdc_mw,33,mW,架构链路功耗预算
+arch,g24,DRV,pdc_mw,99,mW,架构链路功耗预算
+arch,g24,PA,pdc_mw,510,mW,2.4G链总750mW反推
+arch,g24,PLL,pdc_mw,55,mW,架构链路功耗预算
+arch,g56,VGA,gain_db,0,dB,满功率档(范围0~15dB)
+arch,g56,MIX,gain_db,0,dB,GM级+25%占空无源正交
+arch,g56,DRV,gain_db,6,dB,
+arch,g56,PA,gain_db,17,dB,
+arch,g24,VGA,gain_db,0,dB,
+arch,g24,MIX,gain_db,0,dB,
+arch,g24,DRV,gain_db,6,dB,
+arch,g24,PA,gain_db,22,dB,
+arch,g56,DRV,op1db_db,17,dBm,架构给出(输出参考)
+arch,g56,DAC,evm_alloc_db,-50,dB,
+arch,g56,LPF,evm_alloc_db,-55,dB,
+arch,g56,VGAMIX,evm_alloc_db,-48,dB,VGA+混频合并
+arch,g56,LO_IPN,evm_alloc_db,-48,dB,
+arch,g56,IQ_MM,evm_alloc_db,-52,dB,校准后
+arch,g56,LOFT,evm_alloc_db,-52,dB,校准后
+arch,g56,PA,evm_alloc_db,-46,dB,回退8dB
+arch,g24,DAC,evm_alloc_db,-50,dB,
+arch,g24,LPF,evm_alloc_db,-55,dB,
+arch,g24,VGAMIX,evm_alloc_db,-48,dB,
+arch,g24,LOIPN_NA,evm_alloc_db,-48,dB,
+arch,g24,LO_IPN,evm_alloc_db,-48,dB,
+arch,g24,IQ_MM,evm_alloc_db,-52,dB,
+arch,g24,LOFT,evm_alloc_db,-52,dB,
+arch,g24,PA,evm_alloc_db,-46,dB,
+design,g56,SYS,chain_in_db,-5,dBm,链入(DAC满量程)@50Ohm
+design,g56,DAC,gain_db,0,dB,
+design,g56,DAC,evm_block,DAC,,
+design,g56,DAC,evm_direct_db,-53,dB,INL/glitch/ISI三项RSS
+design,g56,DAC,pdc_mw,25,mW,
+design,g56,LPF,gain_db,0,dB,4阶fc420M
+design,g56,LPF,evm_block,LPF,,
+design,g56,LPF,evm_direct_db,-58,dB,通带幅相误差
+design,g56,LPF,pdc_mw,13,mW,
+design,g56,VGA,gain_db,0,dB,满功率档
+design,g56,VGA,oip3_db,18,dBm,输出参考
+design,g56,VGA,evm_block,VGAMIX,,
+design,g56,VGA,pdc_mw,15,mW,
+design,g56,MIX,gain_db,0,dB,gm级+2dB/无源混频-2dB
+design,g56,MIX,oip3_db,20,dBm,输出参考
+design,g56,MIX,evm_block,VGAMIX,,
+design,g56,MIX,pdc_mw,33,mW,
+design,g56,DRV,gain_db,6,dB,
+design,g56,DRV,oip3_db,26,dBm,
+design,g56,DRV,op1db_db,10,dBm,设计取+10dBm(省电60mW)
+design,g56,DRV,evm_block,PA,,
+design,g56,DRV,pdc_mw,40,mW,
+design,g56,PA,gain_db,17,dB,
+design,g56,PA,pae_at_p1db,0.25,~,6GHz PA在P1dB处效率
+design,g56,PA,oip3_over_p1db,8,dB,
+design,g56,PA,evm_block,PA,,
+design,g56,PA,pdc_mw,600,mW,
+design,g56,PA,dpd_im3_cancel_db,13,dB,DPD三阶IM3对消(换取PA直流)
+design,g56,PLL,pdc_mw,55,mW,
+design,g56,AUX,pdc_mw,40,mW,耦合器/检波/ADC/校准
+design,g56,DPD,pdc_mw,60,mW,数字预失真引擎(三阶IM3对消)
+design,g56,IQ_MM,evm_direct_db,-55,dB,校准后残余
+design,g56,LOFT,evm_direct_db,-55,dB,校准后残余
+design,g56,LO_IPN,f0_hz,6e9,Hz,输出频率
+design,g56,LO_IPN,vco_f_hz,6e9,Hz,5-6G直通
+design,g56,LO_IPN,f_ref_hz,1e8,Hz,100MHz VCXO
+design,g56,LO_IPN,pll_bw_hz,8e5,Hz,
+design,g56,LO_IPN,ref_l_100k_dbchz,-158,dBc/Hz,
+design,g56,LO_IPN,ref_slope_dbdec,20,dB/dec,1k-100k
+design,g56,LO_IPN,vco_l_100k_dbchz,-125,dBc/Hz,
+design,g56,LO_IPN,vco_flicker_hz,5e5,Hz,1/f3-1/f2转折
+design,g56,LO_IPN,vco_slope_below_dbdec,30,dB/dec,
+design,g56,LO_IPN,int_f_lo,1e3,Hz,积分下限
+design,g56,LO_IPN,int_f_hi,1e8,Hz,积分上限
+design,g56,LO_IPN,divider_n,1,-,无分频
+design,g56,LO_IPN,divider_l_dbchz,-140,dBc/Hz,分频器1/f底噪
+design,g24,SYS,chain_in_db,-5,dBm,
+design,g24,DAC,gain_db,0,dB,
+design,g24,DAC,evm_block,DAC,,
+design,g24,DAC,evm_direct_db,-53,dB,
+design,g24,DAC,pdc_mw,25,mW,
+design,g24,LPF,gain_db,0,dB,
+design,g24,LPF,evm_block,LPF,,
+design,g24,LPF,evm_direct_db,-58,dB,
+design,g24,LPF,pdc_mw,13,mW,
+design,g24,VGA,gain_db,0,dB,
+design,g24,VGA,oip3_db,18,dBm,
+design,g24,VGA,evm_block,VGAMIX,,
+design,g24,VGA,pdc_mw,15,mW,
+design,g24,MIX,gain_db,0,dB,
+design,g24,MIX,oip3_db,20,dBm,
+design,g24,MIX,evm_block,VGAMIX,,
+design,g24,MIX,pdc_mw,33,mW,
+design,g24,DRV,gain_db,6,dB,
+design,g24,DRV,oip3_db,26,dBm,
+design,g24,DRV,op1db_db,10,dBm,
+design,g24,DRV,evm_block,PA,,
+design,g24,DRV,pdc_mw,40,mW,
+design,g24,PA,gain_db,22,dB,
+design,g24,PA,pae_at_p1db,0.45,~,2.4GHz PA在P1dB处效率
+design,g24,PA,oip3_over_p1db,8,dB,
+design,g24,PA,evm_block,PA,,
+design,g24,PA,pdc_mw,450,mW,
+design,g24,PA,dpd_im3_cancel_db,24,dB,DPD三阶IM3对消(换取PA直流)
+design,g24,PLL,pdc_mw,55,mW,
+design,g24,AUX,pdc_mw,40,mW,
+design,g24,DPD,pdc_mw,60,mW,数字预失真引擎(三阶IM3对消)
+design,g24,IQ_MM,evm_direct_db,-55,dB,
+design,g24,LOFT,evm_direct_db,-55,dB,
+design,g24,LO_IPN,f0_hz,2.4e9,Hz,
+design,g24,LO_IPN,vco_f_hz,4.8e9,Hz,2.4G由VCO/2
+design,g24,LO_IPN,f_ref_hz,1e8,Hz,
+design,g24,LO_IPN,pll_bw_hz,8e5,Hz,
+design,g24,LO_IPN,ref_l_100k_dbchz,-158,dBc/Hz,
+design,g24,LO_IPN,ref_slope_dbdec,20,dB/dec,
+design,g24,LO_IPN,vco_l_100k_dbchz,-125,dBc/Hz,
+design,g24,LO_IPN,vco_flicker_hz,5e5,Hz,
+design,g24,LO_IPN,vco_slope_below_dbdec,30,dB/dec,
+design,g24,LO_IPN,int_f_lo,1e3,Hz,
+design,g24,LO_IPN,int_f_hi,1e8,Hz,
+design,g24,LO_IPN,divider_n,2,-,VCO/2
+design,g24,LO_IPN,divider_l_dbchz,-140,dBc/Hz,
+ref,sys,LO_IPN,alt_ref_1,40e6|-150,Hz|dBc/Hz,常规40MHz TCXO
+ref,sys,LO_IPN,alt_ref_2,1e8|-158,Hz|dBc/Hz,100MHz VCXO
+ref,sys,LO_IPN,alt_ref_3,1.25e8|-160,Hz|dBc/Hz,125MHz VCXO

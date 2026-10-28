@@ -1,0 +1,342 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+artifact_identity.py — 件身份判定器（b7a0，2026-10-19）
+
+立器动机（裁定六十五 §自纠③ 的工具化）：
+  我方在裁定六十四把「我方 8510 滞后镜像件 ca74fd53」当成「fde9 现役件」，
+  据此判对方 runbook 记载过期 —— 差点污染对方的谱系权威源。
+  根因不是「不知道有镜像台账」，而是**判身份靠人脑记忆，没有机器闸**。
+  本器把「这个 sha / 这个件名，在我方是现役还是镜像/历史/夹具」变成一次可复现查询。
+
+三条律的落地点：
+  ★★镜像件身份先验律  → whois / audit：对他人资产下结论前先查身份
+  ★★件引用双标识律    → census：同名多件必须靠 sha+目录区分，本器直接列出全部同名件
+  ★引用数字前必实测律  → 所有 sha 现算，不读任何既有记载
+
+用法：
+  python3 artifact_identity.py index                 # 建/刷新盘内索引（写 /tmp 与 phys/top/artifact_index.json）
+  python3 artifact_identity.py whois <sha8|件名>    # 判身份：命中路径 + 同名件全谱 + 8510 现役对照
+  python3 artifact_identity.py census [--top N]     # 同名多件普查（项目目录内）
+  python3 artifact_identity.py audit <md文件...>     # 扫文档里的 8 位 sha 引用，逐条判身份并标警
+  python3 artifact_identity.py live8510 [件名...]    # GET 8510 现役面回读（不传=白名单关键件）
+
+身份分类（按路径规则，可在 CLASSIFY 里改）：
+  LIVE_ANCHOR   现役面锚（phys/top/）
+  PUBLISH       我方发布面（outbox_files/design/sow6/ = 8510 白名单根）
+  RUN_DEPLOY    代跑部署（phys/sow6_run/run_v2/gen_vNN/）
+  PEER_LANDING  组员到件落地区（inbox_land/ inbox_get/ inbox_files/）
+  MIRROR_AUDIT  镜像审计区（sim_report/mirror_audit_*/ tmp_m5head/）
+  FIXTURE       夹具/自测件（含 selftest / fixture / rehearsal / dryrun）
+  VERIFY        我方复核隔离区（verify/）
+  ARCHIVE       其余（历史档）
+"""
+import os, sys, json, hashlib, re, urllib.request, urllib.parse, collections, time
+
+ROOT = '/data/workspace'
+# ★两个层次，勿串（本器首版即在此串面：把本地盘路径当成 8510 的 name 前缀 ⇒ 全 404）
+PUB_LOCAL = 'outbox_files/design/sow6'   # 本地盘：8510 白名单根
+PUB_REMOTE = 'design/sow6'               # 8510 /files 的 name= 前缀（相对白名单根）
+PUB = PUB_LOCAL                          # 兼容旧引用
+IDX_TMP = '/tmp/artifact_index.json'
+IDX_KEEP = os.path.join(ROOT, 'phys/top/artifact_index.json')
+KEYFILE = os.path.join(ROOT, 'filekey')
+BASE8510 = 'http://127.0.0.1:8510'
+
+SCAN_DIRS = ['phys', 'verify', 'run_v2', 'outbox_files', 'outbox_draft', 'design', 'design_circuit',
+             'sim_report', 'gds', 'incoming', 'inbox_files', 'inbox_get', 'inbox_land', 'tmp_m5head',
+             'tmp_gateB', 'tools', 'webui', 'playbook', 'pdk/sim', 'pex_in', 'fetch_v091',
+             'kb7a43', 'kb7a43_v1', 'research', 'dryrun', 'amem']
+SKIP_DIRNAMES = {'__pycache__', '.git', 'ngroot', 'openvaf', '.venv', 'node_modules', 'ihp_open'}
+MAXB = 20 * 1024 * 1024
+
+CLASSIFY = [
+    (r'^phys/top/', 'LIVE_ANCHOR'),
+    (r'^outbox_files/design/sow6/', 'PUBLISH'),
+    (r'^phys/sow6_run/run_v2/gen_v\d+/', 'RUN_DEPLOY'),
+    # ★代跑产出区（LVS/DRC run_dir、gds 出件）——首版漏了这层 ⇒ 提取件被误归 ARCHIVE 而假报 RISK
+    (r'^phys/sow6_run/run_v2/(lvs|gds)/', 'RUN_OUTPUT'),
+    (r'^phys/(drc|sow6_run)/', 'RUN_OUTPUT'),
+    (r'^gds/', 'RUN_OUTPUT'),
+    (r'^(inbox_land|inbox_get|inbox_files|incoming)/', 'PEER_LANDING'),
+    (r'^(sim_report/mirror_audit|tmp_m5head)/', 'MIRROR_AUDIT'),
+    (r'(selftest|fixture|rehearsal|dryrun)', 'FIXTURE'),
+    (r'^verify/', 'VERIFY'),
+]
+
+
+def classify(rel):
+    for pat, tag in CLASSIFY:
+        if re.search(pat, rel):
+            return tag
+    return 'ARCHIVE'
+
+
+def sha8(b):
+    return hashlib.sha256(b).hexdigest()[:8]
+
+
+def build_index(verbose=True):
+    byname = collections.defaultdict(list)
+    bysha = collections.defaultdict(list)
+    n = 0
+    for inc in SCAN_DIRS:
+        base = os.path.join(ROOT, inc)
+        if not os.path.isdir(base):
+            continue
+        for dp, dn, fn in os.walk(base):
+            dn[:] = [d for d in dn if d not in SKIP_DIRNAMES]
+            for f in fn:
+                p = os.path.join(dp, f)
+                try:
+                    sz = os.path.getsize(p)
+                    if sz > MAXB:
+                        continue
+                    h = hashlib.sha256(open(p, 'rb').read()).hexdigest()
+                except Exception:
+                    continue
+                rel = os.path.relpath(p, ROOT)
+                rec = {'path': rel, 'bytes': sz, 'sha256': h, 'sha8': h[:8], 'cls': classify(rel)}
+                byname[f].append(rec)
+                bysha[h[:8]].append(rec)
+                n += 1
+    idx = {'built_at': time.strftime('%FT%TZ', time.gmtime()), 'files': n,
+           'names': len(byname), 'byname': dict(byname), 'bysha': dict(bysha)}
+    json.dump(idx, open(IDX_TMP, 'w'))
+    try:
+        json.dump(idx, open(IDX_KEEP, 'w'))
+    except Exception as e:
+        print('WARN keep-index write failed:', e)
+    if verbose:
+        multi = sum(1 for v in byname.values() if len({r['sha256'] for r in v}) > 1)
+        print('indexed %d files / %d names / %d names with >1 sha -> %s' % (n, len(byname), multi, IDX_TMP))
+    return idx
+
+
+def load_index():
+    for p in (IDX_TMP, IDX_KEEP):
+        if os.path.exists(p):
+            try:
+                return json.load(open(p))
+            except Exception:
+                pass
+    return build_index()
+
+
+def tok8510():
+    try:
+        return open(KEYFILE).read().strip()
+    except Exception:
+        return None
+
+
+def get8510(name, tok=None):
+    tok = tok or tok8510()
+    if not tok:
+        return None
+    url = '%s/files?token=%s&name=%s/%s' % (BASE8510, tok, PUB_REMOTE, urllib.parse.quote(name))
+    try:
+        with urllib.request.urlopen(url, timeout=20) as r:
+            b = r.read()
+        return {'sha8': sha8(b), 'sha256': hashlib.sha256(b).hexdigest(), 'bytes': len(b)}
+    except Exception as e:
+        return {'error': str(e)}
+
+
+def cmd_whois(arg):
+    idx = load_index()
+    recs = idx['bysha'].get(arg) or idx['byname'].get(arg) or []
+    if not recs:
+        print('NO HIT in local index for %r' % arg)
+    name = recs[0]['path'].split('/')[-1] if recs else arg
+    print('=== %s : %d local copies ===' % (arg, len(recs)))
+    for r in sorted(recs, key=lambda x: x['path']):
+        print('  %-12s %-10s %9d  %s' % (r['cls'], r['sha8'], r['bytes'], r['path']))
+    fam = idx['byname'].get(name, [])
+    shas = sorted({r['sha8'] for r in fam})
+    print('--- same-name family: %s -> %d sha: %s' % (name, len(shas), ' '.join(shas)))
+    live = get8510(name)
+    if live:
+        if 'error' in live:
+            print('--- 8510 live: ERR %s' % live['error'])
+        else:
+            hit = [r for r in fam if r['sha8'] == live['sha8']]
+            print('--- 8510 live(PUBLISH face): %s %dB' % (live['sha8'], live['bytes']))
+            for r in hit:
+                print('      matches local: [%s] %s' % (r['cls'], r['path']))
+            if not hit:
+                print('      !! 8510 live sha NOT present locally -> local copies are ALL stale/mirror')
+    return recs
+
+
+def cmd_census(top=25):
+    idx = load_index()
+    multi = [(n, v) for n, v in idx['byname'].items() if len({r['sha256'] for r in v}) > 1]
+    multi.sort(key=lambda kv: (-len({r['sha256'] for r in kv[1]}), kv[0]))
+    print('names with >1 sha: %d (of %d names)' % (len(multi), len(idx['byname'])))
+    for n, v in multi[:top]:
+        shas = sorted({r['sha8'] for r in v})
+        print('\n%-44s %2d copies / %2d sha' % (n, len(v), len(shas)))
+        for r in sorted(v, key=lambda x: (x['cls'], x['path']))[:10]:
+            print('    %-12s %-10s %9d  %s' % (r['cls'], r['sha8'], r['bytes'], r['path']))
+        if len(v) > 10:
+            print('    ... +%d more' % (len(v) - 10))
+    return multi
+
+
+SHA_RE = re.compile(r'`([0-9a-f]{8})`')
+NAME_RE = re.compile(r'`?([A-Za-z0-9_\.\-\u4e00-\u9fff]+\.[A-Za-z0-9]{1,6})`?')
+# 风险分级：只有「本地有副本但只在镜像/落地/历史区」与「同名件在 8510 现役面是另一个 sha」才算真风险。
+# 「本地无副本」对他人资产是**正常态**（我方从不搬运对方全部件），只记 INFO，不报警——
+# 首版把 NOT-LOCAL 当警 ⇒ 53/137 全红，等于没有信号。
+RISKY_ONLY = {'MIRROR_AUDIT', 'PEER_LANDING', 'ARCHIVE', 'FIXTURE'}
+# 同行若已明确标注「这是旧件」，则引用旧 sha 是**合法**的（留档语义），降级不报警。
+ARCHIVE_WORDS = ('留档', '候补', '旧面', '降名', '降级', '历史', '作废', '撤销', '回滚', '原 ', '原版',
+                 '旧代', '旧装配', '冻结', 'ARCHIVE', 'archive', 'stale', 'prev', 'bak')
+
+
+def cmd_audit(paths, win=70, show_info=False):
+    idx = load_index()
+    live_cache = {}
+    tot = risk = okarch = info = 0
+    for p in paths:
+        if not os.path.exists(p):
+            print('SKIP missing', p)
+            continue
+        txt = open(p, encoding='utf-8', errors='replace').read()
+        lines = txt.splitlines()
+        print('\n########## %s (%d lines) ##########' % (p, len(lines)))
+        for i, ln in enumerate(lines, 1):
+            for m in SHA_RE.finditer(ln):
+                s = m.group(1)
+                tot += 1
+                recs = idx['bysha'].get(s, [])
+                # ★邻近窗配名（首版取「整行所有件名」⇒ 把同行无关件错配给本 sha，假阳性）
+                seg = ln[max(0, m.start() - win): m.end() + win]
+                nm = [x for x in NAME_RE.findall(seg)
+                      if not re.fullmatch(r'[0-9a-f]{8}', x) and x in idx['byname']]
+                tags = sorted({r['cls'] for r in recs})
+                declared = any(w in ln for w in ARCHIVE_WORDS)
+                lvl, why = '', ''
+                if not recs:
+                    lvl, why = 'INFO', 'not-local（他人资产/未搬运，正常态）'
+                elif not (set(tags) & {'PUBLISH', 'LIVE_ANCHOR', 'RUN_DEPLOY', 'RUN_OUTPUT', 'VERIFY'}):
+                    if declared:
+                        lvl, why = 'OKARCH', '本地副本只在 %s，但同行已声明留档语义 ⇒ 合法' % ','.join(tags)
+                    else:
+                        lvl, why = 'RISK', '本地副本只在 %s ⇒ 疑似镜像/历史件被当现役引用（同行无留档声明）' % ','.join(tags)
+                # 同名件在 8510 现役面是否为另一个 sha（★这是「件引用双标识律」的机器闸）
+                for n in set(nm):
+                    fam = idx['byname'].get(n, [])
+                    fs = {r['sha8'] for r in fam}
+                    if len(fs) > 1:
+                        if n not in live_cache:
+                            live_cache[n] = get8510(n)
+                        lv = live_cache[n]
+                        if lv and 'error' not in lv and lv['sha8'] != s and s in fs:
+                            if declared:
+                                lvl = lvl or 'OKARCH'
+                                why += ' | 同名件 %s 8510 现役=%s≠所引 %s（已声明留档）' % (n, lv['sha8'], s)
+                            else:
+                                lvl = 'RISK'
+                                why += ' | ★同名件 %s 的 8510 现役面=%s ≠ 本文所引 %s（同名多件×%d，未声明留档）' % (
+                                    n, lv['sha8'], s, len(fs))
+                if lvl == 'RISK':
+                    risk += 1
+                    print('L%-5d [RISK] %s  %s' % (i, s, why))
+                    print('        %s' % ln.strip()[:200])
+                    for r in recs[:5]:
+                        print('        [%s] %s' % (r['cls'], r['path']))
+                elif lvl == 'OKARCH':
+                    okarch += 1
+                    if show_info:
+                        print('L%-5d [ok-arch] %s %s' % (i, s, why))
+                elif lvl == 'INFO' and show_info:
+                    info += 1
+                    print('L%-5d [info] %s  %s' % (i, s, why))
+    print('\n=== audit: %d sha citations | RISK %d | ok-archive %d | not-local %d ==='
+          % (tot, risk, okarch, tot - risk - okarch))
+
+
+KEY_LIVE = ['m2_mix_v35.gds', 'm2_mix_v34.gds', 'm2_mix_v31.gds', 'm3_drv1_v21_r1.gds',
+            'm3_drv1_v21.gds', 'pex_mix_v27.cdl', 'pex_mix_v31.cdl', 'pex_drv1_v19.cdl',
+            'pex_drv2_v19.cdl', 'mix_subckt_LVS输入_v1g.sp', 'gen_M2_mix_v35.py',
+            'm5_pex_substitute_jia.py', 'm5_cdl_reship_check.py', 'lib13g2.py', 'cbpath.py']
+
+
+def cmd_live(names=None):
+    names = names or KEY_LIVE
+    idx = load_index()
+    print('%-34s %-10s %8s | %-10s %-12s | local shas' % ('8510 name', 'live sha8', 'bytes', 'pub sha8', 'verdict'))
+    for n in names:
+        lv = get8510(n)
+        fam = idx['byname'].get(n, [])
+        locs = sorted({r['sha8'] for r in fam})
+        pubrec = [r for r in fam if r['cls'] == 'PUBLISH']
+        pubs = pubrec[0]['sha8'] if pubrec else 'NOPUB'
+        if not lv or 'error' in lv:
+            print('%-34s ERR %s' % (n, (lv or {}).get('error')))
+            continue
+        if pubs == lv['sha8']:
+            v = 'PUB==LIVE'
+        else:
+            v = '!!PUB≠LIVE'
+        stale = [r for r in fam if r['sha8'] != lv['sha8']]
+        print('%-34s %-10s %8d | %-10s %-12s | %s%s' % (
+            n, lv['sha8'], lv['bytes'], pubs, v, ' '.join(locs),
+            ('  stale×%d' % len(stale)) if stale else ''))
+        for r in stale[:6]:
+            print('        stale [%s] %s %s' % (r['cls'], r['sha8'], r['path']))
+
+
+def run(cmd='whois', arg='', info=False, **kw):
+    """技能入口（register_skill 契约）。cmd=index/whois/census/audit/live8510。
+    arg：whois 的 sha8|件名；census 的 '--top N'；audit 的空格分隔 md 路径；live8510 的空格分隔件名。"""
+    import io as _io, contextlib as _cl
+    buf = _io.StringIO()
+    s = str(arg).strip()
+    # 多值子命令按空白拆分；whois 单值（件名可能含空格则整体保留）
+    if cmd in ('census', 'audit', 'live8510'):
+        a = [cmd] + (s.split() if s else [])
+    else:
+        a = [cmd] + ([s] if s else [])
+    if info and '--info' not in a:
+        a.append('--info')
+    old = sys.argv
+    try:
+        sys.argv = ['artifact_identity.py'] + a
+        with _cl.redirect_stdout(buf):
+            main()
+    finally:
+        sys.argv = old
+    return buf.getvalue()
+
+
+def main():
+    a = sys.argv[1:]
+    if not a:
+        print(__doc__)
+        return 0
+    c = a[0]
+    if c == 'index':
+        build_index()
+    elif c == 'whois':
+        cmd_whois(a[1])
+    elif c == 'census':
+        top = 25
+        if '--top' in a:
+            top = int(a[a.index('--top') + 1])
+        cmd_census(top)
+    elif c == 'audit':
+        rest = [x for x in a[1:] if not x.startswith('--')]
+        cmd_audit(rest, show_info=('--info' in a))
+    elif c == 'live8510':
+        cmd_live(a[1:] or None)
+    else:
+        print('unknown cmd', c)
+        return 2
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

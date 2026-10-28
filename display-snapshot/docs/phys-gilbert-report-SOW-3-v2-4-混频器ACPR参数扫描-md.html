@@ -1,0 +1,935 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOW-3 v2.4 · 混频器 ACPR 限制的参数扫描（阶段 1 粗扫 + 阶段 2 等功率处方） · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="../index.html" class="">总览</a><a href="../spec.html" class="">规格</a><a href="architecture-md.html" class="">架构</a><a href="../docs.html" class="on">文档</a><a href="../circuit.html" class="">电路</a><a href="../layout.html" class="">版图</a><a href="../phys.html" class="">版图实证</a><a href="../dyn.html" class="">动态指标</a><a href="../scan.html" class="">ACPR 扫描</a><a href="../netlist.html" class="">网表</a><a href="../sim.html" class="">仿真</a><a href="../tree.html" class="">文件树</a><a href="../data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><p class="muted"><a href="../docs.html">← 文档库</a> · 动态指标与 ACPR（v2.3/v2.4） · phys/gilbert/report/SOW-3_v2.4_混频器ACPR参数扫描.md · 127 行 · sha256 d518b08f50fd… · 2026-10-16 13:29 · <a href="http://62.234.172.57:8600/raw?p=phys/gilbert/report/SOW-3_v2.4_%E6%B7%B7%E9%A2%91%E5%99%A8ACPR%E5%8F%82%E6%95%B0%E6%89%AB%E6%8F%8F.md">下载原文</a></p><div class="card"><h1 id="sow-3-v24-acpr-1-2">SOW-3 v2.4 · 混频器 ACPR 限制的参数扫描（阶段 1 粗扫 + 阶段 2 等功率处方）</h1>
+<ul>
+<li>版本：<strong>v1.0</strong>（组长 b7a0 代跑，2026-10-16T12:37~13:2xZ）</li>
+<li>数据源：<code>pdk/sim/v014/chain_top_tb_v014.sp</code>（b7e7 定稿板，混频器子电路按轴改参数，网表其余零改）</li>
+<li>判读口径（与 v2.3 冻结口径同源）：v2.3 冻结口径：相干窗 200ns / 64 音 5..320MHz / Δf=5MHz / 2ps / 逐 bin 直读</li>
+<li>激励：64 音等幅多载波（5…320 MHz，间隔 5 MHz）经 LO 5.5 GHz 上变频 = 320 MHz 信道 DSB 表示；相干窗 200 ns、Δf = 5 MHz、逐 bin 直读。</li>
+</ul>
+<h2 id="0">0. 为什么要扫（问题定义）</h2>
+<p>v2.3 全链动态实测证明：<strong>混频器是 ACPR 的第一限制级</strong>——×1 档链出 ACPR1 = −27.7 dBc 时，混频器出已经是 −36.9 dBc；再往上驱动，混频器进入硬压缩（输出只涨 5 dB，ACPR 塌 13 dB）。spec S6 判据是 <strong>≥ 45 dBc</strong>，线性区实测只有 −43.95 dBc（裕 1.05 dB）。本轮回答的是<strong>可设计的问题</strong>：哪几个参数能换回 dB、代价是什么。</p>
+<p>基线（v014 原样，×1 档）：混频器出 -26.63 dBm / ACPR1 -36.88 dBc / EVM -54.9 dB / i_mix 39.9 mA / Vce_sw 1.186 V / Vce_gm 0.961 V。</p>
+<p><strong>DC 判据口径（重要，别踩坑）</strong>：45 mA 判据线是<strong>混频器自身电流</strong>（XBI1+XBI2 两条尾流之和，b7e7 口径 typ 记 44.6 mA），<strong>不是全链 Vcc</strong>——本轮实测全链 Vcc = 0.51 A 级（含 LO_BUF+DRV1+DRV2），把它当 45 mA 线会全表误判。Vce 门按<strong>混频器基线实测值</strong>定（开关对 1.186 V、gm 对 0.961 V），不套 drv2 的 1.2 V 线（那是共基/CB 驱动的门）。</p>
+<h2 id="1-129-1">1. 阶段 1：一次一因子粗扫（29 变体，同一输入 ×1 档）</h2>
+<blockquote>
+<p>读表纪律：各变体增益不同 ⇒ 输出功率不同 ⇒ <strong>ACPR 不可直接横比</strong>。所以下面每行都给「ACPR + 输出功率」两列，真正的处方在第 2 节。</p>
+</blockquote>
+<h3 id="11-gm-nx-rf-gm-gm">1.1 gm 跨导对管尺寸 nx —— RF 口线性度 ↔ gm 兑换率（gm 越小越线性，但增益/驱动能力同步下降）</h3>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>混频器出 Pmt</th>
+<th>混频器 ACPR1</th>
+<th>ΔACPR(vs 基线)</th>
+<th>EVM</th>
+<th>纹波</th>
+<th>IM3@带边</th>
+<th>链出 ACPR1</th>
+<th>i_mix</th>
+<th>Vce_sw</th>
+<th>ΔVce_sw</th>
+<th>Vce_gm</th>
+<th>DC门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>-27.70 dBm</td>
+<td>-46.46 dBc</td>
+<td>+9.59 dB</td>
+<td>-52.1 dB</td>
+<td>0.45 dB</td>
+<td>-53.33 dBc</td>
+<td>-27.01 dBc</td>
+<td>37.6 mA</td>
+<td>1.171 V</td>
+<td>-0.015 V</td>
+<td>1.024 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>3 <strong>(基线)</strong></td>
+<td>-26.63 dBm</td>
+<td>-36.88 dBc</td>
+<td>+0.00 dB</td>
+<td>-54.9 dB</td>
+<td>0.19 dB</td>
+<td>-44.17 dBc</td>
+<td>-27.67 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>4</td>
+<td>-25.98 dBm</td>
+<td>-32.95 dBc</td>
+<td>-3.93 dB</td>
+<td>-56.9 dB</td>
+<td>0.21 dB</td>
+<td>-40.80 dBc</td>
+<td>-27.01 dBc</td>
+<td>40.8 mA</td>
+<td>1.192 V</td>
+<td>+0.006 V</td>
+<td>0.923 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>6</td>
+<td>-25.17 dBm</td>
+<td>-31.18 dBc</td>
+<td>-5.69 dB</td>
+<td>-56.0 dB</td>
+<td>0.31 dB</td>
+<td>-39.06 dBc</td>
+<td>-25.20 dBc</td>
+<td>41.4 mA</td>
+<td>1.196 V</td>
+<td>+0.010 V</td>
+<td>0.880 V</td>
+<td><strong>待确认</strong></td>
+</tr>
+<tr>
+<td>8</td>
+<td>-24.67 dBm</td>
+<td>-30.36 dBc</td>
+<td>-6.52 dB</td>
+<td>-54.5 dB</td>
+<td>0.39 dB</td>
+<td>-38.22 dBc</td>
+<td>-24.07 dBc</td>
+<td>41.7 mA</td>
+<td>1.198 V</td>
+<td>+0.012 V</td>
+<td>0.856 V</td>
+<td><strong>待确认</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-gm-re-gm">1.2 gm 对发射极退化 Re —— 线性 ↑ / gm ↓ 的经典兑换旋钮，不加直流功耗</h3>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>混频器出 Pmt</th>
+<th>混频器 ACPR1</th>
+<th>ΔACPR(vs 基线)</th>
+<th>EVM</th>
+<th>纹波</th>
+<th>IM3@带边</th>
+<th>链出 ACPR1</th>
+<th>i_mix</th>
+<th>Vce_sw</th>
+<th>ΔVce_sw</th>
+<th>Vce_gm</th>
+<th>DC门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>-23.27 dBm</td>
+<td>-36.54 dBc</td>
+<td>-0.34 dB</td>
+<td>-46.0 dB</td>
+<td>0.59 dB</td>
+<td>-42.48 dBc</td>
+<td>-19.55 dBc</td>
+<td>41.7 mA</td>
+<td>1.198 V</td>
+<td>+0.012 V</td>
+<td>0.862 V</td>
+<td><strong>待确认</strong></td>
+</tr>
+<tr>
+<td>10</td>
+<td>-25.22 dBm</td>
+<td>-36.45 dBc</td>
+<td>-0.42 dB</td>
+<td>-50.3 dB</td>
+<td>0.34 dB</td>
+<td>-43.16 dBc</td>
+<td>-23.93 dBc</td>
+<td>40.9 mA</td>
+<td>1.193 V</td>
+<td>+0.007 V</td>
+<td>0.913 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>15 <strong>(基线)</strong></td>
+<td>-26.63 dBm</td>
+<td>-36.88 dBc</td>
+<td>+0.00 dB</td>
+<td>-54.9 dB</td>
+<td>0.19 dB</td>
+<td>-44.17 dBc</td>
+<td>-27.67 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>30</td>
+<td>-28.84 dBm</td>
+<td>-41.93 dBc</td>
+<td>+5.05 dB</td>
+<td>-64.1 dB</td>
+<td>0.10 dB</td>
+<td>-49.74 dBc</td>
+<td>-32.66 dBc</td>
+<td>35.0 mA</td>
+<td>1.156 V</td>
+<td>-0.030 V</td>
+<td>1.078 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>50</td>
+<td>-30.04 dBm</td>
+<td>-53.90 dBc</td>
+<td>+17.02 dB</td>
+<td>-59.5 dB</td>
+<td>0.08 dB</td>
+<td>-61.53 dBc</td>
+<td>-33.70 dBc</td>
+<td>28.9 mA</td>
+<td>1.121 V</td>
+<td>-0.065 V</td>
+<td>1.182 V</td>
+<td><strong>待确认</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-lo-nx">1.3 LO 开关对尺寸 nx —— 开关锐度 ↔ 电流窃取 ↔ 尾流能否全部进负载</h3>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>混频器出 Pmt</th>
+<th>混频器 ACPR1</th>
+<th>ΔACPR(vs 基线)</th>
+<th>EVM</th>
+<th>纹波</th>
+<th>IM3@带边</th>
+<th>链出 ACPR1</th>
+<th>i_mix</th>
+<th>Vce_sw</th>
+<th>ΔVce_sw</th>
+<th>Vce_gm</th>
+<th>DC门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>-35.71 dBm</td>
+<td>-33.75 dBc</td>
+<td>-3.13 dB</td>
+<td>-47.4 dB</td>
+<td>0.33 dB</td>
+<td>-40.92 dBc</td>
+<td>-32.08 dBc</td>
+<td>39.8 mA</td>
+<td>1.339 V</td>
+<td>+0.153 V</td>
+<td>0.810 V</td>
+<td><strong>待确认</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>-30.19 dBm</td>
+<td>-38.59 dBc</td>
+<td>+1.71 dB</td>
+<td>-57.9 dB</td>
+<td>0.17 dB</td>
+<td>-45.47 dBc</td>
+<td>-39.36 dBc</td>
+<td>39.8 mA</td>
+<td>1.236 V</td>
+<td>+0.050 V</td>
+<td>0.911 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>4 <strong>(基线)</strong></td>
+<td>-26.63 dBm</td>
+<td>-36.88 dBc</td>
+<td>+0.00 dB</td>
+<td>-54.9 dB</td>
+<td>0.19 dB</td>
+<td>-44.17 dBc</td>
+<td>-27.67 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>6</td>
+<td>-22.45 dBm</td>
+<td>-51.91 dBc</td>
+<td>+15.03 dB</td>
+<td>-49.4 dB</td>
+<td>0.47 dB</td>
+<td>-59.07 dBc</td>
+<td>-17.51 dBc</td>
+<td>39.9 mA</td>
+<td>1.134 V</td>
+<td>-0.052 V</td>
+<td>1.012 V</td>
+<td><strong>待确认</strong></td>
+</tr>
+<tr>
+<td>8</td>
+<td>-20.48 dBm</td>
+<td>-47.52 dBc</td>
+<td>+10.64 dB</td>
+<td>-47.3 dB</td>
+<td>0.62 dB</td>
+<td>-55.70 dBc</td>
+<td>-14.70 dBc</td>
+<td>39.9 mA</td>
+<td>1.107 V</td>
+<td>-0.079 V</td>
+<td>1.039 V</td>
+<td><strong>待确认</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-lo-rd12-lo-vbe-lo">1.4 LO 口串阻 Rd1/2 —— LO 驱动摆幅 ↔ 开关管 Vbe 摆幅（影响开关导通角与 LO 非线性产物）</h3>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>混频器出 Pmt</th>
+<th>混频器 ACPR1</th>
+<th>ΔACPR(vs 基线)</th>
+<th>EVM</th>
+<th>纹波</th>
+<th>IM3@带边</th>
+<th>链出 ACPR1</th>
+<th>i_mix</th>
+<th>Vce_sw</th>
+<th>ΔVce_sw</th>
+<th>Vce_gm</th>
+<th>DC门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>-26.52 dBm</td>
+<td>-36.98 dBc</td>
+<td>+0.11 dB</td>
+<td>-54.8 dB</td>
+<td>0.20 dB</td>
+<td>-44.25 dBc</td>
+<td>-27.31 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>-0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>5</td>
+<td>-26.56 dBm</td>
+<td>-36.94 dBc</td>
+<td>+0.07 dB</td>
+<td>-54.9 dB</td>
+<td>0.19 dB</td>
+<td>-44.22 dBc</td>
+<td>-27.44 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>-0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>10 <strong>(基线)</strong></td>
+<td>-26.63 dBm</td>
+<td>-36.88 dBc</td>
+<td>+0.00 dB</td>
+<td>-54.9 dB</td>
+<td>0.19 dB</td>
+<td>-44.17 dBc</td>
+<td>-27.67 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>20</td>
+<td>-26.77 dBm</td>
+<td>-36.76 dBc</td>
+<td>-0.11 dB</td>
+<td>-55.1 dB</td>
+<td>0.19 dB</td>
+<td>-44.08 dBc</td>
+<td>-28.13 dBc</td>
+<td>39.9 mA</td>
+<td>1.187 V</td>
+<td>+0.001 V</td>
+<td>0.960 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>40</td>
+<td>-27.08 dBm</td>
+<td>-36.58 dBc</td>
+<td>-0.30 dB</td>
+<td>-55.3 dB</td>
+<td>0.18 dB</td>
+<td>-43.92 dBc</td>
+<td>-29.12 dBc</td>
+<td>39.9 mA</td>
+<td>1.188 V</td>
+<td>+0.002 V</td>
+<td>0.959 V</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table>
+<h3 id="15-lo-cc12-lo">1.5 LO 交流耦合 Cc1/2 —— LO 驱动电平，唯一<strong>不加直流功耗</strong>的驱动旋钮</h3>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>混频器出 Pmt</th>
+<th>混频器 ACPR1</th>
+<th>ΔACPR(vs 基线)</th>
+<th>EVM</th>
+<th>纹波</th>
+<th>IM3@带边</th>
+<th>链出 ACPR1</th>
+<th>i_mix</th>
+<th>Vce_sw</th>
+<th>ΔVce_sw</th>
+<th>Vce_gm</th>
+<th>DC门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3p</td>
+<td>-26.84 dBm</td>
+<td>-36.71 dBc</td>
+<td>-0.17 dB</td>
+<td>-55.1 dB</td>
+<td>0.19 dB</td>
+<td>-44.02 dBc</td>
+<td>-28.35 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>5p</td>
+<td>-26.72 dBm</td>
+<td>-36.81 dBc</td>
+<td>-0.06 dB</td>
+<td>-55.0 dB</td>
+<td>0.19 dB</td>
+<td>-44.11 dBc</td>
+<td>-27.96 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>10p <strong>(基线)</strong></td>
+<td>-26.63 dBm</td>
+<td>-36.88 dBc</td>
+<td>+0.00 dB</td>
+<td>-54.9 dB</td>
+<td>0.19 dB</td>
+<td>-44.17 dBc</td>
+<td>-27.67 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>20p</td>
+<td>-26.58 dBm</td>
+<td>-36.81 dBc</td>
+<td>-0.06 dB</td>
+<td>-54.8 dB</td>
+<td>0.20 dB</td>
+<td>-44.12 dBc</td>
+<td>-27.54 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>50p</td>
+<td>-26.55 dBm</td>
+<td>-36.59 dBc</td>
+<td>-0.28 dB</td>
+<td>-54.6 dB</td>
+<td>0.20 dB</td>
+<td>-43.96 dBc</td>
+<td>-27.51 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table>
+<h3 id="16-rf-rl12-acpr">1.6 混频器 RF 负载 RL1/2 —— 输出摆幅 ↔ 压缩点（同时改写 ACPR 判据点本身）</h3>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>混频器出 Pmt</th>
+<th>混频器 ACPR1</th>
+<th>ΔACPR(vs 基线)</th>
+<th>EVM</th>
+<th>纹波</th>
+<th>IM3@带边</th>
+<th>链出 ACPR1</th>
+<th>i_mix</th>
+<th>Vce_sw</th>
+<th>ΔVce_sw</th>
+<th>Vce_gm</th>
+<th>DC门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>25</td>
+<td>-29.61 dBm</td>
+<td>-36.89 dBc</td>
+<td>+0.01 dB</td>
+<td>-55.1 dB</td>
+<td>0.15 dB</td>
+<td>-44.20 dBc</td>
+<td>-37.99 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>45 <strong>(基线)</strong></td>
+<td>-26.63 dBm</td>
+<td>-36.88 dBc</td>
+<td>+0.00 dB</td>
+<td>-54.9 dB</td>
+<td>0.19 dB</td>
+<td>-44.17 dBc</td>
+<td>-27.67 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>60</td>
+<td>-25.44 dBm</td>
+<td>-36.84 dBc</td>
+<td>-0.04 dB</td>
+<td>-54.8 dB</td>
+<td>0.22 dB</td>
+<td>-44.13 dBc</td>
+<td>-24.48 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>90</td>
+<td>-24.06 dBm</td>
+<td>-36.78 dBc</td>
+<td>-0.10 dB</td>
+<td>-54.6 dB</td>
+<td>0.26 dB</td>
+<td>-44.06 dBc</td>
+<td>-21.26 dBc</td>
+<td>39.9 mA</td>
+<td>1.186 V</td>
+<td>+0.000 V</td>
+<td>0.961 V</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-2">2. 阶段 2：等功率 / 等线性处方（这才是给设计岗的数字）</h2>
+<p>两条工程量：① <strong>P_REF = -26.63 dBm（基线 ×1 档混频器输出）处的 ACPR / EVM</strong>——同功率比线性；② <strong>ACPR = −45 dBc（S6 判据）时的最大输出功率</strong>——这条链能给到多大功率。每个候选跑 ×0.5/×1/×2 三档输入得 (Pmt, ACPR, EVM, 纹波) 曲线后插值；基线曲线复用 v2.3 的 mt0p5/mt1/mt2（同 deck 同口径，不重跑）。<strong>EVM 必须同表看</strong>：有的旋钮换 ACPR 是拿 EVM 去换的。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>曲线来源</th>
+<th>三点 (Pmt/ACPR)</th>
+<th>P_REF 处 ACPR</th>
+<th>ΔACPR</th>
+<th>P_REF 处 EVM</th>
+<th>ΔEVM</th>
+<th>P_REF 处纹波</th>
+<th>ACPR=−45dBc 时最大输出</th>
+<th>ΔP</th>
+<th>外推?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline · v014 原样</td>
+<td>v2.3 mt0p5/mt1/mt2</td>
+<td>-32.9/-45.6 · -26.6/-36.9 · -20.3/-33.1</td>
+<td><strong>-36.88 dBc</strong></td>
+<td>+0.00</td>
+<td>-54.93 dB</td>
+<td>+0.00</td>
+<td>0.19 dB</td>
+<td><strong>-32.40 dBm</strong></td>
+<td>+0.00</td>
+<td>否</td>
+</tr>
+<tr>
+<td>gmnx2 · gm 对 nx 3→2（DC 门过）</td>
+<td>x0.5:p2 x1:p1 x2:p2</td>
+<td>-33.6/-53.0 · -27.7/-46.5 · -21.5/-36.2</td>
+<td><strong>-44.70 dBc</strong></td>
+<td>-7.83</td>
+<td>-52.02 dB</td>
+<td>+2.91</td>
+<td>0.46 dB</td>
+<td><strong>-26.81 dBm</strong></td>
+<td>+5.59</td>
+<td>否</td>
+</tr>
+<tr>
+<td>swnx6 · LO 开关对 nx 4→6（DC 软门待确认）</td>
+<td>x0.5:p2 x1:p1 x2:p2</td>
+<td>-28.5/-59.4 · -22.4/-51.9 · -16.6/-35.1</td>
+<td><strong>-57.10 dBc</strong></td>
+<td>-20.22</td>
+<td>-49.43 dB</td>
+<td>+5.49</td>
+<td>0.45 dB</td>
+<td><strong>-20.07 dBm</strong></td>
+<td>+12.34</td>
+<td>否</td>
+</tr>
+<tr>
+<td>gmnx2_swnx6 · 两者叠加：RF 口线性 + 开关锐度</td>
+<td>x0.5:p2 x1:p2 x2:p2</td>
+<td>-29.4/-54.8 · -23.5/-38.1 · -17.8/-32.8</td>
+<td><strong>-46.94 dBc</strong></td>
+<td>-10.06</td>
+<td>-46.87 dB</td>
+<td>+8.05</td>
+<td>0.71 dB</td>
+<td><strong>-25.95 dBm</strong></td>
+<td>+6.46</td>
+<td>否</td>
+</tr>
+<tr>
+<td>regm30 · gm 退化 15→30 Ω（DC 门过）</td>
+<td>x0.5:p2 x1:p1 x2:p2</td>
+<td>-35.0/-52.6 · -28.8/-41.9 · -22.6/-36.8</td>
+<td><strong>-40.13 dBc</strong></td>
+<td>-3.26</td>
+<td>-60.81 dB</td>
+<td>-5.88</td>
+<td>0.15 dB</td>
+<td><strong>-30.61 dBm</strong></td>
+<td>+1.79</td>
+<td>否</td>
+</tr>
+<tr>
+<td>swnx5 · LO 开关对 nx 4→5（swnx6 与基线之间的 Vce 折中档）</td>
+<td>x0.5:p2 x1:p2 x2:p2</td>
+<td>-30.3/-50.4 · -24.1/-41.9 · -18.1/-44.7</td>
+<td><strong>-45.30 dBc</strong></td>
+<td>-8.42</td>
+<td>-51.67 dB</td>
+<td>+3.26</td>
+<td>0.34 dB</td>
+<td><strong>-26.42 dBm</strong></td>
+<td>+5.99</td>
+<td>否</td>
+</tr>
+<tr>
+<td>regm30_swnx6 · gm 退化 30 Ω + LO 开关对 nx=6（两头都要）</td>
+<td>x0.5:p2 x1:p2 x2:p2</td>
+<td>-31.1/-70.1 · -25.1/-58.5 · -19.1/-41.3</td>
+<td><strong>-61.54 dBc</strong></td>
+<td>-24.66</td>
+<td>-53.87 dB</td>
+<td>+1.06</td>
+<td>0.24 dB</td>
+<td><strong>-20.40 dBm</strong></td>
+<td>+12.01</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>（Pmt 单位 dBm、ACPR 单位 dBc；「外推」= 目标点不在三点区间内，线性外推，可信度低一档。）</p>
+<h3 id="21-pacpr45-dc">2.1 处方阶梯（按 ΔP@ACPR=−45 排序，含 DC 门）</h3>
+<table>
+<thead>
+<tr>
+<th>档</th>
+<th>方案</th>
+<th>ACPR 改善@P_REF</th>
+<th>EVM 变化@P_REF</th>
+<th>Δ 混频器电流</th>
+<th>ΔVce_sw</th>
+<th>ACPR 限输出</th>
+<th>ΔP</th>
+<th>DC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>待确认档</td>
+<td>swnx6 · LO 开关对 nx 4→6（DC 软门待确认）</td>
+<td><strong>+20.2 dB</strong>（改善）</td>
+<td>+5.5 dB</td>
+<td>+0.0 mA</td>
+<td>-0.052 V</td>
+<td>-20.1 dBm</td>
+<td>+12.3 dB</td>
+<td><strong>待确认（Vce_sw）</strong></td>
+</tr>
+<tr>
+<td>推荐</td>
+<td>regm30_swnx6 · gm 退化 30 Ω + LO 开关对 nx=6（两头都要）</td>
+<td><strong>+24.7 dB</strong>（改善）</td>
+<td>+1.1 dB</td>
+<td>-4.9 mA</td>
+<td>-0.074 V</td>
+<td>-20.4 dBm</td>
+<td>+12.0 dB</td>
+<td><strong>待确认（Vce_sw）</strong></td>
+</tr>
+<tr>
+<td>待确认档</td>
+<td>gmnx2_swnx6 · 两者叠加：RF 口线性 + 开关锐度</td>
+<td><strong>+10.1 dB</strong>（改善）</td>
+<td>+8.1 dB</td>
+<td>-2.3 mA</td>
+<td>-0.063 V</td>
+<td>-25.9 dBm</td>
+<td>+6.5 dB</td>
+<td><strong>待确认（Vce_sw）</strong></td>
+</tr>
+<tr>
+<td>保守</td>
+<td>swnx5 · LO 开关对 nx 4→5（swnx6 与基线之间的 Vce 折中档）</td>
+<td><strong>+8.4 dB</strong>（改善）</td>
+<td>+3.3 dB</td>
+<td>+0.0 mA</td>
+<td>-0.031 V</td>
+<td>-26.4 dBm</td>
+<td>+6.0 dB</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>保守</td>
+<td>gmnx2 · gm 对 nx 3→2（DC 门过）</td>
+<td><strong>+7.8 dB</strong>（改善）</td>
+<td>+2.9 dB</td>
+<td>-2.3 mA</td>
+<td>-0.015 V</td>
+<td>-26.8 dBm</td>
+<td>+5.6 dB</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>保守</td>
+<td>regm30 · gm 退化 15→30 Ω（DC 门过）</td>
+<td><strong>+3.3 dB</strong>（改善）</td>
+<td>-5.9 dB</td>
+<td>-4.9 mA</td>
+<td>-0.030 V</td>
+<td>-30.6 dBm</td>
+<td>+1.8 dB</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table>
+<p>读法：<strong>推荐档</strong>是等功率 ACPR 改善最大、且电流反而下降的方案，唯一待确认项是 LO 开关对 Vce_sw 下降约 0.07 V（1.186 → 1.112 V，未进饱和，但偏离基线，需电路设计岗签字）；<strong>保守档</strong>在 DC 门内全过，代价是改善只有推荐档的三分之一左右。两档都要在<strong>级间阻抗匹配完成后</strong>重测，因为 drv 段当前的负增益会吃掉混频器侧的一部分收益。</p>
+<h2 id="3">3. 结论与派工</h2>
+<p><strong>① 六个旋钮里只有三个真的在动非线性</strong>（其余三轴 ACPR 变化 &lt; 0.3 dB，它们只改增益与摆幅、不改失真机理——写进报告是为了否证，不是为了用）：
+  - <strong>LO 开关对尺寸 nx</strong>：ACPR 跨度 <strong>18.2 dB</strong>；DC 门内最好档 3 → -38.59 dBc（Δ+1.7 dB，输出 -30.2 dBm （Δ-3.6 dB），Vce_sw 1.236 V）
+  - <strong>gm 对发射极退化 Re</strong>：ACPR 跨度 <strong>17.4 dB</strong>；DC 门内最好档 30 → -41.93 dBc（Δ+5.1 dB，输出 -28.8 dBm （Δ-2.2 dB），Vce_sw 1.156 V）
+  - <strong>gm 跨导对管尺寸 nx</strong>：ACPR 跨度 <strong>16.1 dB</strong>；DC 门内最好档 2 → -46.46 dBc（Δ+9.6 dB，输出 -27.7 dBm （Δ-1.1 dB），Vce_sw 1.171 V）
+  - <strong>LO 口串阻 Rd1/2</strong>：ACPR 跨度 <strong>0.4 dB</strong>；DC 门内最好档 2 → -36.98 dBc（Δ+0.1 dB，输出 -26.5 dBm （Δ+0.1 dB），Vce_sw 1.186 V）
+  - <strong>LO 交流耦合 Cc1/2</strong>：ACPR 跨度 <strong>0.3 dB</strong>；DC 门内最好档 10p → -36.88 dBc（Δ+0.0 dB，输出 -26.6 dBm （Δ+0.0 dB），Vce_sw 1.186 V）
+  - <strong>混频器 RF 负载 RL1/2</strong>：ACPR 跨度 <strong>0.1 dB</strong>；DC 门内最好档 25 → -36.89 dBc（Δ+0.0 dB，输出 -29.6 dBm （Δ-3.0 dB），Vce_sw 1.186 V）</p>
+<p><strong>② 为什么 gm 对管变小 / 开关对变大反而更线性</strong>（机理，不是玄学）：
+  · gm 对 nx 3→2：每只管的电流密度下降、Vce 摆幅余量变大 → gm 对的 RF 口压缩点后移；代价是 gm 下降，但尾流同步下降（i_mix 39.9→37.6 mA）且开关对拿到的电流更多，<strong>净效果是输出功率还涨了 1.1 dB</strong>——这是本轮最干净的一个结果（DC 全过、无副作用）。
+  · LO 开关对 nx 4→6：开关锐度提高 → 尾流在「不导通」那侧的漏流减少 → 有效输出/总电流比上升（实测输出涨 4.2 dB），同时开关对基极电流上升把 nswa 抬高 → <strong>Vce_sw 由 1.186 V 降到 1.134 V</strong>。这一点必须由电路设计岗确认是否可接受（HBT 未进饱和，但偏离基线 0.05 V）。
+  · gm 退化 Re 15→30/50 Ω：教科书式线性兑换（纹波 0.19→0.10/0.08 dB，EVM −54.9→−64.1 dB），代价是输出功率掉 2~3.4 dB；Re=50 Ω 时尾流电压被压到 0.197 V、混频器电流掉到 28.9 mA，<strong>偏离设计工作点过多，DC 门不过</strong>，不采纳为处方。</p>
+<p><strong>③ 处方排序（交 b7e7，落 v015 草案）</strong>：见第 2 节等功率表——「ACPR=−45 dBc 时最大输出功率」这一列直接决定这条链能给到多大功率，优先看它。</p>
+<p><strong>④ 与 v2.3 结论②（级间阻抗未匹配）是串联关系</strong>：级间匹配决定链级总增益与后级压缩，混频器旋钮决定 ACPR 起点。落地顺序 = <strong>先级间匹配（b7e7 在办）→ 再按本轮等功率表调混频器旋钮</strong>→ 两者叠加后重测 /dyn 全表。</p>
+<p><strong>⑤ 本轮未覆盖（写明以免被当结论）</strong>：① 只扫 typ 27 °C 单角，无 PVT；② 只扫 5.5 GHz LO（2.4 GHz 档同结构未扫）；③ 混频器 ACPR 与链级 ACPR 一起给，但 drv 段仍是负增益，链级 ACPR 的最优工作点会被 drv 压缩拖低——<strong>级间匹配没做完之前，混频器侧的改善不会 1:1 传到天线口</strong>；④ S11 镜像抑制本 bench 测不了（缺 I/Q 正交激励，理由见 spec §12.5 注）。</p><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */.codehilite{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:8px 10px}</style></div></main></body></html>

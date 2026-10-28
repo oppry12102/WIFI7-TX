@@ -1,0 +1,62 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>迭代 · WiFi7-TX 设计交付全景</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:#c9d6e8;
+ font:15px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif}
+a{color:#7cc4ff;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#0d1524f0;backdrop-filter:blur(6px);
+ border-bottom:1px solid #1e2a3d;padding:10px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+header .brand{font-weight:700;color:#eaf2ff;letter-spacing:.3px}
+header nav a{margin-right:14px;font-size:14px;color:#9fb6d4;padding:3px 2px}
+header nav a.on{color:#fff;border-bottom:2px solid #3b82f6}
+header .sp{flex:1}
+header .tag{font-size:12px;color:#7d93b0;border:1px solid #24334a;border-radius:20px;padding:2px 10px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+h1{font-size:24px;margin:6px 0 4px}h2{font-size:19px;margin:26px 0 10px;color:#eaf2ff;
+ border-left:3px solid #3b82f6;padding-left:9px}h3{font-size:16px;margin:18px 0 8px;color:#dbe7f7}
+.card{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.kpi{background:#101a2b;border:1px solid #1e2a3d;border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:#7cc4ff}.kpi .l{font-size:12.5px;color:#8fa6c2}
+.kpi .n{font-size:11.5px;color:#6d84a3;margin-top:3px}
+.ok{color:#34d399}.no{color:#f87171}.warn{color:#fbbf24}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid #1e2a3d;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#13203a;color:#bcd2ee;font-weight:600}
+tr:hover td{background:#142033}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}
+code{background:#142033;padding:1px 5px;border-radius:4px;font-size:12.5px;color:#9ad7ff}
+pre{background:#0a1120;border:1px solid #1e2a3d;border-radius:8px;padding:10px 12px;overflow:auto;
+ font-size:12px;line-height:1.5}
+pre code{background:none;padding:0}
+.chart{width:100%;height:auto;background:#0c1424;border:1px solid #1a2436;border-radius:8px}
+.ct{fill:#dbe7f7;font-size:14px;font-weight:600}.ca{fill:#8296b2;font-size:10.5px}
+.chl{fill:#f87171;font-size:10.5px}
+.chart-empty{padding:20px;color:#6d84a3}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;border:1px solid}
+.b-ok{color:#34d399;border-color:#14532d;background:#0d2b1e}
+.b-no{color:#f87171;border-color:#7f1d1d;background:#2b0d0d}
+.b-warn{color:#fbbf24;border-color:#78350f;background:#2b1f0d}
+.b-info{color:#7cc4ff;border-color:#1e3a8a;background:#0d1c33}
+.fig{background:#0c1424;border:1px solid #1e2a3d;border-radius:10px;padding:10px}
+.fig svg{width:100%;height:auto;background:#fff;border-radius:6px}
+.fig .cap{font-size:12.5px;color:#8fa6c2;margin-top:7px}
+.fig .cap b{color:#dbe7f7}
+.muted{color:#8296b2;font-size:12.5px}
+.pill{display:inline-block;background:#13203a;border:1px solid #24354f;border-radius:14px;
+ padding:2px 10px;margin:2px 4px 2px 0;font-size:12px}
+.toc{columns:2;font-size:13px}
+.small{font-size:12.5px}
+hr{border:0;border-top:1px solid #1e2a3d;margin:18px 0}
+</style></head><body>
+<header><span class="brand">WiFi7-TX · 交付全景</span><nav><a href="../index.html" class="">总览</a><a href="../spec.html" class="">规格</a><a href="../docs/architecture-md.html" class="">架构</a><a href="../docs.html" class="">文档</a><a href="../circuit.html" class="">电路</a><a href="../layout.html" class="">版图</a><a href="../phys.html" class="">版图实证</a><a href="../dyn.html" class="">动态指标</a><a href="../scan.html" class="">ACPR 扫描</a><a href="../netlist.html" class="">网表</a><a href="../sim.html" class="on">仿真</a><a href="../tree.html" class="">文件树</a><a href="../data.html" class="">数据</a></nav><span class="sp"></span>
+<span class="tag">SOW-2 结项 · v014 终态</span><span class="tag">无鉴权 · 只读</span></header>
+<main><h1>迭代路径与判读</h1>
+<p class="muted">SOW-2 OP27 温漂轴四轮迭代：v011a-r2 → v012 → v013 → v014（单参数收口，结项）。</p>
+<svg class="chart" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" xmlns="http://www.w3.org/2000/svg"><text x="74" y="18" class="ct">mix.ntaila t125−t27 残差：四轮迭代（判据轴 v2500）</text><line x1="74" y1="258.4" x2="878" y2="258.4" stroke="#223047"/><text x="66" y="262.4" class="ca" text-anchor="end">-40.00</text><line x1="74" y1="178.4" x2="878" y2="178.4" stroke="#223047"/><text x="66" y="182.4" class="ca" text-anchor="end">-20.00</text><line x1="74" y1="98.4" x2="878" y2="98.4" stroke="#223047"/><text x="66" y="102.4" class="ca" text-anchor="end">0</text><rect x="102.1" y="98.4" width="43.4" height="141.2" fill="#3b82f6" rx="1.5" opacity="0.88"><title>v011a-r2 · typ = -35.29</title></rect><rect x="303.1" y="98.4" width="43.4" height="118.4" fill="#3b82f6" rx="1.5" opacity="0.88"><title>v012 · typ = -29.60</title></rect><rect x="504.1" y="98.4" width="43.4" height="39.1" fill="#3b82f6" rx="1.5" opacity="0.88"><title>v013 · typ = -9.78</title></rect><rect x="705.1" y="91.4" width="43.4" height="7.0" fill="#3b82f6" rx="1.5" opacity="0.88"><title>v014 · typ = +1.75</title></rect><rect x="150.4" y="98.4" width="43.4" height="159.4" fill="#f97316" rx="1.5" opacity="0.88"><title>v011a-r2 · bcs = -39.84</title></rect><rect x="351.4" y="98.4" width="43.4" height="129.3" fill="#f97316" rx="1.5" opacity="0.88"><title>v012 · bcs = -32.32</title></rect><rect x="552.4" y="98.4" width="43.4" height="32.8" fill="#f97316" rx="1.5" opacity="0.88"><title>v013 · bcs = -8.21</title></rect><rect x="753.4" y="75.2" width="43.4" height="23.2" fill="#f97316" rx="1.5" opacity="0.88"><title>v014 · bcs = +5.79</title></rect><rect x="198.6" y="98.4" width="43.4" height="142.8" fill="#10b981" rx="1.5" opacity="0.88"><title>v011a-r2 · wcs = -35.69</title></rect><rect x="399.6" y="98.4" width="43.4" height="125.2" fill="#10b981" rx="1.5" opacity="0.88"><title>v012 · wcs = -31.30</title></rect><rect x="600.6" y="98.4" width="43.4" height="59.8" fill="#10b981" rx="1.5" opacity="0.88"><title>v013 · wcs = -14.95</title></rect><rect x="801.6" y="98.4" width="43.4" height="22.6" fill="#10b981" rx="1.5" opacity="0.88"><title>v014 · wcs = -5.65</title></rect><line x1="74" y1="72.8" x2="878" y2="72.8" stroke="#ef4444" stroke-width="1.4" stroke-dasharray="7,4"/><text x="874" y="67.8" class="chl" text-anchor="end">+6.4</text><line x1="74" y1="124.0" x2="878" y2="124.0" stroke="#ef4444" stroke-width="1.4" stroke-dasharray="7,4"/><text x="874" y="119.0" class="chl" text-anchor="end">−6.4</text><line x1="74" y1="98.4" x2="878" y2="98.4" stroke="#5b6b82"/><text x="174.5" y="297.0" class="ca" text-anchor="middle">v011a-r2</text><text x="375.5" y="297.0" class="ca" text-anchor="middle">v012</text><text x="576.5" y="297.0" class="ca" text-anchor="middle">v013</text><text x="777.5" y="297.0" class="ca" text-anchor="middle">v014</text><text x="14" y="169" class="ca" text-anchor="middle" transform="rotate(-90 14 169)">mV</text><rect x="74" y="309" width="11" height="11" rx="2" fill="#3b82f6"/><text x="90" y="318" class="ca">typ</text><rect x="115.6" y="309" width="11" height="11" rx="2" fill="#f97316"/><text x="131.6" y="318" class="ca">bcs</text><rect x="157.2" y="309" width="11" height="11" rx="2" fill="#10b981"/><text x="173.2" y="318" class="ca">wcs</text></svg>
+<table><tr><th class="">版本</th><th class="">改动</th><th class="">状态</th><th class="">裁决</th><th class="">机理/备注</th><th class="">来源</th></tr><tr><td><b>v011a-r2</b></td><td>首版晶体管级三板（Gilbert mix + LO BUF + 链级联），链路基准入版</td><td><span class="badge b-no">—</span></td><td>FAIL（t125 残差 −35mV 失守）</td><td>vdd 轴 9/27 角塌 <0.35V；wcs+t125 在 v2500 亦 0.2816 失守；B 口径 mix 13/27 失守</td><td><span class="muted small">判读纪要_v011a_r2_快验与OP27 · 判据域 0/15 · 最差点 chain.mi.ntaila -40.08mV</span></td></tr><tr><td><b>v012</b></td><td>感测管 Is0 ×4（感测密度修正）</td><td><span class="badge b-no">—</span></td><td>FAIL（方向判死）</td><td>三口径预期（−6.4/−8.8/−21）全部落空 → 机理=感测/gm 两管 Vbe TC 失配（−0.32mV/K），Is0 路线判死</td><td><span class="muted small">判读纪要_v012_OP · 判据域 9/15 · 最差点 chain.mi.ntaila -32.62mV</span></td></tr><tr><td><b>v013</b></td><td>锚回填 0.8260→0.8359 + rr 672→680 + PTAT 注入（kptat=2.53）</td><td><span class="badge b-no">—</span></td><td>三过一不足</td><td>η=1 假设定标致三 corner 仍超 6.4mV 判据线 → 引出 η 实测标定</td><td><span class="muted small">判读纪要_v013_OP · 判据域 9/15 · 最差点 mix.ntaila -14.95mV</span></td></tr><tr><td><b>v014</b></td><td>单参数收口 kptat 2.53→3.98（η 实测 min-max 线性折中）</td><td><span class="badge b-ok">PASS</span></td><td>全过（判据线 6.4mV）</td><td>η 实测 typ .670 / bcs .815 / wcs .552；补偿斜率 +0.4755mV/K；t27 零点不动 → 定标与 i_vcc 零移动</td><td><span class="muted small">判读纪要_v014_OP · 判据域 15/15 · 最差点 mix.ntaila +5.79mV</span></td></tr></table>
+<table><tr><th class="">版本</th><th class="">改动</th><th class="">判据轴超线</th><th class="">边角超线</th><th class="">规格点 ntail min</th><th class="">nsens</th><th class="">i_vcc</th></tr><tr><td><b>v011a-r2</b></td><td>首版晶体管级三板（锚未回填 nsens=0.6806）</td><td>15/15 超线（max -40.08mV）</td><td>22/30 超线（max -51.78mV）</td><td>350.386 mV</td><td>0.790195 V</td><td>44.641 mA</td></tr><tr><td><b>v012</b></td><td>感测管 Is0 x4</td><td>6/15 超线（max -32.62mV）</td><td>15/30 超线（max -43.75mV）</td><td>357.915 mV</td><td>0.835863 V</td><td>45.425 mA</td></tr><tr><td><b>v013</b></td><td>锚回填 + rr680 + PTAT(kptat=2.53)</td><td>6/15 超线（max -14.95mV）</td><td>9/30 超线（max -26.60mV）</td><td>354.199 mV</td><td>0.835863 V</td><td>44.683 mA</td></tr><tr><td><b>v014</b></td><td>单参数收口 kptat=3.98</td><td>0/15 超线（max +5.79mV）</td><td>11/30 超线（max -17.25mV）</td><td>354.199 mV</td><td>0.835863 V</td><td>44.683 mA</td></tr></table>
+<p class="muted small">判读纪要全文见 <a href="../docs.html">文档库 · 判读纪要</a>（含口径拍板 B 口径复合判据）。</p></main></body></html>
