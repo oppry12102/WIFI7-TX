@@ -1,6 +1,0 @@
-ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/liblstream.so
-ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/libmaly.so
-ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/db_plugins/libmebes.so
-ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/lay_plugins/liblay_plugin.so
-ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/lay_plugins/libmaly_ui.so
-ERROR: Unable to load plugin: /data/workspace/pdk/klroot/usr/lib/klayout/lay_plugins/libmebes_ui.so
